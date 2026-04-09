@@ -332,34 +332,26 @@ poetry run pytest --cov=cell_project --cov-report=html
 
 ---
 
-## 📈 Próximos Passos (Roadmap Inicial)
+### Roadmap de Desenvolvimento
 
-### Fase 1 - Fundação (Atual)
-- [x] Configuração do ambiente Poetry e Django
-- [x] Definição da stack tecnológica
-- [ ] Implementar modelos (Models) principais
-- [ ] Configurar Django Admin para gestão inicial
-
-### Fase 2 - Core
-- [ ] Implementar autenticação JWT
-- [ ] Criar endpoints REST para CRUD de Membros e Células
-- [ ] Desenvolver estrutura de hierarquia de liderança
-
-### Fase 3 - Funcionalidades Específicas
-- [ ] Sistema de frequência e cálculo de assiduidade
-- [ ] Gestão de calendário anual
-- [ ] Relatórios básicos com Pandas
-
-### Fase 4 - Frontend Inicial
-- [ ] Setup do projeto Angular
-- [ ] Tela de login
-- [ ] Dashboard básico
-- [ ] CRUD de membros
-
-### Fase 5 - Expansão
-- [ ] Integração com OpenAI para insights
-- [ ] Módulo de ministérios
-- [ ] Expansão para áreas não-Mag (adultos)
+| Fase | Tarefa | Status |
+|------|--------|--------|
+| **1 - Fundação** | Configuração do ambiente Poetry e Django | ✅ Concluído |
+| **1 - Fundação** | Definição da stack tecnológica | ✅ Concluído |
+| **1 - Fundação** | Implementar modelos (Models) principais | 🔄 Em andamento |
+| **1 - Fundação** | Configurar Django Admin | ⏳ Pendente |
+| **2 - Core** | Implementar autenticação JWT | ⏳ Pendente |
+| **2 - Core** | Criar endpoints REST CRUD | ⏳ Pendente |
+| **2 - Core** | Estrutura de hierarquia de liderança | ⏳ Pendente |
+| **3 - Funcionalidades** | Sistema de frequência e assiduidade | ⏳ Pendente |
+| **3 - Funcionalidades** | Gestão de calendário anual | ⏳ Pendente |
+| **3 - Funcionalidades** | Relatórios com Pandas | ⏳ Pendente |
+| **4 - Frontend** | Setup do projeto Angular | ⏳ Pendente |
+| **4 - Frontend** | Tela de login | ⏳ Pendente |
+| **4 - Frontend** | Dashboard básico | ⏳ Pendente |
+| **5 - Expansão** | Integração com OpenAI | ⏳ Pendente |
+| **5 - Expansão** | Módulo de ministérios | ⏳ Pendente |
+| **5 - Expansão** | Expansão para áreas adultas | ⏳ Pendente |
 
 ---
 
