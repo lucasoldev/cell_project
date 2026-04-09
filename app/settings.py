@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'event_types',
+    'leadership_roles',
 ]
 
 MIDDLEWARE = [
