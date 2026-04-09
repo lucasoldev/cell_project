@@ -21,6 +21,7 @@ dependencies = [
     # --- Docs (do seu original) ---
     "mkdocs>=1.6.1,<2.0.0",
     "mkdocs-material>=9.6.20,<10.0.0",
+    "uuid (>=1.30,<2.0)",
 ]
 
 [build-system]
