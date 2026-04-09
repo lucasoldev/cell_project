@@ -28,6 +28,7 @@ INSTALLED_APPS = [
 
     'event_types',
     'leadership_roles',
+    'ministries',
 ]
 
 MIDDLEWARE = [
