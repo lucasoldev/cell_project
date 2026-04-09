@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'leadership_roles',
     'ministries',
     'areas',
+    'mag_branches',
 ]
 
 MIDDLEWARE = [
