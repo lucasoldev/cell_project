@@ -10,7 +10,6 @@ class EventType(BaseModel):
         CELULA = 'CELULA', 'Célula'
         LIVRE = 'LIVRE', 'Livre'
         MAG = 'MAG', 'Mag'
-        FERIADO = 'FERIADO', 'Feriado'
 
     name = models.CharField(
         max_length=10,
