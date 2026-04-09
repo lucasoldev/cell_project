@@ -1,0 +1,69 @@
+[project]
+name = "cell_project"
+version = "0.1.0"
+description = ""
+authors = [{ name = "lucasoldev", email = "lucas.oliveira.profissional@hotmail.com" }]
+readme = "README.md"
+requires-python = ">=3.13,<4.0"
+dependencies = [
+    # --- Django Core ---
+    "django>=5.0.1,<6.0.0",
+    "djangorestframework>=3.15.1,<4.0.0",
+    "djangorestframework-simplejwt>=5.3.1,<6.0.0",
+    "psycopg2-binary>=2.9.10,<3.0.0",
+    "python-dotenv>=1.1.1,<2.0.0",
+    # --- OpenAI & HTTP ---
+    "openai>=1.97.0,<2.0.0",
+    "httpx>=0.28.1,<1.0.0",
+    # --- Utils (do requirements original) ---
+    "pydantic>=2.10.6,<3.0.0",
+    "pyjwt>=2.10.1,<3.0.0",
+    # --- Docs (do seu original) ---
+    "mkdocs>=1.6.1,<2.0.0",
+    "mkdocs-material>=9.6.20,<10.0.0",
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+# --- Linters e Testes (do requirements original) ---
+flake8 = "^7.0.0"
+# --- Ferramentas (do seu original) ---
+ruff = "^0.12.7"
+taskipy = "^1.14.1"
+pytest-django = "^4.8.0"  # Adicionei pois é essencial para testar Django
+pytest-cov = "^5.0"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "cell_project.settings" # Ajuste se seu settings estiver em outro lugar
+pythonpath = "."
+addopts = '-p no:warnings --reuse-db'
+
+[tool.coverage.run]
+concurrency = ["thread", "multiprocessing"]
+source = ["cell_project"] # Ajuste para o nome da pasta do seu app Django principal
+
+[tool.ruff]
+line-length = 79
+exclude = [
+    ".venv",
+    "venv",
+    "migrations",
+    "alembic", # Pode remover se não for usar sqlalchemy
+]
+
+[tool.ruff.lint]
+select = ['I', 'F', 'E', 'W', 'PL', 'PT']
+ignore = ['PLR2004', 'PLR0917', 'PLR0913', 'PT022']
+
+[tool.ruff.format]
+quote-style = 'single'
+
+[tool.taskipy.tasks]
+lint = 'ruff check'
+format = 'ruff format && ruff check --fix'
+test = 'pytest -s -x --cov=cell_project -vv'
+post_test = 'coverage html'
+docs = 'mkdocs serve -a 127.0.0.1:8001'
