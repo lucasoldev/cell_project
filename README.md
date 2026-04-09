@@ -1,4 +1,3 @@
-```markdown
 # Cell Project - ERP para Gestão de Igreja em Células
 
 ![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
