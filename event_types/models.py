@@ -14,12 +14,17 @@ class EventType(BaseModel):
     name = models.CharField(
         max_length=10,
         choices=Types.choices,
-        unique=True
+        unique=True,
+        verbose_name='Nome'
     )
-    description = models.TextField(null=True, blank=True)
+    description = models.TextField(
+        null=True,
+        blank=True,
+        verbose_name='Descrição'
+    )
 
     class Meta:
         ordering = ['name']
 
     def __str__(self):
-        return self.get_name_display()  # Mostra "Célula" em vez de "CELULA"
+        return self.get_name_display()

@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'members',
     'hosts',
     'cells',
+    'calendar_events',
 ]
 
 MIDDLEWARE = [
