@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'mag_branches',
     'person',
     'members',
+    'hosts',
 ]
 
 MIDDLEWARE = [
