@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'calendar_events',
     'cell_locations',
     'visitors',
+    'leaderships',
 ]
 
 MIDDLEWARE = [
