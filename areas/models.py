@@ -38,7 +38,8 @@ class Area(BaseModel):
         return self.get_color_display()
 
 
-"""     def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):
+        """Ensures MAG area is always red"""
         if self.is_mag:
             self.color = self.AreaColor.VERMELHA
-        super().save(*args, **kwargs) """
+        super().save(*args, **kwargs)

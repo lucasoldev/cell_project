@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'person',
     'members',
     'hosts',
+    'cells',
 ]
 
 MIDDLEWARE = [
