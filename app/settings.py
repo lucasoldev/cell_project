@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'cell_locations',
     'visitors',
     'leaderships',
+    'cell_members',
 ]
 
 MIDDLEWARE = [
