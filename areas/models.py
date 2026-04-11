@@ -1,4 +1,5 @@
 from django.db import models
+
 from app.basemodel import BaseModel
 
 
@@ -6,37 +7,37 @@ class Area(BaseModel):
     """
     Areas of church cell supervision (Red, Yellow, Blue, Green, White)
     """
+
     class AreaColor(models.TextChoices):
-        VERMELHA = 'RED', 'Vermelha'
-        AMARELA = 'YELLOW', 'Amarela'
-        AZUL = 'BLUE', 'Azul'
-        VERDE = 'GREEN', 'Verde'
-        BRANCA = 'WHITE', 'Branca'
+        VERMELHA = "RED", "Vermelha"
+        AMARELA = "YELLOW", "Amarela"
+        AZUL = "BLUE", "Azul"
+        VERDE = "GREEN", "Verde"
+        BRANCA = "WHITE", "Branca"
 
     color = models.CharField(
         max_length=20,
         choices=AreaColor.choices,
-        unique=True  # Garante que não tenha áreas duplicadas
+        unique=True,  # Garante que não tenha áreas duplicadas
     )
     is_mag = models.BooleanField(
-        default=False,
-        help_text='Marque se for a área MAG (Área Vermelha)'
+        default=False, help_text="Marque se for a área MAG (Área Vermelha)"
     )
     notes = models.TextField(blank=True)
 
     class Meta:
-        db_table = 'area'
-        ordering = ['color']  # Ordena pela cor
+        db_table = "area"
+        ordering = ["color"]  # Ordena pela cor
         constraints = [
             models.CheckConstraint(
-            check=models.Q(is_mag=True, color='RED') | models.Q(is_mag=False),
-                name='mag_area_must_be_red'
+                check=models.Q(is_mag=True, color="RED")
+                | models.Q(is_mag=False),
+                name="mag_area_must_be_red",
             )
         ]
 
     def __str__(self):
         return self.get_color_display()
-
 
     def save(self, *args, **kwargs):
         """Ensures MAG area is always red"""

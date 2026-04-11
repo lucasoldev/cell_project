@@ -22,6 +22,7 @@ dependencies = [
     "mkdocs>=1.6.1,<2.0.0",
     "mkdocs-material>=9.6.20,<10.0.0",
     "uuid (>=1.30,<2.0)",
+    "black (>=26.3.1,<27.0.0)",
 ]
 
 [build-system]
@@ -51,13 +52,25 @@ line-length = 79
 exclude = [
     ".venv",
     "venv",
-    "migrations",
-    "alembic", # Pode remover se não for usar sqlalchemy
 ]
+
+extend-exclude = [
+    ".venv",
+    "venv",
+    "__pycache__",
+    "**/migrations/**",
+    "manage.py",
+    "**/settings.py",
+    "settings.py",
+    "*/settings/*.py",
+]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"**/migrations/*.py" = ["E501", "I001"]
 
 [tool.ruff.lint]
 select = ['I', 'F', 'E', 'W', 'PL', 'PT']
-ignore = ['PLR2004', 'PLR0917', 'PLR0913', 'PT022']
+ignore = ['PLR2004', 'PLR0917', 'PLR0913', 'PT022', 'F401']
 
 [tool.ruff.format]
 quote-style = 'single'
