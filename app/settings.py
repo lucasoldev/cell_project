@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'member_ministries',
     'cell_meetings',
     'meeting_attendances',
+    'monthly_attendances',
 ]
 
 MIDDLEWARE = [
