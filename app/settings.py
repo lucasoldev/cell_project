@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'visitors',
     'leaderships',
     'cell_members',
+    'member_ministries',
 ]
 
 MIDDLEWARE = [
