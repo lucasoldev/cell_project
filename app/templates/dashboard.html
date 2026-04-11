@@ -1,0 +1,288 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Cell Project - Dashboard
+{% endblock %}
+
+{% block content %}
+
+  {% include 'components/_dashboard_metrics.html' %}
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Gráficos de Presença e Crescimento -->
+  <div class="row mt-4 justify-content-center">
+    <div class="col-md-6 text-center">
+      <h5 class="text-center mb-3">Presença Semanal por Célula (Últimos 7 Dias)</h5>
+      <canvas id="weeklyAttendanceChart"></canvas>
+    </div>
+    <div class="col-md-6 text-center">
+      <h5 class="text-center mb-3">Novos Membros por Mês</h5>
+      <canvas id="monthlyNewMembersChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Gráficos de Células e Ministérios -->
+  <div class="row mt-5 justify-content-center">
+    <div class="col-md-6 text-center">
+      {% if cells_by_area != '{}' %}
+        <h5 class="mb-3">Células por Área</h5>
+        <div class="mb-4"></div>
+        <div style="width: 400px; display: inline-block;">
+          <canvas id="cellsByAreaChart"></canvas>
+        </div>
+      {% endif %}
+    </div>
+    <div class="col-md-6 text-center">
+      {% if members_by_ministry != '{}' %}
+        <h5 class="mb-3">Membros por Ministério</h5>
+        <div class="mb-4"></div>
+        <div style="width: 400px; display: inline-block;">
+          <canvas id="membersByMinistryChart"></canvas>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Tabela de Próximas Reuniões -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="bi bi-calendar-check"></i>
+            Próximas Reuniões
+          </h5>
+        </div>
+        <div class="card-body">
+          {% if upcoming_meetings %}
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Célula</th>
+                    <th>Data</th>
+                    <th>Horário</th>
+                    <th>Local</th>
+                    <th>Anfitrião</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for meeting in upcoming_meetings %}
+                  <tr>
+                    <td>
+                      <a href="{% url 'meeting_detail' meeting.pk %}">
+                        {{ meeting.cell.name }}
+                      </a>
+                    </td>
+                    <td>{{ meeting.meeting_date|date:"d/m/Y" }}</td>
+                    <td>{{ meeting.meeting_time|default:"19:30" }}</td>
+                    <td>{{ meeting.location_address|truncatechars:30 }}</td>
+                    <td>{{ meeting.host_name|default:"Não definido" }}</td>
+                    <td>
+                      <span class="badge bg-success">Agendada</span>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <p class="text-muted text-center py-3">
+              Nenhuma reunião agendada para os próximos dias.
+            </p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabela de Membros Fiéis -->
+  {% if faithful_members %}
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="bi bi-trophy-fill text-warning"></i>
+            Membros Fiéis este Mês
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Membro</th>
+                  <th>Célula</th>
+                  <th>Presenças</th>
+                  <th>Percentual</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for member in faithful_members %}
+                <tr>
+                  <td>{{ member.member_name }}</td>
+                  <td>{{ member.cell_name }}</td>
+                  <td>{{ member.attendances }}/{{ member.total_meetings }}</td>
+                  <td>
+                    <div class="progress" style="height: 20px;">
+                      <div 
+                        class="progress-bar bg-success" 
+                        role="progressbar" 
+                        style="width: {{ member.attendance_percentage }}%;"
+                        aria-valuenow="{{ member.attendance_percentage }}" 
+                        aria-valuemin="0" 
+                        aria-valuemax="100"
+                      >
+                        {{ member.attendance_percentage|floatformat:1 }}%
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge bg-success">
+                      <i class="bi bi-star-fill"></i> Fiel
+                    </span>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Dados dos gráficos (passados pela view)
+      var weeklyAttendanceData = JSON.parse('{{ weekly_attendance_data|safe }}');
+      var monthlyNewMembersData = JSON.parse('{{ monthly_new_members_data|safe }}');
+      var cellsByArea = JSON.parse('{{ cells_by_area|safe }}');
+      var membersByMinistry = JSON.parse('{{ members_by_ministry|safe }}');
+
+      // Gráfico de Presença Semanal
+      var ctxWeekly = document.getElementById('weeklyAttendanceChart').getContext('2d');
+      var weeklyAttendanceChart = new Chart(ctxWeekly, {
+        type: 'line',
+        data: {
+          labels: weeklyAttendanceData.labels,
+          datasets: weeklyAttendanceData.datasets
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              title: {
+                display: true,
+                text: 'Percentual de Presença (%)'
+              }
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return context.dataset.label + ': ' + context.parsed.y + '%';
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // Gráfico de Novos Membros por Mês
+      var ctxMonthly = document.getElementById('monthlyNewMembersChart').getContext('2d');
+      var monthlyNewMembersChart = new Chart(ctxMonthly, {
+        type: 'bar',
+        data: {
+          labels: monthlyNewMembersData.labels,
+          datasets: [{
+            label: 'Novos Membros',
+            data: monthlyNewMembersData.values,
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Quantidade de Membros'
+              }
+            }
+          }
+        }
+      });
+
+      // Gráfico de Células por Área (Doughnut)
+      if (Object.keys(cellsByArea).length > 0) {
+        var ctxCellsArea = document.getElementById('cellsByAreaChart').getContext('2d');
+        var cellsByAreaChart = new Chart(ctxCellsArea, {
+          type: 'doughnut',
+          data: {
+            labels: Object.keys(cellsByArea),
+            datasets: [{
+              data: Object.values(cellsByArea),
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.7)',
+                'rgba(54, 162, 235, 0.7)',
+                'rgba(255, 206, 86, 0.7)',
+                'rgba(75, 192, 192, 0.7)',
+                'rgba(153, 102, 255, 0.7)',
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            plugins: {
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }
+        });
+      }
+
+      // Gráfico de Membros por Ministério (Doughnut)
+      if (Object.keys(membersByMinistry).length > 0) {
+        var ctxMembersMinistry = document.getElementById('membersByMinistryChart').getContext('2d');
+        var membersByMinistryChart = new Chart(ctxMembersMinistry, {
+          type: 'doughnut',
+          data: {
+            labels: Object.keys(membersByMinistry),
+            datasets: [{
+              data: Object.values(membersByMinistry),
+              backgroundColor: [
+                'rgba(255, 159, 64, 0.7)',
+                'rgba(255, 99, 132, 0.7)',
+                'rgba(54, 162, 235, 0.7)',
+                'rgba(75, 192, 192, 0.7)',
+                'rgba(153, 102, 255, 0.7)',
+                'rgba(201, 203, 207, 0.7)',
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            plugins: {
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }
+        });
+      }
+    });
+  </script>
+{% endblock %}

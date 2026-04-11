@@ -1,0 +1,77 @@
+<div class="row g-4">
+  <!-- Card: Total de Células -->
+  <div class="col-md-3">
+    <div class="card card-dashboard h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="text-muted mb-2">Total de Células</h6>
+            <h2 class="mb-0">{{ total_cells }}</h2>
+          </div>
+          <i class="bi bi-house-door fs-1 text-primary"></i>
+        </div>
+        {% if active_cells %}
+          <small class="text-success">
+            <i class="bi bi-arrow-up"></i> {{ active_cells }} ativas
+          </small>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Card: Membros Ativos -->
+  <div class="col-md-3">
+    <div class="card card-dashboard h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="text-muted mb-2">Membros Ativos</h6>
+            <h2 class="mb-0">{{ active_members }}</h2>
+          </div>
+          <i class="bi bi-people fs-1 text-success"></i>
+        </div>
+        <small class="text-muted">
+          Total: {{ total_members }} cadastrados
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card: Presença Média -->
+  <div class="col-md-3">
+    <div class="card card-dashboard h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="text-muted mb-2">Presença Média</h6>
+            <h2 class="mb-0">{{ avg_attendance|floatformat:1 }}%</h2>
+          </div>
+          <i class="bi bi-graph-up fs-1 text-warning"></i>
+        </div>
+        <small class="text-muted">
+          Últimos 30 dias
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card: Visitantes este Mês -->
+  <div class="col-md-3">
+    <div class="card card-dashboard h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="text-muted mb-2">Visitantes (Mês)</h6>
+            <h2 class="mb-0">{{ monthly_visitors }}</h2>
+          </div>
+          <i class="bi bi-person-plus fs-1 text-info"></i>
+        </div>
+        {% if conversion_rate %}
+          <small class="text-success">
+            <i class="bi bi-arrow-up"></i> {{ conversion_rate|floatformat:1 }}% conversão
+          </small>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
