@@ -21,7 +21,10 @@ class EventType(BaseModel):
     )
 
     class Meta:
-        ordering = ["name"]
+        db_table = 'event_type'
+        verbose_name = 'Tipo de Evento'
+        verbose_name_plural = 'Tipos de Eventos'
+        ordering = ['name']
 
     def __str__(self):
         return self.get_name_display()

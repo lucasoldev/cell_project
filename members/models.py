@@ -22,10 +22,24 @@ class Member(BaseModel):
     notes = models.TextField(blank=True, verbose_name="Observações")
 
     class Meta:
-        db_table = "member"
-        verbose_name = "Membro"
-        verbose_name_plural = "Membros"
-        ordering = ["person__full_name"]
+        db_table = 'member'
+        verbose_name = 'Membro'
+        verbose_name_plural = 'Membros'
+        ordering = ['person__full_name']
+        indexes = [
+            models.Index(fields=['person']),
+            models.Index(fields=['is_active']),
+        ]
 
     def __str__(self):
         return f"Membro: {self.person.full_name}"
+
+    @property
+    def full_name(self):
+        """Returns the member's full name"""
+        return self.person.full_name
+
+    @property
+    def age(self):
+        """Returns the member's age"""
+        return self.person.age

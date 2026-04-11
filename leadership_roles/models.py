@@ -22,8 +22,22 @@ class LeadershipRole(BaseModel):
     )
 
     class Meta:
-        db_table = "leadership_role"
-        ordering = ["hierarchy_level"]
+        db_table = 'leadership_role'
+        verbose_name = 'Cargo de Liderança'
+        verbose_name_plural = 'Cargos de Liderança'
+        ordering = ['hierarchy_level']
 
     def __str__(self):
         return self.get_title_display()
+
+    def save(self, *args, **kwargs):
+        """Auto-sets hierarchy level based on role"""
+        hierarchy_map = {
+            self.Roles.PASTOR: 1,
+            self.Roles.SUPERVISOR_AREA: 2,
+            self.Roles.SUPERVISOR_CELULA: 3,
+            self.Roles.FACILITADOR: 4,
+            self.Roles.AUXILIAR: 5,
+        }
+        self.hierarchy_level = hierarchy_map.get(self.title, 99)
+        super().save(*args, **kwargs)

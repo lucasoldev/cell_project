@@ -13,9 +13,10 @@ class Ministry(BaseModel):
     notes = models.TextField(blank=True)
 
     class Meta:
-        db_table = "ministry"
-        verbose_name_plural = "ministries"
-        ordering = ["name"]
+        db_table = 'ministry'
+        verbose_name = 'Ministério'
+        verbose_name_plural = 'Ministérios'
+        ordering = ['name']
 
     def __str__(self):
         return self.name

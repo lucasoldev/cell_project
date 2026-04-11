@@ -26,13 +26,14 @@ class Area(BaseModel):
     notes = models.TextField(blank=True)
 
     class Meta:
-        db_table = "area"
-        ordering = ["color"]  # Ordena pela cor
+        db_table = 'area'
+        verbose_name = 'Área'
+        verbose_name_plural = 'Áreas'
+        ordering = ['color']
         constraints = [
             models.CheckConstraint(
-                check=models.Q(is_mag=True, color="RED")
-                | models.Q(is_mag=False),
-                name="mag_area_must_be_red",
+                check=models.Q(is_mag=True, color='RED') | models.Q(is_mag=False),
+                name='mag_area_must_be_red'
             )
         ]
 

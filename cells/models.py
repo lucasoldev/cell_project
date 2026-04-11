@@ -35,10 +35,14 @@ class Cell(BaseModel):
     notes = models.TextField(blank=True, verbose_name="Observações")
 
     class Meta:
-        db_table = "cell"
-        verbose_name = "Célula"
-        verbose_name_plural = "Células"
-        ordering = ["name"]
+        db_table = 'cell'
+        verbose_name = 'Célula'
+        verbose_name_plural = 'Células'
+        ordering = ['name']
+        indexes = [
+            models.Index(fields=['area']),
+            models.Index(fields=['mag_branch']),
+        ]
 
     def __str__(self):
         return f"{self.name} - {self.area.get_color_display()}"
