@@ -80,7 +80,7 @@
             {% block breadcrumb %}
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
                 {% block breadcrumb_items %}{% endblock %}
               </ol>
             </nav>
@@ -127,7 +127,6 @@
   
   <!-- Scripts customizados -->
   <script>
-    // Ativar tooltips do Bootstrap
     document.addEventListener('DOMContentLoaded', function() {
       var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
       var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {

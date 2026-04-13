@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from django.views.generic import ListView
+from . import models
 
-# Create your views here.
+
+class EventTypeListView(ListView):
+    model = models.EventType
+    template_name = 'event_types_list.html'
+    context_object_name = 'event_types'

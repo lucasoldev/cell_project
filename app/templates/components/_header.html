@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'dashboard' %}">
+    <a class="navbar-brand" href="#">
       <i class="bi bi-people-fill"></i>
       Cell Project
     </a>
@@ -18,15 +18,15 @@
               {{ user.get_full_name|default:user.username }}
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="{% url 'profile' %}">
+              <li><a class="dropdown-item" href="#">
                 <i class="bi bi-person"></i> Meu Perfil
               </a></li>
-              <li><a class="dropdown-item" href="{% url 'my_cells' %}">
+              <li><a class="dropdown-item" href="#">
                 <i class="bi bi-house-door"></i> Minhas Células
               </a></li>
               <li><hr class="dropdown-divider"></li>
               <li>
-                <form method="post" action="{% url 'logout' %}">
+                <form method="post" action="#">
                   {% csrf_token %}
                   <button type="submit" class="dropdown-item text-danger">
                     <i class="bi bi-box-arrow-right"></i> Sair
@@ -37,7 +37,7 @@
           </li>
         {% else %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'login' %}">
+            <a class="nav-link" href="#">
               <i class="bi bi-box-arrow-in-right"></i> Entrar
             </a>
           </li>

@@ -4,8 +4,7 @@
       
       <!-- Dashboard -->
       <li class="nav-item">
-        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" 
-           href="{% url 'dashboard' %}">
+        <a class="nav-link active" href="#">
           <i class="bi bi-speedometer2"></i>
           Dashboard
         </a>
@@ -13,8 +12,7 @@
       
       <!-- Células -->
       <li class="nav-item">
-        <a class="nav-link {% if 'cell' in request.resolver_match.url_name %}active{% endif %}" 
-           href="{% url 'cell_list' %}">
+        <a class="nav-link" href="#">
           <i class="bi bi-house-door"></i>
           Células
         </a>
@@ -22,8 +20,7 @@
       
       <!-- Membros -->
       <li class="nav-item">
-        <a class="nav-link {% if 'member' in request.resolver_match.url_name %}active{% endif %}" 
-           href="{% url 'member_list' %}">
+        <a class="nav-link" href="#">
           <i class="bi bi-people"></i>
           Membros
         </a>
@@ -31,8 +28,7 @@
       
       <!-- Visitantes -->
       <li class="nav-item">
-        <a class="nav-link {% if 'visitor' in request.resolver_match.url_name %}active{% endif %}" 
-           href="{% url 'visitor_list' %}">
+        <a class="nav-link" href="#">
           <i class="bi bi-person-plus"></i>
           Visitantes
         </a>
@@ -40,8 +36,7 @@
       
       <!-- Reuniões -->
       <li class="nav-item">
-        <a class="nav-link {% if 'meeting' in request.resolver_match.url_name %}active{% endif %}" 
-           href="{% url 'meeting_list' %}">
+        <a class="nav-link" href="#">
           <i class="bi bi-calendar-check"></i>
           Reuniões
         </a>
@@ -49,8 +44,7 @@
       
       <!-- Presenças -->
       <li class="nav-item">
-        <a class="nav-link {% if 'attendance' in request.resolver_match.url_name %}active{% endif %}" 
-           href="{% url 'attendance_list' %}">
+        <a class="nav-link" href="#">
           <i class="bi bi-clipboard-check"></i>
           Presenças
         </a>
@@ -58,28 +52,23 @@
       
       <!-- Calendário -->
       <li class="nav-item">
-        <a class="nav-link {% if 'calendar' in request.resolver_match.url_name %}active{% endif %}" 
-           href="{% url 'calendar_list' %}">
+        <a class="nav-link" href="#">
           <i class="bi bi-calendar3"></i>
           Calendário
         </a>
       </li>
       
-      <!-- Lideranças (apenas para supervisores/pastores) -->
-      {% if user.is_staff or user.leadership_positions.exists %}
+      <!-- Lideranças -->
       <li class="nav-item">
-        <a class="nav-link {% if 'leadership' in request.resolver_match.url_name %}active{% endif %}" 
-           href="{% url 'leadership_list' %}">
+        <a class="nav-link" href="#">
           <i class="bi bi-star"></i>
           Lideranças
         </a>
       </li>
-      {% endif %}
       
       <!-- Ministérios -->
       <li class="nav-item">
-        <a class="nav-link {% if 'ministry' in request.resolver_match.url_name %}active{% endif %}" 
-           href="{% url 'ministry_list' %}">
+        <a class="nav-link" href="#">
           <i class="bi bi-building"></i>
           Ministérios
         </a>
@@ -89,31 +78,27 @@
       
       <!-- Relatórios -->
       <li class="nav-item">
-        <a class="nav-link {% if 'report' in request.resolver_match.url_name %}active{% endif %}" 
-           href="{% url 'reports' %}">
+        <a class="nav-link" href="#">
           <i class="bi bi-graph-up"></i>
           Relatórios
         </a>
       </li>
       
-      <!-- Áreas (admin) -->
-      {% if user.is_staff %}
+      <!-- Áreas -->
       <li class="nav-item">
-        <a class="nav-link {% if 'area' in request.resolver_match.url_name %}active{% endif %}" 
-           href="{% url 'area_list' %}">
+        <a class="nav-link" href="#">
           <i class="bi bi-diagram-3"></i>
           Áreas
         </a>
       </li>
       
-      <!-- Admin Django -->
+      <!-- Admin -->
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'admin:index' %}" target="_blank">
+        <a class="nav-link" href="#" target="_blank">
           <i class="bi bi-gear"></i>
           Administração
         </a>
       </li>
-      {% endif %}
     </ul>
   </div>
 </div>
