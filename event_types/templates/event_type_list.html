@@ -29,7 +29,14 @@
         {% endif %}
       </div>
     </form>
-  </div>
+    </div>
+    {% if perms.brands.add_brand %}
+    <div class="col-md-6">
+        <a href="{% url 'event_type_create' %}" class="btn btn-success float-end">
+            <i class="bi bi-plus"></i> Novo tipo de evento
+        </a>
+    </div>
+    {% endif %}
 </div>
 
 <div class="table-responsive">
@@ -38,24 +45,24 @@
       <tr>
         <th>Nome</th>
         <th>Descrição</th>
-
+        <th>Ações</th>
       </tr>
     </thead>
     <tbody>
       {% for event_type in event_types %}
       <tr>
+        <td>{{ event_type.get_name_display }}</td>
+        <td>{{ event_type.description }}</td>
         <td>
-          <span class="badge bg-secondary">
-            {{ event_type.get_name_display }}
-          </span>
-        </td>
-        <td>{{ event_type.description|default:"—"|truncatechars:60 }}</td>
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="4" class="text-center py-4 text-muted">
-          <i class="bi bi-calendar-x fs-1"></i>
-          <p class="mt-2 mb-0">Nenhum tipo de evento encontrado.</p>
+            <a href="{% url 'event_type_detail' event_type.id %}" class="btn btn-info btn-sm">
+                <i class="bi bi-eye"></i>
+            </a>
+            <a href="{% url 'event_type_update' event_type.id %}" class="btn btn-warning btn-sm">
+                <i class="bi bi-pencil"></i>
+            </a>
+            <a href="{% url 'event_type_delete' event_type.id %}" class="btn btn-danger btn-sm">
+                <i class="bi bi-trash3"></i>
+            </a>
         </td>
       </tr>
       {% endfor %}
