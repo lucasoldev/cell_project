@@ -1,0 +1,255 @@
+{% extends 'app/base.html' %}
+
+{% block title %}
+  Ministérios - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item active" aria-current="page">Ministérios</li>
+{% endblock %}
+
+{% block page_heading %}
+  <div class="d-flex justify-content-between align-items-center">
+    <span><i class="bi bi-building"></i> Ministérios</span>
+    <a href="#" class="btn btn-primary">
+      <i class="bi bi-plus-circle"></i> Novo Ministério
+    </a>
+  </div>
+{% endblock %}
+
+{% block content %}
+  <div class="card shadow-sm">
+    <div class="card-header bg-dark border-secondary">
+      <div class="row g-3">
+        <div class="col-md-8">
+          <form method="get" class="d-flex">
+            <input 
+              type="text" 
+              name="search" 
+              class="form-control me-2" 
+              placeholder="Buscar por nome ou descrição..." 
+              value=""
+            >
+            <button type="submit" class="btn btn-outline-light">
+              <i class="bi bi-search"></i>
+            </button>
+            <a href="#" class="btn btn-outline-secondary ms-2">
+              <i class="bi bi-x-circle"></i>
+            </a>
+          </form>
+        </div>
+        <div class="col-md-4 text-md-end">
+          <small class="text-muted">
+            6 registro(s) encontrado(s)
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col" class="ps-3">#</th>
+              <th scope="col">Nome</th>
+              <th scope="col">Descrição</th>
+              <th scope="col">Observações</th>
+              <th scope="col">Criado em</th>
+              <th scope="col" class="text-end pe-3">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Dados mockados para visualização -->
+            <tr>
+              <td class="ps-3">1</td>
+              <td>
+                <span class="fw-bold">
+                  <i class="bi bi-music-note-beamed text-info me-1"></i>
+                  Louvor
+                </span>
+              </td>
+              <td>Ministério responsável pela música e adoração nos cultos.</td>
+              <td>Ensaios às quintas-feiras às 19h30</td>
+              <td>05/01/2024 14:30</td>
+              <td class="text-end pe-3">
+                <a href="#" class="btn btn-sm btn-outline-warning me-1" data-bs-toggle="tooltip" title="Editar">
+                  <i class="bi bi-pencil-square"></i>
+                </a>
+                <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Excluir">
+                  <i class="bi bi-trash3"></i>
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td class="ps-3">2</td>
+              <td>
+                <span class="fw-bold">
+                  <i class="bi bi-children text-success me-1"></i>
+                  Infantil
+                </span>
+              </td>
+              <td>Cuidado e ensino bíblico para crianças de 0 a 11 anos.</td>
+              <td>Atividades durante os cultos de domingo</td>
+              <td>08/01/2024 09:15</td>
+              <td class="text-end pe-3">
+                <a href="#" class="btn btn-sm btn-outline-warning me-1" data-bs-toggle="tooltip" title="Editar">
+                  <i class="bi bi-pencil-square"></i>
+                </a>
+                <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Excluir">
+                  <i class="bi bi-trash3"></i>
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td class="ps-3">3</td>
+              <td>
+                <span class="fw-bold">
+                  <i class="bi bi-heart-fill text-danger me-1"></i>
+                  Casais
+                </span>
+              </td>
+              <td>Acompanhamento e eventos para casais da igreja.</td>
+              <td>Reuniões mensais aos sábados</td>
+              <td>10/01/2024 16:45</td>
+              <td class="text-end pe-3">
+                <a href="#" class="btn btn-sm btn-outline-warning me-1" data-bs-toggle="tooltip" title="Editar">
+                  <i class="bi bi-pencil-square"></i>
+                </a>
+                <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Excluir">
+                  <i class="bi bi-trash3"></i>
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td class="ps-3">4</td>
+              <td>
+                <span class="fw-bold">
+                  <i class="bi bi-person-raised-hand text-primary me-1"></i>
+                  Jovens
+                </span>
+              </td>
+              <td>Ministério voltado para jovens de 12 a 25 anos.</td>
+              <td>Culto de jovens aos sábados às 19h</td>
+              <td>12/01/2024 11:00</td>
+              <td class="text-end pe-3">
+                <a href="#" class="btn btn-sm btn-outline-warning me-1" data-bs-toggle="tooltip" title="Editar">
+                  <i class="bi bi-pencil-square"></i>
+                </a>
+                <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Excluir">
+                  <i class="bi bi-trash3"></i>
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td class="ps-3">5</td>
+              <td>
+                <span class="fw-bold">
+                  <i class="bi bi-cup-hot-fill text-warning me-1"></i>
+                  Recepção
+                </span>
+              </td>
+              <td>Recepção de visitantes e novos membros na igreja.</td>
+              <td>Escala de domingo a cada 15 dias</td>
+              <td>15/01/2024 13:20</td>
+              <td class="text-end pe-3">
+                <a href="#" class="btn btn-sm btn-outline-warning me-1" data-bs-toggle="tooltip" title="Editar">
+                  <i class="bi bi-pencil-square"></i>
+                </a>
+                <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Excluir">
+                  <i class="bi bi-trash3"></i>
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td class="ps-3">6</td>
+              <td>
+                <span class="fw-bold">
+                  <i class="bi bi-camera-fill text-secondary me-1"></i>
+                  Comunicação
+                </span>
+              </td>
+              <td>Responsável por fotografia, vídeo e redes sociais.</td>
+              <td>Cobertura de eventos e cultos</td>
+              <td>20/01/2024 10:00</td>
+              <td class="text-end pe-3">
+                <a href="#" class="btn btn-sm btn-outline-warning me-1" data-bs-toggle="tooltip" title="Editar">
+                  <i class="bi bi-pencil-square"></i>
+                </a>
+                <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Excluir">
+                  <i class="bi bi-trash3"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Resumo estatístico -->
+    <div class="card-footer bg-dark border-secondary">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-building fs-4 text-primary me-2"></i>
+            <div>
+              <small class="text-muted d-block">Total de Ministérios</small>
+              <strong>6</strong>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-people fs-4 text-success me-2"></i>
+            <div>
+              <small class="text-muted d-block">Total de Membros</small>
+              <strong>42</strong>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-star-fill fs-4 text-warning me-2"></i>
+            <div>
+              <small class="text-muted d-block">Ministério mais ativo</small>
+              <strong>Louvor</strong>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-calendar-check fs-4 text-info me-2"></i>
+            <div>
+              <small class="text-muted d-block">Criados este mês</small>
+              <strong>1</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer bg-dark border-secondary">
+      <nav aria-label="Paginação">
+        <ul class="pagination justify-content-center mb-0">
+          <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-chevron-double-left"></i></span>
+          </li>
+          <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-chevron-left"></i></span>
+          </li>
+
+          <li class="page-item active">
+            <span class="page-link">Página 1 de 1</span>
+          </li>
+
+          <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-chevron-right"></i></span>
+          </li>
+          <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-chevron-double-right"></i></span>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+{% endblock %}

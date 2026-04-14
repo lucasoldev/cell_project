@@ -9,128 +9,58 @@
 {% endblock %}
 
 {% block page_heading %}
-  <div class="d-flex justify-content-between align-items-center">
-    <span><i class="bi bi-calendar-event"></i> Tipos de Eventos</span>
-    <a href="#" class="btn btn-primary">
-      <i class="bi bi-plus-circle"></i> Novo Tipo
-    </a>
-  </div>
+  <span><i class="bi bi-calendar-event"></i> Tipos de Eventos</span>
 {% endblock %}
 
 {% block content %}
-  <div class="card shadow-sm">
-    <div class="card-header bg-dark border-secondary">
-      <div class="row g-3">
-        <div class="col-md-8">
-          <form method="get" class="d-flex">
-            <input 
-              type="text" 
-              name="search" 
-              class="form-control me-2" 
-              placeholder="Buscar por nome..." 
-              value=""
-            >
-            <button type="submit" class="btn btn-outline-light">
-              <i class="bi bi-search"></i>
-            </button>
-            <a href="#" class="btn btn-outline-secondary ms-2">
-              <i class="bi bi-x-circle"></i>
-            </a>
-          </form>
-        </div>
-        <div class="col-md-4 text-md-end">
-          <small class="text-muted">
-            3 registro(s) encontrado(s)
-          </small>
-        </div>
+
+<div class="row mb-3">
+  <div class="col-md-6">
+    <form method="get" action="{% url 'event_type_list' %}">
+      <div class="input-group">
+        <input type="text" class="form-control" name="name" placeholder="nome" value="{{ request.GET.name }}">
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-search"></i>
+        </button>
+        {% if request.GET.name %}
+          <a href="{% url 'event_type_list' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-x-circle"></i>
+          </a>
+        {% endif %}
       </div>
-    </div>
-
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-          <thead class="table-dark">
-            <tr>
-              <th scope="col" class="ps-3">#</th>
-              <th scope="col">Nome</th>
-              <th scope="col">Descrição</th>
-              <th scope="col" class="text-end pe-3">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Dados mockados para visualização -->
-            <tr>
-              <td class="ps-3">1</td>
-              <td>
-                <span class="badge bg-secondary">Célula</span>
-              </td>
-              <td>Reunião semanal de célula</td>
-              <td class="text-end pe-3">
-                <a href="#" class="btn btn-sm btn-outline-warning me-1" data-bs-toggle="tooltip" title="Editar">
-                  <i class="bi bi-pencil-square"></i>
-                </a>
-                <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Excluir">
-                  <i class="bi bi-trash3"></i>
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <td class="ps-3">2</td>
-              <td>
-                <span class="badge bg-secondary">Livre</span>
-              </td>
-              <td>Dia livre sem célula ou Mag</td>
-              <td class="text-end pe-3">
-                <a href="#" class="btn btn-sm btn-outline-warning me-1" data-bs-toggle="tooltip" title="Editar">
-                  <i class="bi bi-pencil-square"></i>
-                </a>
-                <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Excluir">
-                  <i class="bi bi-trash3"></i>
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <td class="ps-3">3</td>
-              <td>
-                <span class="badge bg-secondary">Mag</span>
-              </td>
-              <td>Encontro de Jovens (MAG)</td>
-              <td class="text-end pe-3">
-                <a href="#" class="btn btn-sm btn-outline-warning me-1" data-bs-toggle="tooltip" title="Editar">
-                  <i class="bi bi-pencil-square"></i>
-                </a>
-                <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Excluir">
-                  <i class="bi bi-trash3"></i>
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="card-footer bg-dark border-secondary">
-      <nav aria-label="Paginação">
-        <ul class="pagination justify-content-center mb-0">
-          <li class="page-item disabled">
-            <span class="page-link"><i class="bi bi-chevron-double-left"></i></span>
-          </li>
-          <li class="page-item disabled">
-            <span class="page-link"><i class="bi bi-chevron-left"></i></span>
-          </li>
-
-          <li class="page-item active">
-            <span class="page-link">Página 1 de 1</span>
-          </li>
-
-          <li class="page-item disabled">
-            <span class="page-link"><i class="bi bi-chevron-right"></i></span>
-          </li>
-          <li class="page-item disabled">
-            <span class="page-link"><i class="bi bi-chevron-double-right"></i></span>
-          </li>
-        </ul>
-      </nav>
-    </div>
+    </form>
   </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>Nome</th>
+        <th>Descrição</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {% for event_type in event_types %}
+      <tr>
+        <td>
+          <span class="badge bg-secondary">
+            {{ event_type.get_name_display }}
+          </span>
+        </td>
+        <td>{{ event_type.description|default:"—"|truncatechars:60 }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="4" class="text-center py-4 text-muted">
+          <i class="bi bi-calendar-x fs-1"></i>
+          <p class="mt-2 mb-0">Nenhum tipo de evento encontrado.</p>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
 {% endblock %}
