@@ -23,13 +23,12 @@ class EventTypeCreateView(CreateView):
     template_name = 'event_type_create.html'
     form_class = forms.EventTypeForm
     success_url = reverse_lazy('event_type_list')
-    context_object_name = 'event_types_create'
 
 
 class EventTypeDetailView(DetailView):
     model = models.EventType
     template_name = 'event_type_detail.html'
-    context_object_name = 'event_type_detail'
+    context_object_name = 'event_type'
 
 
 class EventTypeUpdateView(UpdateView):
@@ -37,11 +36,10 @@ class EventTypeUpdateView(UpdateView):
     template_name = 'event_type_update.html'
     form_class = forms.EventTypeForm
     success_url = reverse_lazy('event_type_list')
-    context_object_name = 'event_type_update'
+    context_object_name = 'event_type'
 
 
 class EventTypeDeleteView(DeleteView):
     model = models.EventType
     template_name = 'event_type_delete.html'
     success_url = reverse_lazy('event_type_list')
-    context_object_name = 'event_type_delete'

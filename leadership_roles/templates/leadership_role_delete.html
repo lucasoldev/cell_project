@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Deletar Tipo de Evento - Cell Project
+  Deletar Cargo - Cell Project
 {% endblock %}
 
 {% block breadcrumb_items %}
-  <li class="breadcrumb-item"><a href="{% url 'event_type_list' %}">Tipos de Eventos</a></li>
-  <li class="breadcrumb-item"><a href="{% url 'event_type' object.pk %}">{{ object.get_name_display }}</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'leadership_role_list' %}">Cargos</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'leadership_role' object.pk %}">{{ object.get_title_display }}</a></li>
   <li class="breadcrumb-item active" aria-current="page">Deletar</li>
 {% endblock %}
 
 {% block page_heading %}
-  <span><i class="bi bi-trash3"></i> Deletar Tipo de Evento</span>
+  <span><i class="bi bi-trash3"></i> Deletar Tipo Cargo</span>
 {% endblock %}
 
 {% block content %}
@@ -36,8 +36,8 @@
         </div>
         
         <p class="card-text fs-5">
-          Tem certeza de que deseja excluir o tipo de evento 
-          <strong class="text-danger">{{ object.get_name_display }}</strong>?
+          Tem certeza de que deseja excluir o cargo 
+          <strong class="text-danger">{{ object.get_title_display }}</strong>?
         </p>
         
         <hr class="my-4">
@@ -50,7 +50,7 @@
                   <th scope="row">Nome:</th>
                   <td>
                     <span class="badge bg-secondary fs-6">
-                      {{ object.get_name_display }}
+                      {{ object.get_title_display }}
                     </span>
                   </td>
                 </tr>
@@ -71,11 +71,11 @@
         </div>
         
         <!-- Aviso sobre registros relacionados -->
-        {% if related_events_count %}
+        {% if related_leadership_role_count %}
         <div class="alert alert-danger">
           <i class="bi bi-link-45deg me-2"></i>
-          <strong>Aviso:</strong> Este tipo de evento está associado a 
-          <strong>{{ related_events_count }}</strong> evento(s) no calendário. 
+          <strong>Aviso:</strong> Este tipo de cargo está associado a 
+          <strong>{{ related_leadership_role_count }}</strong> cargo(s) no diagrama. 
           A exclusão pode afetar estes registros.
         </div>
         {% endif %}
@@ -90,8 +90,8 @@
         </form>
         
         <div class="mt-4">
-          <a href="{% url 'event_type_list' %}" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Cancelar e voltar para a Lista de Tipos de Eventos
+          <a href="{% url 'leadership_role_list' %}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Cancelar e voltar para a Lista de Cargos
           </a>
         </div>
       </div>

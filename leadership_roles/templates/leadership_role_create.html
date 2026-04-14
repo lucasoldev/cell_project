@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Novo Cargo de Liderança - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'leadership_role_list' %}">Cargos de Liderança</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Novo Cargo</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-star-fill"></i> Cadastrar Cargo de Liderança</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="card shadow-sm">
+      <div class="card-header bg-dark border-secondary">
+        <h5 class="mb-0">
+          Preencha os dados do cargo
+        </h5>
+      </div>
+      
+      <div class="card-body">
+        <form method="post" action="{% url 'leadership_role_create' %}" novalidate>
+          {% csrf_token %}
+          
+          <!-- Campo: Título (ChoiceField) -->
+          <div class="mb-3">
+            <label for="{{ form.title.id_for_label }}" class="form-label">
+              <i class="bi bi-tag"></i> Título <span class="text-danger">*</span>
+            </label>
+            <select 
+              name="{{ form.title.name }}" 
+              id="{{ form.title.id_for_label }}" 
+              class="form-select {% if form.title.errors %}is-invalid{% endif %}"
+              required
+            >
+              <option value="">Selecione um cargo...</option>
+              {% for value, label in form.title.field.choices %}
+                {% if value %}
+                  <option value="{{ value }}" {% if form.title.value == value %}selected{% endif %}>
+                    {{ label }}
+                  </option>
+                {% endif %}
+              {% endfor %}
+            </select>
+            {% if form.title.errors %}
+              <div class="invalid-feedback">
+                {{ form.title.errors|join:", " }}
+              </div>
+            {% endif %}
+            {% if form.title.help_text %}
+              <small class="form-text text-muted">{{ form.title.help_text }}</small>
+            {% endif %}
+          </div>
+          
+          <!-- Campo: Descrição -->
+          <div class="mb-3">
+            <label for="{{ form.description.id_for_label }}" class="form-label">
+              <i class="bi bi-file-text"></i> Descrição
+            </label>
+            <textarea 
+              name="{{ form.description.name }}" 
+              id="{{ form.description.id_for_label }}" 
+              class="form-control {% if form.description.errors %}is-invalid{% endif %}"
+              rows="3"
+              placeholder="Descreva as atribuições deste cargo..."
+            >{{ form.description.value|default:'' }}</textarea>
+            {% if form.description.errors %}
+              <div class="invalid-feedback">
+                {{ form.description.errors|join:", " }}
+              </div>
+            {% endif %}
+            {% if form.description.help_text %}
+              <small class="form-text text-muted">{{ form.description.help_text }}</small>
+            {% endif %}
+          </div>
+          
+          <!-- Botões de ação -->
+          <div class="d-flex justify-content-between mt-4">
+            <a href="{% url 'leadership_role_list' %}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Cancelar e voltar para a lista
+            </a>
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-check-lg"></i> Salvar Cargo
+            </button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Dicas rápidas -->
+      <div class="card-footer bg-dark border-secondary">
+        <small class="text-muted">
+          <i class="bi bi-info-circle me-1"></i>
+          <strong>Hierarquia dos cargos:</strong><br>
+          <span class="badge bg-danger">Pastor</span> - Liderança da igreja. Supervisiona os demais Prs, supers de área e ministérios.<br>
+          <span class="badge bg-warning text-dark">Supervisor de Área</span> - Supervisiona uma área específica<br>
+          <span class="badge bg-info">Supervisor de Célula</span> - Coordena um conjunto de células<br>
+          <span class="badge bg-success">Facilitador</span> - Lidera uma célula específica<br>
+          <span class="badge bg-secondary">Auxiliar</span> - Auxilia o facilitador na gestão
+        </small>
+      </div>
+    </div>
+    
+</div>
+
+{% endblock %}

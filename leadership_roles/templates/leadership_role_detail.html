@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ leadership_role.get_title_display }} - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'leadership_role_list' %}">Cargos</a></li>
+  <li class="breadcrumb-item active" aria-current="page">{{ leadership_role.get_title_display }}</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-calendar-event"></i> Detalhes dos Cargos</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="card shadow-sm">
+      <div class="card-header bg-dark border-secondary">
+        <h5 class="mb-0">
+          <i class="bi bi-info-circle me-2"></i>
+          Informações do Cargo
+        </h5>
+      </div>
+      
+      <div class="card-body">
+        <table class="table table-borderless">
+          <tbody>
+            <tr>
+              <th scope="row">Nome</th>
+              <td>
+                <span class="badge bg-primary fs-6">
+                  {{ leadership_role.get_title_display }}
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Descrição</th>
+              <td>
+                <span class="badge bg-primary fs-6">
+                  {{ leadership_role.description }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="card-footer bg-dark border-secondary">
+        <div class="d-flex justify-content-end">
+          <a href="{% url 'leadership_role_list' %}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Voltar para a lista
+          </a>
+        </div>
+      </div>
+    </div>
+    
+</div>
+
+{% endblock %}
