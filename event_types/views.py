@@ -1,7 +1,6 @@
-from typing import Any
-from django.db.models.query import QuerySet
-from django.views.generic import ListView
-from . import models
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView
+from . import models, forms
 
 
 class EventTypeListView(ListView):
@@ -17,3 +16,11 @@ class EventTypeListView(ListView):
             queryset = queryset.filter(name__icontains=name)
         
         return queryset
+
+
+class EventTypeCreateView(CreateView):
+    model = models.EventType
+    template_name = 'event_types_create.html'
+    form_class = forms.EventTypeForm
+    success_url = reverse_lazy('event_type_list')
+    context_object_name = 'event_types_create'
