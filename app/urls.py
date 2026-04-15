@@ -8,4 +8,5 @@ urlpatterns = [
     path('', include('members.urls')),
     path('', include('hosts.urls')),
     path('', include('visitors.urls')),
+    path('', include('cells.urls')),
 ]

@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Nova Célula - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'cell_list' %}">Células</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Nova Célula</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-house-add"></i> Cadastrar Célula</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark border-secondary">
+                <h5 class="mb-0">
+                    Preencha os dados da célula
+                </h5>
+            </div>
+            
+            <div class="card-body">
+                <form method="post" action="{% url 'cell_create' %}" novalidate>
+                    {% csrf_token %}
+                    
+                    <!-- Campo: Nome -->
+                    <div class="mb-3">
+                        <label for="{{ form.name.id_for_label }}" class="form-label">
+                            <i class="bi bi-tag"></i> Nome da Célula <span class="text-danger">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            name="{{ form.name.name }}" 
+                            id="{{ form.name.id_for_label }}" 
+                            class="form-control {% if form.name.errors %}is-invalid{% endif %}"
+                            placeholder="Ex: Célula Ágape, Célula da Fé..."
+                            value="{{ form.name.value|default:'' }}"
+                            required
+                        >
+                        {% if form.name.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.name.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Campo: Área -->
+                    <div class="mb-3">
+                        <label for="{{ form.area.id_for_label }}" class="form-label">
+                            <i class="bi bi-diagram-3"></i> Área <span class="text-danger">*</span>
+                        </label>
+                        <select 
+                            name="{{ form.area.name }}" 
+                            id="{{ form.area.id_for_label }}" 
+                            class="form-select {% if form.area.errors %}is-invalid{% endif %}"
+                            required
+                        >
+                            <option value="">Selecione uma área...</option>
+                            {% for area in form.area.field.queryset %}
+                                <option value="{{ area.pk }}" {% if form.area.value|stringformat:"s" == area.pk|stringformat:"s" %}selected{% endif %}>
+                                    {{ area.get_color_display }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if form.area.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.area.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Campo: Ramificação MAG -->
+                    <div class="mb-3">
+                        <label for="{{ form.mag_branch.id_for_label }}" class="form-label">
+                            <i class="bi bi-diagram-2"></i> Ramificação MAG
+                        </label>
+                        <select 
+                            name="{{ form.mag_branch.name }}" 
+                            id="{{ form.mag_branch.id_for_label }}" 
+                            class="form-select {% if form.mag_branch.errors %}is-invalid{% endif %}"
+                        >
+                            <option value="">Selecione uma ramificação...</option>
+                            {% for branch in form.mag_branch.field.queryset %}
+                                <option value="{{ branch.pk }}" {% if form.mag_branch.value|stringformat:"s" == branch.pk|stringformat:"s" %}selected{% endif %}>
+                                    {{ branch.get_name_display }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if form.mag_branch.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.mag_branch.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            Obrigatório apenas para células da área MAG (Vermelha).
+                        </small>
+                    </div>
+                    
+                    <!-- Campo: CGSBC -->
+                    <div class="mb-3">
+                        <label for="{{ form.cgsbc.id_for_label }}" class="form-label">
+                            <i class="bi bi-building"></i> CGSBC
+                        </label>
+                        <input 
+                            type="text" 
+                            name="{{ form.cgsbc.name }}" 
+                            id="{{ form.cgsbc.id_for_label }}" 
+                            class="form-control {% if form.cgsbc.errors %}is-invalid{% endif %}"
+                            placeholder="Nome da igreja para células não-MAG"
+                            value="{{ form.cgsbc.value|default:'' }}"
+                        >
+                        {% if form.cgsbc.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.cgsbc.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            Apenas para células de áreas não-MAG.
+                        </small>
+                    </div>
+                    
+                    <!-- Campo: Observações -->
+                    <div class="mb-3">
+                        <label for="{{ form.notes.id_for_label }}" class="form-label">
+                            <i class="bi bi-pencil"></i> Observações
+                        </label>
+                        <textarea 
+                            name="{{ form.notes.name }}" 
+                            id="{{ form.notes.id_for_label }}" 
+                            class="form-control {% if form.notes.errors %}is-invalid{% endif %}"
+                            rows="3"
+                            placeholder="Observações adicionais sobre a célula..."
+                        >{{ form.notes.value|default:'' }}</textarea>
+                        {% if form.notes.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.notes.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Botões de ação -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'cell_list' %}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Cancelar e voltar para a lista
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg"></i> Salvar Célula
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

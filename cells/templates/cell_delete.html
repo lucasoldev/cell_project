@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Deletar Célula - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'cell_list' %}">Células</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'cell_detail' object.pk %}">{{ object.name }}</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Deletar</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-trash3"></i> Deletar Célula</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow-sm border-danger">
+      <div class="card-header bg-danger text-white">
+        <h5 class="mb-0">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          Confirmar Exclusão
+        </h5>
+      </div>
+      
+      <div class="card-body">
+        <div class="alert alert-warning d-flex align-items-start" role="alert">
+          <i class="bi bi-exclamation-circle-fill me-3 fs-3"></i>
+          <div>
+            <h5 class="alert-heading">Atenção!</h5>
+            <p class="mb-0">Esta ação não pode ser desfeita. Todos os dados relacionados a esta célula podem ser afetados.</p>
+          </div>
+        </div>
+        
+        <p class="card-text fs-5">
+          Tem certeza de que deseja excluir a célula 
+          <strong class="text-danger">{{ object.name }}</strong>?
+        </p>
+        
+        <hr class="my-4">
+        
+        <!-- Detalhes do registro que será deletado -->
+        <div class="row mb-4">
+            <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <th scope="row" class="w-25">Nome:</th>
+                  <td>
+                    <span class="fw-bold">{{ object.name }}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Área:</th>
+                  <td>
+                    {% if object.area.color == 'RED' %}
+                        <span class="badge bg-danger">{{ object.area.get_color_display }}</span>
+                    {% elif object.area.color == 'YELLOW' %}
+                        <span class="badge bg-warning text-dark">{{ object.area.get_color_display }}</span>
+                    {% elif object.area.color == 'BLUE' %}
+                        <span class="badge bg-primary">{{ object.area.get_color_display }}</span>
+                    {% elif object.area.color == 'GREEN' %}
+                        <span class="badge bg-success">{{ object.area.get_color_display }}</span>
+                    {% elif object.area.color == 'WHITE' %}
+                        <span class="badge bg-light text-dark">{{ object.area.get_color_display }}</span>
+                    {% else %}
+                        <span class="badge bg-secondary">{{ object.area.get_color_display }}</span>
+                    {% endif %}
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Ramificação MAG:</th>
+                  <td>{{ object.mag_branch.get_name_display|default:"—" }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">CGSBC:</th>
+                  <td>{{ object.cgsbc|default:"—" }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Criado em:</th>
+                  <td>{{ object.created_at|date:"d/m/Y H:i" }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Última atualização:</th>
+                  <td>{{ object.updated_at|date:"d/m/Y H:i" }}</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        
+        <!-- Aviso sobre registros relacionados -->
+        <div class="alert alert-danger">
+          <i class="bi bi-link-45deg me-2"></i>
+          <strong>Aviso:</strong> Esta célula possui vínculos que também serão excluídos:
+          <ul class="mt-2 mb-0">
+            {% if object.members.exists %}
+              <li><strong>Membros:</strong> {{ object.members.count }} membro(s) será(ão) desvinculado(s)</li>
+            {% endif %}
+            {% if object.visitors.exists %}
+              <li><strong>Visitantes:</strong> {{ object.visitors.count }} registro(s) de visita(s) será(ão) removido(s)</li>
+            {% endif %}
+            {% if object.meetings.exists %}
+              <li><strong>Reuniões:</strong> {{ object.meetings.count }} reunião(ões) será(ão) removida(s)</li>
+            {% endif %}
+            {% if object.locations.exists %}
+              <li><strong>Locais:</strong> {{ object.locations.count }} local(is) será(ão) removido(s)</li>
+            {% endif %}
+          </ul>
+        </div>
+        
+        <form method="post">
+          {% csrf_token %}
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-danger text-black">
+                <i class="bi bi-trash3"></i> Excluir
+            </button>
+            <a href="{% url 'cell_list' %}" class="btn btn-secondary">
+              <i class="bi bi-arrow-left"></i> Cancelar e voltar para a Lista de Células
+            </a>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
