@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Novo Membro - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'member_list' %}">Membros</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Novo Membro</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-person-plus-fill"></i> Cadastrar Membro</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark border-secondary">
+                <h5 class="mb-0">
+                    Preencha os dados do membro
+                </h5>
+            </div>
+            
+            <div class="card-body">
+                <form method="post" action="{% url 'member_create' %}" novalidate>
+                    {% csrf_token %}
+                    
+                    <!-- Campo: Pessoa -->
+                    <div class="mb-3">
+                        <label for="{{ form.person.id_for_label }}" class="form-label">
+                            <i class="bi bi-person"></i> Pessoa <span class="text-danger">*</span>
+                        </label>
+                        <select 
+                            name="{{ form.person.name }}" 
+                            id="{{ form.person.id_for_label }}" 
+                            class="form-select {% if form.person.errors %}is-invalid{% endif %}"
+                            required
+                        >
+                            <option value="">Selecione uma pessoa...</option>
+                            {% for person in form.person.field.queryset %}
+                                <option value="{{ person.pk }}" {% if form.person.value|stringformat:"s" == person.pk|stringformat:"s" %}selected{% endif %}>
+                                    {{ person.full_name }} - {{ person.phone }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if form.person.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.person.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            <a href="{% url 'person_create' %}" target="_blank">
+                                <i class="bi bi-plus-circle"></i> Cadastrar nova pessoa
+                            </a>
+                        </small>
+                    </div>
+                    
+                    <!-- Campo: Data de Entrada -->
+                    <div class="mb-3">
+                        <label for="{{ form.entry_date.id_for_label }}" class="form-label">
+                            <i class="bi bi-calendar3"></i> Data de Entrada <span class="text-danger">*</span>
+                        </label>
+                        <input 
+                            type="date" 
+                            name="{{ form.entry_date.name }}" 
+                            id="{{ form.entry_date.id_for_label }}" 
+                            class="form-control {% if form.entry_date.errors %}is-invalid{% endif %}"
+                            value="{{ form.entry_date.value|date:'Y-m-d'|default:'' }}"
+                            required
+                        >
+                        {% if form.entry_date.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.entry_date.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Campo: Ativo -->
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input 
+                                type="checkbox" 
+                                name="{{ form.is_active.name }}" 
+                                id="{{ form.is_active.id_for_label }}" 
+                                class="form-check-input {% if form.is_active.errors %}is-invalid{% endif %}"
+                                {% if form.is_active.value %}checked{% endif %}
+                            >
+                            <label for="{{ form.is_active.id_for_label }}" class="form-check-label">
+                                <i class="bi bi-check-circle"></i> Membro ativo
+                            </label>
+                            {% if form.is_active.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.is_active.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <small class="form-text text-muted">Desmarque esta opção se o membro for não-assíduo.</small>
+                    </div>
+                    
+                    <!-- Campo: Observações -->
+                    <div class="mb-3">
+                        <label for="{{ form.notes.id_for_label }}" class="form-label">
+                            <i class="bi bi-pencil"></i> Observações
+                        </label>
+                        <textarea 
+                            name="{{ form.notes.name }}" 
+                            id="{{ form.notes.id_for_label }}" 
+                            class="form-control {% if form.notes.errors %}is-invalid{% endif %}"
+                            rows="3"
+                            placeholder="Observações adicionais (opcional)..."
+                        >{{ form.notes.value|default:'' }}</textarea>
+                        {% if form.notes.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.notes.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Botões de ação -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'member_list' %}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Cancelar e voltar para a lista de membros
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg"></i> Salvar Membro
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

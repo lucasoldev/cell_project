@@ -36,7 +36,7 @@ class PersonUpdateView(UpdateView):
     template_name = 'person_update.html'
     form_class = forms.PersonForm
     context_object_name = 'person'
-    reverse_lazy('person_detail')
+    success_url = reverse_lazy('person_list')
 
 
 class PersonDeleteView(DeleteView):
