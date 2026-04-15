@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Novo Local de Anfitrião - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'host_list' %}">Locais de Anfitriões</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Novo Local</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-house-add"></i> Cadastrar Local de Anfitrião</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark border-secondary">
+                <h5 class="mb-0">
+                    Preencha os dados do local
+                </h5>
+            </div>
+            
+            <div class="card-body">
+                <form method="post" action="{% url 'host_create' %}" novalidate>
+                    {% csrf_token %}
+                    
+                    <!-- Campo: Pessoa (Anfitrião) -->
+                    <div class="mb-3">
+                        <label for="{{ form.person.id_for_label }}" class="form-label">
+                            <i class="bi bi-person"></i> Anfitrião <span class="text-danger">*</span>
+                        </label>
+                        <select 
+                            name="{{ form.person.name }}" 
+                            id="{{ form.person.id_for_label }}" 
+                            class="form-select {% if form.person.errors %}is-invalid{% endif %}"
+                            required
+                        >
+                            <option value="">Selecione um anfitrião...</option>
+                            {% for person in form.person.field.queryset %}
+                                <option value="{{ person.pk }}" {% if form.person.value|stringformat:"s" == person.pk|stringformat:"s" %}selected{% endif %}>
+                                    {{ person.full_name }} - {{ person.phone }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if form.person.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.person.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            <a href="{% url 'person_create' %}" target="_blank">
+                                 Cadastrar nova pessoa
+                            </a>
+                        </small>
+                    </div>
+                    
+                    <!-- Campo: Endereço Completo -->
+                    <div class="mb-3">
+                        <label for="{{ form.full_address.id_for_label }}" class="form-label">
+                            <i class="bi bi-house"></i> Endereço Completo <span class="text-danger">*</span>
+                        </label>
+                        <textarea 
+                            name="{{ form.full_address.name }}" 
+                            id="{{ form.full_address.id_for_label }}" 
+                            class="form-control {% if form.full_address.errors %}is-invalid{% endif %}"
+                            rows="3"
+                            placeholder="Ex: Rua das Flores, 123 - Centro - São Paulo/SP"
+                            required
+                        >{{ form.full_address.value|default:'' }}</textarea>
+                        {% if form.full_address.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.full_address.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Campo: Observações -->
+                    <div class="mb-3">
+                        <label for="{{ form.notes.id_for_label }}" class="form-label">
+                            <i class="bi bi-pencil"></i> Observações
+                        </label>
+                        <textarea 
+                            name="{{ form.notes.name }}" 
+                            id="{{ form.notes.id_for_label }}" 
+                            class="form-control {% if form.notes.errors %}is-invalid{% endif %}"
+                            rows="2"
+                            placeholder="Ex: Portão azul, casa com muro baixo..."
+                        >{{ form.notes.value|default:'' }}</textarea>
+                        {% if form.notes.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.notes.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Botões de ação -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'host_list' %}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Cancelar e voltar para a lista
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg"></i> Salvar Local
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

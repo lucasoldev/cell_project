@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ host.person.full_name }} - Local de Anfitrião - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'host_list' %}">Locais de Anfitriões</a></li>
+  <li class="breadcrumb-item active" aria-current="page">{{ host.person.full_name }}</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-house-heart"></i> Detalhes do Local de Anfitrião</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark border-secondary">
+                <h5 class="mb-0">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Informações do Local
+                </h5>
+            </div>
+            
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="w-25">Anfitrião</th>
+                            <td>
+                                <span class="fw-bold fs-5">{{ host.person.full_name }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Telefone</th>
+                            <td>
+                                <i class="bi bi-telephone me-1"></i>
+                                {{ host.person.phone }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Endereço Completo</th>
+                            <td>
+                                <i class="bi bi-house me-1"></i>
+                                {{ host.full_address|linebreaksbr }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Observações</th>
+                            <td>{{ host.notes|default:"—"|linebreaksbr }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Criado em</th>
+                            <td>
+                                <i class="bi bi-calendar3 me-1"></i>
+                                {{ host.created_at|date:"d/m/Y H:i" }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Última atualização</th>
+                            <td>
+                                <i class="bi bi-clock-history me-1"></i>
+                                {{ host.updated_at|date:"d/m/Y H:i" }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="card-footer bg-dark border-secondary">
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'host_list' %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Voltar para a lista
+                    </a>
+                    <div>
+                        <a href="{% url 'host_update' host.pk %}" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> Editar
+                        </a>
+                        <a href="{% url 'host_delete' host.pk %}" class="btn btn-danger ms-2 text-black">
+                            <i class="bi bi-trash3"></i> Excluir
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Informações de vínculos -->
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-dark border-secondary">
+                <h6 class="mb-0">
+                    <i class="bi bi-link-45deg me-2"></i>
+                    Reuniões neste Local
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-calendar-check fs-1 text-primary"></i>
+                            <h5 class="mt-2 mb-0">{{ host.meetings.count|default:"0" }}</h5>
+                            <small class="text-muted">Total de reuniões</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-calendar-week fs-1 text-success"></i>
+                            <h5 class="mt-2 mb-0">{{ host.cell_locations.count|default:"0" }}</h5>
+                            <small class="text-muted">Células vinculadas</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-calendar-range fs-1 text-info"></i>
+                            <h5 class="mt-2 mb-0">—</h5>
+                            <small class="text-muted">Última reunião</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-calendar-plus fs-1 text-warning"></i>
+                            <h5 class="mt-2 mb-0">—</h5>
+                            <small class="text-muted">Próxima reunião</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
