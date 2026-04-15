@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . import models
+#from . import models
 
 
 class MemberAdmin(admin.ModelAdmin):
@@ -13,4 +13,4 @@ class MemberAdmin(admin.ModelAdmin):
     raw_id_fields = ('person',)
 
 
-admin.site.register(models.Member, MemberAdmin)
+#admin.site.register(models.Member, MemberAdmin)

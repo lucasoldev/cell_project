@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Nova Pessoa - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'person_list' %}">Pessoas</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Nova Pessoa</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-person-plus-fill"></i> Cadastrar Pessoa</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="card shadow-sm">
+      <div class="card-header bg-dark border-secondary">
+        <h5 class="mb-0">
+          Preencha os dados da pessoa
+        </h5>
+      </div>
+      
+      <div class="card-body">
+        <form method="post" action="{% url 'person_create' %}" novalidate>
+          {% csrf_token %}
+          
+          <!-- Campo: Nome Completo -->
+          <div class="mb-3">
+            <label for="{{ form.full_name.id_for_label }}" class="form-label">
+              <i class="bi bi-person"></i> Nome Completo <span class="text-danger">*</span>
+            </label>
+            <input 
+              type="text" 
+              name="{{ form.full_name.name }}" 
+              id="{{ form.full_name.id_for_label }}" 
+              class="form-control {% if form.full_name.errors %}is-invalid{% endif %}"
+              placeholder="Ex: João da Silva"
+              value="{{ form.full_name.value|default:'' }}"
+              required
+            >
+            {% if form.full_name.errors %}
+              <div class="invalid-feedback">
+                {{ form.full_name.errors|join:", " }}
+              </div>
+            {% endif %}
+          </div>
+          
+          <!-- Campo: Telefone -->
+          <div class="mb-3">
+            <label for="{{ form.phone.id_for_label }}" class="form-label">
+              <i class="bi bi-telephone"></i> Telefone <span class="text-danger">*</span>
+            </label>
+            <input 
+              type="text" 
+              name="{{ form.phone.name }}" 
+              id="{{ form.phone.id_for_label }}" 
+              class="form-control {% if form.phone.errors %}is-invalid{% endif %}"
+              placeholder="Ex: (11) 99999-9999"
+              value="{{ form.phone.value|default:'' }}"
+              required
+            >
+            {% if form.phone.errors %}
+              <div class="invalid-feedback">
+                {{ form.phone.errors|join:", " }}
+              </div>
+            {% endif %}
+          </div>
+          
+          <!-- Campo: Gênero -->
+          <div class="mb-3">
+            <label for="{{ form.gender.id_for_label }}" class="form-label">
+              <i class="bi bi-gender-ambiguous"></i> Gênero <span class="text-danger">*</span>
+            </label>
+            <select 
+              name="{{ form.gender.name }}" 
+              id="{{ form.gender.id_for_label }}" 
+              class="form-select {% if form.gender.errors %}is-invalid{% endif %}"
+              required
+            >
+              <option value="">Selecione o gênero...</option>
+              {% for value, label in form.gender.field.choices %}
+                {% if value %}
+                  <option value="{{ value }}" {% if form.gender.value == value %}selected{% endif %}>
+                    {{ label }}
+                  </option>
+                {% endif %}
+              {% endfor %}
+            </select>
+            {% if form.gender.errors %}
+              <div class="invalid-feedback">
+                {{ form.gender.errors|join:", " }}
+              </div>
+            {% endif %}
+          </div>
+          
+          <!-- Campo: Estado Civil -->
+          <div class="mb-3">
+            <label for="{{ form.marital_status.id_for_label }}" class="form-label">
+              <i class="bi bi-heart"></i> Estado Civil <span class="text-danger">*</span>
+            </label>
+            <select 
+              name="{{ form.marital_status.name }}" 
+              id="{{ form.marital_status.id_for_label }}" 
+              class="form-select {% if form.marital_status.errors %}is-invalid{% endif %}"
+              required
+            >
+              <option value="">Selecione o estado civil...</option>
+              {% for value, label in form.marital_status.field.choices %}
+                {% if value %}
+                  <option value="{{ value }}" {% if form.marital_status.value == value %}selected{% endif %}>
+                    {{ label }}
+                  </option>
+                {% endif %}
+              {% endfor %}
+            </select>
+            {% if form.marital_status.errors %}
+              <div class="invalid-feedback">
+                {{ form.marital_status.errors|join:", " }}
+              </div>
+            {% endif %}
+          </div>
+          
+          <!-- Campo: Data de Nascimento -->
+          <div class="mb-3">
+            <label for="{{ form.birth_date.id_for_label }}" class="form-label">
+              <i class="bi bi-calendar3"></i> Data de Nascimento <span class="text-danger">*</span>
+            </label>
+            <input 
+              type="date" 
+              name="{{ form.birth_date.name }}" 
+              id="{{ form.birth_date.id_for_label }}" 
+              class="form-control {% if form.birth_date.errors %}is-invalid{% endif %}"
+              value="{{ form.birth_date.value|date:'Y-m-d'|default:'' }}"
+              required
+            >
+            {% if form.birth_date.errors %}
+              <div class="invalid-feedback">
+                {{ form.birth_date.errors|join:", " }}
+              </div>
+            {% endif %}
+          </div>
+          
+          <!-- Campo: Endereço -->
+          <div class="mb-3">
+            <label for="{{ form.address.id_for_label }}" class="form-label">
+              <i class="bi bi-house"></i> Endereço
+            </label>
+            <textarea 
+              name="{{ form.address.name }}" 
+              id="{{ form.address.id_for_label }}" 
+              class="form-control {% if form.address.errors %}is-invalid{% endif %}"
+              rows="2"
+              placeholder="Ex: Rua das Flores, 123 - Centro"
+            >{{ form.address.value|default:'' }}</textarea>
+            {% if form.address.errors %}
+              <div class="invalid-feedback">
+                {{ form.address.errors|join:", " }}
+              </div>
+            {% endif %}
+          </div>
+          
+          <!-- Campo: Observações -->
+          <div class="mb-3">
+            <label for="{{ form.notes.id_for_label }}" class="form-label">
+              <i class="bi bi-pencil"></i> Observações
+            </label>
+            <textarea 
+              name="{{ form.notes.name }}" 
+              id="{{ form.notes.id_for_label }}" 
+              class="form-control {% if form.notes.errors %}is-invalid{% endif %}"
+              rows="2"
+              placeholder="Observações adicionais (opcional)..."
+            >{{ form.notes.value|default:'' }}</textarea>
+            {% if form.notes.errors %}
+              <div class="invalid-feedback">
+                {{ form.notes.errors|join:", " }}
+              </div>
+            {% endif %}
+          </div>
+          
+          <!-- Botões de ação -->
+          <div class="d-flex justify-content-between mt-4">
+            <a href="{% url 'person_list' %}" class="btn btn-secondary">
+              <i class="bi bi-arrow-left"></i> Cancelar e voltar para a Lista de Pessoas
+            </a>
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-check-lg"></i> Salvar Pessoa
+            </button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Dicas rápidas -->
+      <div class="card-footer bg-dark border-secondary">
+        <small class="text-muted">
+          <i class="bi bi-info-circle me-1"></i>
+          <strong>Campos obrigatórios:</strong> Nome Completo, Telefone, Gênero, Estado Civil e Data de Nascimento.
+        </small>
+      </div>
+    </div>
+    
+</div>
+
+{% endblock %}

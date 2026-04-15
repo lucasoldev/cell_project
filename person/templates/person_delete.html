@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Deletar Pessoa - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'person_list' %}">Pessoas</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'person_detail' object.pk %}">{{ object.full_name }}</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Deletar</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-trash3"></i> Deletar Pessoa</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow-sm border-danger">
+      <div class="card-header bg-danger text-white">
+        <h5 class="mb-0">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          Confirmar Exclusão
+        </h5>
+      </div>
+      
+      <div class="card-body">
+        <div class="alert alert-warning d-flex align-items-start" role="alert">
+          <i class="bi bi-exclamation-circle-fill me-3 fs-3"></i>
+          <div>
+            <h5 class="alert-heading">Atenção!</h5>
+            <p class="mb-0">Esta ação não pode ser desfeita. Todos os dados relacionados a esta pessoa podem ser afetados.</p>
+          </div>
+        </div>
+        
+        <p class="card-text fs-5">
+          Tem certeza de que deseja excluir a pessoa 
+          <strong class="text-danger">{{ object.full_name }}</strong>?
+        </p>
+        
+        <hr class="my-4">
+        
+        <!-- Detalhes do registro que será deletado -->
+        <div class="row mb-4">
+            <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <th scope="row" class="w-25">Nome Completo:</th>
+                  <td>
+                    <span class="fw-bold">{{ object.full_name }}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Telefone:</th>
+                  <td>{{ object.phone }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Gênero:</th>
+                  <td>
+                    <span class="badge bg-info">{{ object.get_gender_display }}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Estado Civil:</th>
+                  <td>
+                    <span class="badge bg-secondary">{{ object.get_marital_status_display }}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Data de Nascimento:</th>
+                  <td>{{ object.birth_date|date:"d/m/Y" }} ({{ object.age }} anos)</td>
+                </tr>
+                <tr>
+                  <th scope="row">Criado em:</th>
+                  <td>{{ object.created_at|date:"d/m/Y H:i" }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Última atualização:</th>
+                  <td>{{ object.updated_at|date:"d/m/Y H:i" }}</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        
+        <!-- Aviso sobre registros relacionados -->
+        <div class="alert alert-danger">
+          <i class="bi bi-link-45deg me-2"></i>
+          <strong>Aviso:</strong> Esta pessoa possui vínculos que também serão excluídos:
+          <ul class="mt-2 mb-0">
+            {% if object.member_profile %}
+              <li><strong>Membro:</strong> O perfil de membro será removido</li>
+            {% endif %}
+            {% if object.host_locations.exists %}
+              <li><strong>Locais de Anfitrião:</strong> {{ object.host_locations.count }} local(is) será(ão) removido(s)</li>
+            {% endif %}
+            {% if object.leadership_positions.exists %}
+              <li><strong>Cargos de Liderança:</strong> {{ object.leadership_positions.count }} cargo(s) será(ão) removido(s)</li>
+            {% endif %}
+            {% if object.visits.exists %}
+              <li><strong>Visitas:</strong> {{ object.visits.count }} registro(s) de visita(s) será(ão) removido(s)</li>
+            {% endif %}
+          </ul>
+        </div>
+        
+        <form method="post">
+          {% csrf_token %}
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-danger text-dark">
+                <i class="bi bi-trash3"></i> Excluir
+            </button>
+            <a href="{% url 'person_list' %}" class="btn btn-secondary">
+              <i class="bi bi-arrow-left"></i> Cancelar e voltar para a Lista de Pessoas
+            </a>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
