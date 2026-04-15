@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Novo Visitante - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'visitor_list' %}">Visitantes</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Novo Visitante</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-person-plus"></i> Registrar Visitante</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark border-secondary">
+                <h5 class="mb-0">
+                    Preencha os dados da visita
+                </h5>
+            </div>
+            
+            <div class="card-body">
+                <form method="post" action="{% url 'visitor_create' %}" novalidate>
+                    {% csrf_token %}
+                    
+                    <!-- Campo: Pessoa -->
+                    <div class="mb-3">
+                        <label for="{{ form.person.id_for_label }}" class="form-label">
+                            <i class="bi bi-person"></i> Visitante <span class="text-danger">*</span>
+                        </label>
+                        <select 
+                            name="{{ form.person.name }}" 
+                            id="{{ form.person.id_for_label }}" 
+                            class="form-select {% if form.person.errors %}is-invalid{% endif %}"
+                            required
+                        >
+                            <option value="">Selecione uma pessoa...</option>
+                            {% for person in form.person.field.queryset %}
+                                <option value="{{ person.pk }}" {% if form.person.value|stringformat:"s" == person.pk|stringformat:"s" %}selected{% endif %}>
+                                    {{ person.full_name }} - {{ person.phone }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if form.person.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.person.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            <a href="{% url 'person_create' %}" target="_blank">
+                                <i class="bi bi-plus-circle"></i> Cadastrar nova pessoa
+                            </a>
+                        </small>
+                    </div>
+                    
+                    <!-- Campo: Célula -->
+                    <div class="mb-3">
+                        <label for="{{ form.cell.id_for_label }}" class="form-label">
+                            <i class="bi bi-house-door"></i> Célula visitada <span class="text-danger">*</span>
+                        </label>
+                        <select 
+                            name="{{ form.cell.name }}" 
+                            id="{{ form.cell.id_for_label }}" 
+                            class="form-select {% if form.cell.errors %}is-invalid{% endif %}"
+                            required
+                        >
+                            <option value="">Selecione uma célula...</option>
+                            {% for cell in form.cell.field.queryset %}
+                                <option value="{{ cell.pk }}" {% if form.cell.value|stringformat:"s" == cell.pk|stringformat:"s" %}selected{% endif %}>
+                                    {{ cell.name }} - {{ cell.area.get_color_display }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if form.cell.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.cell.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Campo: Data da Visita -->
+                    <div class="mb-3">
+                        <label for="{{ form.visit_date.id_for_label }}" class="form-label">
+                            <i class="bi bi-calendar3"></i> Data da Visita <span class="text-danger">*</span>
+                        </label>
+                        <input 
+                            type="date" 
+                            name="{{ form.visit_date.name }}" 
+                            id="{{ form.visit_date.id_for_label }}" 
+                            class="form-control {% if form.visit_date.errors %}is-invalid{% endif %}"
+                            value="{{ form.visit_date.value|date:'Y-m-d'|default:'' }}"
+                            required
+                        >
+                        {% if form.visit_date.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.visit_date.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Campo: Tornou-se Membro -->
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input 
+                                type="checkbox" 
+                                name="{{ form.became_member.name }}" 
+                                id="{{ form.became_member.id_for_label }}" 
+                                class="form-check-input {% if form.became_member.errors %}is-invalid{% endif %}"
+                                {% if form.became_member.value %}checked{% endif %}
+                            >
+                            <label for="{{ form.became_member.id_for_label }}" class="form-check-label">
+                                <i class="bi bi-person-check"></i> Tornou-se membro
+                            </label>
+                            {% if form.became_member.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.became_member.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <small class="form-text text-muted">Marque esta opção se o visitante decidiu se tornar membro da igreja.</small>
+                    </div>
+                    
+                    <!-- Campo: Observações -->
+                    <div class="mb-3">
+                        <label for="{{ form.notes.id_for_label }}" class="form-label">
+                            <i class="bi bi-pencil"></i> Observações
+                        </label>
+                        <textarea 
+                            name="{{ form.notes.name }}" 
+                            id="{{ form.notes.id_for_label }}" 
+                            class="form-control {% if form.notes.errors %}is-invalid{% endif %}"
+                            rows="3"
+                            placeholder="Observações adicionais sobre a visita..."
+                        >{{ form.notes.value|default:'' }}</textarea>
+                        {% if form.notes.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.notes.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Botões de ação -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'visitor_list' %}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Cancelar e voltar para a lista
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg"></i> Salvar Visitante
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

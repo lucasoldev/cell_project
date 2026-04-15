@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Deletar Visitante - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'visitor_list' %}">Visitantes</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'visitor_detail' object.pk %}">{{ object.person.full_name }}</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Deletar</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-trash3"></i> Deletar Visitante</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow-sm border-danger">
+      <div class="card-header bg-danger text-white">
+        <h5 class="mb-0">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          Confirmar Exclusão
+        </h5>
+      </div>
+      
+      <div class="card-body">
+        <div class="alert alert-warning d-flex align-items-start" role="alert">
+          <i class="bi bi-exclamation-circle-fill me-3 fs-3"></i>
+          <div>
+            <h5 class="alert-heading">Atenção!</h5>
+            <p class="mb-0">Esta ação não pode ser desfeita. O registro desta visita será permanentemente removido.</p>
+          </div>
+        </div>
+        
+        <p class="card-text fs-5">
+          Tem certeza de que deseja excluir o registro de visita de 
+          <strong class="text-danger">{{ object.person.full_name }}</strong>?
+        </p>
+        
+        <hr class="my-4">
+        
+        <!-- Detalhes do registro que será deletado -->
+        <div class="row mb-4">
+            <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <th scope="row" class="w-25">Visitante:</th>
+                  <td>
+                    <span class="fw-bold">{{ object.person.full_name }}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Telefone:</th>
+                  <td>{{ object.person.phone }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Célula Visitada:</th>
+                  <td>{{ object.cell.name }} ({{ object.cell.area.get_color_display }})</td>
+                </tr>
+                <tr>
+                  <th scope="row">Data da Visita:</th>
+                  <td>{{ object.visit_date|date:"d/m/Y" }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Status:</th>
+                  <td>
+                    {% if object.became_member %}
+                        <span class="badge bg-success">Tornou-se Membro</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark">Visitante</span>
+                    {% endif %}
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Observações:</th>
+                  <td>{{ object.notes|default:"—"|truncatechars:50 }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Criado em:</th>
+                  <td>{{ object.created_at|date:"d/m/Y H:i" }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Última atualização:</th>
+                  <td>{{ object.updated_at|date:"d/m/Y H:i" }}</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        
+        <form method="post">
+          {% csrf_token %}
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-danger">
+                <i class="bi bi-trash3"></i> Excluir
+            </button>
+            <a href="{% url 'visitor_list' %}" class="btn btn-secondary">
+              <i class="bi bi-arrow-left"></i> Cancelar e voltar para a Lista de Visitantes
+            </a>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
