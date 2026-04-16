@@ -1,19 +1,31 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  {{ host.person.full_name }} - Local de Anfitrião - Cell Project
+  {{ cell_location.cell.name }} - Local de Célula - Cell Project
 {% endblock %}
 
 {% block breadcrumb_items %}
-  <li class="breadcrumb-item"><a href="{% url 'host_list' %}">Locais de Anfitriões</a></li>
-  <li class="breadcrumb-item active" aria-current="page">{{ host.person.full_name }}</li>
+  <li class="breadcrumb-item"><a href="{% url 'cell_location_list' %}">Locais de Células</a></li>
+  <li class="breadcrumb-item active" aria-current="page">{{ cell_location.cell.name }}</li>
 {% endblock %}
 
 {% block page_heading %}
-  <span><i class="bi bi-house-heart"></i> Detalhes do Local de Anfitrião</span>
+  <span><i class="bi bi-geo-alt"></i> Detalhes do Local de Célula</span>
 {% endblock %}
 
 {% block content %}
+
+<!-- Toast de notificação -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
+    <div id="copyToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-check-circle me-2"></i>Endereço copiado!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fechar"></button>
+        </div>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-12">
@@ -29,44 +41,59 @@
                 <table class="table table-borderless">
                     <tbody>
                         <tr>
-                            <th scope="row" class="w-25">Anfitrião</th>
+                            <th scope="row" class="w-25">Célula</th>
                             <td>
-                                <span class="fw-bold fs-5">{{ host.person.full_name }}</span>
+                                <span class="fw-bold fs-5">{{ cell_location.cell.name }}</span>
+                                <span class="text-muted ms-2">({{ cell_location.cell.area.get_color_display }})</span>
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row">Telefone</th>
+                            <th scope="row">Anfitrião</th>
                             <td>
-                                <i class="bi bi-telephone me-1"></i>
-                                {{ host.person.phone }}
+                                {% if cell_location.host %}
+                                    <i class="bi bi-person me-1"></i>{{ cell_location.host_name }}
+                                {% else %}
+                                    <span class="text-muted">—</span>
+                                {% endif %}
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row">Endereço Completo</th>
+                            <th scope="row">Status</th>
                             <td>
-                                <i class="bi bi-house me-1"></i>
-                                {{ host.full_address|linebreaksbr }}
-                                <button class="btn btn-sm btn-outline-info" onclick="copyAddress()" title="Copiar endereço">
-                                    <i class="bi bi-copy"></i>
-                                </button>
+                                {% if cell_location.is_active %}
+                                    <span class="badge bg-success">Ativo</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Inativo</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Endereço</th>
+                            <td>
+                                <div class="d-flex align-items-start">
+                                    <span id="locationAddress" class="me-2">{{ cell_location.address }}</span>
+                                    <button class="btn btn-sm btn-outline-info" onclick="copyAddress()" title="Copiar endereço">
+                                        <i class="bi bi-copy"></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                         <tr>
                             <th scope="row">Observações</th>
-                            <td>{{ host.notes|default:"—"|linebreaksbr }}</td>
+                            <td>{{ cell_location.notes|default:"—"|linebreaksbr }}</td>
                         </tr>
                         <tr>
                             <th scope="row">Criado em</th>
                             <td>
                                 <i class="bi bi-calendar3 me-1"></i>
-                                {{ host.created_at|date:"d/m/Y H:i" }}
+                                {{ cell_location.created_at|date:"d/m/Y H:i" }}
                             </td>
                         </tr>
                         <tr>
                             <th scope="row">Última atualização</th>
                             <td>
                                 <i class="bi bi-clock-history me-1"></i>
-                                {{ host.updated_at|date:"d/m/Y H:i" }}
+                                {{ cell_location.updated_at|date:"d/m/Y H:i" }}
                             </td>
                         </tr>
                     </tbody>
@@ -75,14 +102,14 @@
             
             <div class="card-footer bg-dark border-secondary">
                 <div class="d-flex justify-content-between">
-                    <a href="{% url 'host_list' %}" class="btn btn-secondary">
+                    <a href="{% url 'cell_location_list' %}" class="btn btn-secondary">
                         <i class="bi bi-arrow-left"></i> Voltar para a lista
                     </a>
                     <div>
-                        <a href="{% url 'host_update' host.pk %}" class="btn btn-warning">
+                        <a href="{% url 'cell_location_update' cell_location.pk %}" class="btn btn-warning">
                             <i class="bi bi-pencil"></i> Editar
                         </a>
-                        <a href="{% url 'host_delete' host.pk %}" class="btn btn-danger ms-2 text-black">
+                        <a href="{% url 'cell_location_delete' cell_location.pk %}" class="btn btn-danger ms-2 text-black">
                             <i class="bi bi-trash3"></i> Excluir
                         </a>
                     </div>
@@ -100,28 +127,21 @@
             </div>
             <div class="card-body">
                 <div class="row text-center">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="border rounded p-3">
                             <i class="bi bi-calendar-check fs-1 text-primary"></i>
-                            <h5 class="mt-2 mb-0">{{ host.meetings.count|default:"0" }}</h5>
+                            <h5 class="mt-2 mb-0">{{ cell_location.meetings.count|default:"0" }}</h5>
                             <small class="text-muted">Total de reuniões</small>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="border rounded p-3">
                             <i class="bi bi-calendar-week fs-1 text-success"></i>
-                            <h5 class="mt-2 mb-0">{{ host.cell_locations.count|default:"0" }}</h5>
-                            <small class="text-muted">Células vinculadas</small>
+                            <h5 class="mt-2 mb-0">{{ cell_location.meetings.filter.took_place|default:"0" }}</h5>
+                            <small class="text-muted">Reuniões realizadas</small>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="border rounded p-3">
-                            <i class="bi bi-calendar-range fs-1 text-info"></i>
-                            <h5 class="mt-2 mb-0">—</h5>
-                            <small class="text-muted">Última reunião</small>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="border rounded p-3">
                             <i class="bi bi-calendar-plus fs-1 text-warning"></i>
                             <h5 class="mt-2 mb-0">—</h5>
@@ -136,15 +156,13 @@
 
 <script>
     function copyAddress() {
-        const addressElement = document.getElementById('hostAddress');
-        const address = addressElement.innerText.trim(); // Remove espaços extras
+        const address = "{{ cell_location.address|escapejs }}";
         
         navigator.clipboard.writeText(address).then(() => {
             const toast = new bootstrap.Toast(document.getElementById('copyToast'));
             toast.show();
         }).catch(err => {
             console.error('Erro ao copiar:', err);
-            alert('Não foi possível copiar o endereço.');
         });
     }
 </script>
