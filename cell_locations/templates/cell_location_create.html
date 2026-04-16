@@ -63,9 +63,9 @@
                             id="{{ form.host.id_for_label }}" 
                             class="form-select {% if form.host.errors %}is-invalid{% endif %}"
                         >
-                            <option value="">Selecione um anfitrião...</option>
+                            <option value="">Selecione uma célula primeiro...</option>
                             {% for host in form.host.field.queryset %}
-                                <option value="{{ host.pk }}" {% if form.host.value|stringformat:"s" == host.pk|stringformat:"s" %}selected{% endif %}>
+                                <option value="{{ host.pk }}" {% if form.host.value|stringformat:"s" == host.pk|stringformat:"s" %}selected{% endif %} data-address="{{ host.full_address|escapejs }}">
                                     {{ host.person.full_name }}
                                 </option>
                             {% endfor %}
@@ -158,4 +158,92 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cellSelect = document.getElementById('{{ form.cell.id_for_label }}');
+        const hostSelect = document.getElementById('{{ form.host.id_for_label }}');
+        const addressTextarea = document.getElementById('{{ form.address.id_for_label }}');
+        
+        // Dados de todos os anfitriões
+        const allHosts = {{ all_hosts_json|safe }};
+        
+        // Função para filtrar anfitriões
+        function filterHostsByCell(cellId) {
+            // Limpa o dropdown
+            hostSelect.innerHTML = '';
+            
+            // Adiciona opção vazia
+            const emptyOption = document.createElement('option');
+            emptyOption.value = '';
+            
+            if (!cellId) {
+                emptyOption.textContent = 'Selecione uma célula primeiro...';
+                hostSelect.appendChild(emptyOption);
+                return;
+            }
+            
+            emptyOption.textContent = 'Selecione um anfitrião...';
+            hostSelect.appendChild(emptyOption);
+            
+            // Filtra anfitriões disponíveis
+            let availableCount = 0;
+            
+            allHosts.forEach(host => {
+                // ❌ PULA anfitriões que JÁ SÃO ANFITRIÕES desta célula
+                const isHostOfSelectedCell = host.hosted_cells.includes(cellId);
+                
+                if (!isHostOfSelectedCell) {
+                    const option = document.createElement('option');
+                    option.value = host.pk;
+                    option.textContent = host.name;
+                    option.dataset.address = host.full_address;
+                    hostSelect.appendChild(option);
+                    availableCount++;
+                }
+            });
+            
+            if (availableCount === 0) {
+                emptyOption.textContent = 'Nenhum anfitrião disponível para esta célula';
+            }
+        }
+        
+        // Evento: quando uma célula é selecionada
+        cellSelect.addEventListener('change', function() {
+            const cellId = this.value;
+            filterHostsByCell(cellId);
+            addressTextarea.value = '';
+        });
+        
+        // Evento: quando um anfitrião é selecionado
+        hostSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const address = selectedOption.dataset.address;
+            
+            if (address) {
+                addressTextarea.value = address;
+            }
+        });
+        
+        // Se já houver uma célula selecionada (edição), aplica o filtro
+        if (cellSelect.value) {
+            filterHostsByCell(cellSelect.value);
+            
+            // Restaura o anfitrião selecionado se houver
+            const selectedHostId = '{{ form.host.value|default:"" }}';
+            if (selectedHostId) {
+                setTimeout(() => {
+                    for (let i = 0; i < hostSelect.options.length; i++) {
+                        if (hostSelect.options[i].value === selectedHostId) {
+                            hostSelect.selectedIndex = i;
+                            break;
+                        }
+                    }
+                }, 100);
+            }
+        }
+    });
+</script>
 {% endblock %}

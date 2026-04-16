@@ -113,3 +113,28 @@
 </div>
 
 {% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const personSelect = document.getElementById('{{ form.person.id_for_label }}');
+        const addressTextarea = document.getElementById('{{ form.full_address.id_for_label }}');
+        
+        // Objeto com os endereços das pessoas
+        const personAddresses = {
+            {% for person in form.person.field.queryset %}
+                "{{ person.pk }}": "{{ person.address|escapejs }}"{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        };
+        
+        // Quando uma pessoa for selecionada
+        personSelect.addEventListener('change', function() {
+            const personId = this.value;
+            
+            if (personId && personAddresses[personId]) {
+                addressTextarea.value = personAddresses[personId];
+            }
+        });
+    });
+</script>
+{% endblock %}
