@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
+{% load cell_tags %}
 
 {% block title %}
-  {{ cell_member.member_name }} - {{ cell_member.cell.name }} - Cell Project
+  {{ cell_member.member_name }} - {{ cell_member.cell|cell_display }} - Cell Project
 {% endblock %}
 
 {% block breadcrumb_items %}
@@ -36,11 +37,7 @@
                         </tr>
                         <tr>
                             <th scope="row">Célula</th>
-                            <td>
-                                <i class="bi bi-house-door me-1"></i>
-                                {{ cell_member.cell.name }}
-                                <span class="text-muted ms-2">({{ cell_member.cell.area.get_color_display }})</span>
-                            </td>
+                            <td>{{ cell_member.cell|cell_display }}</td>
                         </tr>
                         <tr>
                             <th scope="row">Função</th>
@@ -64,44 +61,25 @@
                         </tr>
                         <tr>
                             <th scope="row">Data de Início</th>
-                            <td>
-                                <i class="bi bi-calendar3 me-1"></i>
-                                {{ cell_member.start_date|date:"d/m/Y" }}
-                            </td>
+                            <td>{{ cell_member.start_date|date:"d/m/Y" }}</td>
                         </tr>
                         {% if cell_member.end_date %}
                         <tr>
                             <th scope="row">Data de Término</th>
-                            <td>
-                                <i class="bi bi-calendar-x me-1"></i>
-                                {{ cell_member.end_date|date:"d/m/Y" }}
-                            </td>
+                            <td>{{ cell_member.end_date|date:"d/m/Y" }}</td>
                         </tr>
                         {% endif %}
-                        <tr>
-                            <th scope="row">Duração</th>
-                            <td>
-                                <i class="bi bi-clock me-1"></i>
-                                {{ cell_member.duration_days }} dias
-                            </td>
-                        </tr>
                         <tr>
                             <th scope="row">Observações</th>
                             <td>{{ cell_member.notes|default:"—"|linebreaksbr }}</td>
                         </tr>
                         <tr>
                             <th scope="row">Criado em</th>
-                            <td>
-                                <i class="bi bi-calendar3 me-1"></i>
-                                {{ cell_member.created_at|date:"d/m/Y H:i" }}
-                            </td>
+                            <td>{{ cell_member.created_at|date:"d/m/Y H:i" }}</td>
                         </tr>
                         <tr>
                             <th scope="row">Última atualização</th>
-                            <td>
-                                <i class="bi bi-clock-history me-1"></i>
-                                {{ cell_member.updated_at|date:"d/m/Y H:i" }}
-                            </td>
+                            <td>{{ cell_member.updated_at|date:"d/m/Y H:i" }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -119,58 +97,6 @@
                         <a href="{% url 'cell_member_delete' cell_member.pk %}" class="btn btn-danger ms-2 text-black">
                             <i class="bi bi-trash3"></i> Excluir
                         </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Informações do Membro -->
-        <div class="card shadow-sm mt-4">
-            <div class="card-header bg-dark border-secondary">
-                <h6 class="mb-0">
-                    <i class="bi bi-person me-2"></i>
-                    Informações do Membro
-                </h6>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr>
-                                    <th scope="row" class="w-25">Telefone:</th>
-                                    <td>{{ cell_member.member.person.phone }}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Idade:</th>
-                                    <td>{{ cell_member.member.age }} anos</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Membro desde:</th>
-                                    <td>{{ cell_member.member.entry_date|date:"d/m/Y" }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-md-6">
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr>
-                                    <th scope="row" class="w-25">Status do Membro:</th>
-                                    <td>
-                                        {% if cell_member.member.is_active %}
-                                            <span class="badge bg-success">Ativo</span>
-                                        {% else %}
-                                            <span class="badge bg-secondary">Inativo</span>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Total de Células:</th>
-                                    <td>{{ cell_member.member.cell_memberships.count }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load cell_tags %}
 
 {% block title %}
   Locais de Células - Cell Project
@@ -59,7 +60,7 @@
                 <tbody>
                     {% for location in cell_locations %}
                     <tr>
-                        <td>{{ location.cell.name }}</td>
+                        <td>{{ location.cell|cell_display }}</td>
                         <td>{{ location.host_name }}</td>
                         <td>{{ location.short_address }}</td>
                         <td>
@@ -98,7 +99,6 @@
         </div>
     </div>
 
-    <!-- Informações adicionais -->
     <div class="card-footer bg-dark border-secondary">
         <div class="d-flex align-items-center">
             <i class="bi bi-info-circle-fill text-info me-2"></i>
@@ -113,27 +113,26 @@
 
 <div class="mt-3"></div>
 
-<div class="card-footer bg-dark border-secondary">
-    <nav aria-label="Paginação">
-        <ul class="pagination justify-content-center mb-0">
-            <li class="page-item disabled">
-                <span class="page-link"><i class="bi bi-chevron-double-left"></i></span>
-            </li>
-            <li class="page-item disabled">
-                <span class="page-link"><i class="bi bi-chevron-left"></i></span>
-            </li>
 
-            <li class="page-item active">
-                <span class="page-link">Página 1 de 1</span>
-            </li>
+<nav aria-label="Paginação">
+    <ul class="pagination justify-content-center mb-0">
+        <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-chevron-double-left"></i></span>
+        </li>
+        <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-chevron-left"></i></span>
+        </li>
 
-            <li class="page-item disabled">
-                <span class="page-link"><i class="bi bi-chevron-right"></i></span>
-            </li>
-            <li class="page-item disabled">
-                <span class="page-link"><i class="bi bi-chevron-double-right"></i></span>
-            </li>
-        </ul>
-    </nav>
-</div>
+        <li class="page-item active">
+            <span class="page-link">Página 1 de 1</span>
+        </li>
+
+        <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-chevron-right"></i></span>
+        </li>
+        <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-chevron-double-right"></i></span>
+        </li>
+    </ul>
+</nav>
 {% endblock %}

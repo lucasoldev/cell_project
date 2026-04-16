@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
+{% load cell_tags %}
 
 {% block title %}
-  {{ cell.name }} - Célula - Cell Project
+  {{ cell|cell_display }} - Cell Project
 {% endblock %}
 
 {% block breadcrumb_items %}
   <li class="breadcrumb-item"><a href="{% url 'cell_list' %}">Células</a></li>
-  <li class="breadcrumb-item active" aria-current="page">{{ cell.name }}</li>
+  <li class="breadcrumb-item active" aria-current="page">{{ cell|cell_display }}</li>
 {% endblock %}
 
 {% block page_heading %}
@@ -31,7 +32,7 @@
                         <tr>
                             <th scope="row" class="w-25">Nome</th>
                             <td>
-                                <span class="fw-bold fs-5">{{ cell.name }}</span>
+                                <span class="fw-bold fs-5">{{ cell|cell_display }}</span>
                             </td>
                         </tr>
                         <tr>
@@ -115,7 +116,6 @@
             </div>
         </div>
         
-        <!-- Informações de vínculos -->
         <div class="card shadow-sm mt-4">
             <div class="card-header bg-dark border-secondary">
                 <h6 class="mb-0">

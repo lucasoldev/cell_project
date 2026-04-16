@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
+{% load cell_tags %}
 
 {% block title %}
-  {{ cell_location.cell.name }} - Local de Célula - Cell Project
+  {{ cell_location.cell|cell_display }} - Local de Célula - Cell Project
 {% endblock %}
 
 {% block breadcrumb_items %}
   <li class="breadcrumb-item"><a href="{% url 'cell_location_list' %}">Locais de Células</a></li>
-  <li class="breadcrumb-item active" aria-current="page">{{ cell_location.cell.name }}</li>
+  <li class="breadcrumb-item active" aria-current="page">{{ cell_location.cell|cell_display }}</li>
 {% endblock %}
 
 {% block page_heading %}
@@ -14,18 +15,6 @@
 {% endblock %}
 
 {% block content %}
-
-<!-- Toast de notificação -->
-<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
-    <div id="copyToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                <i class="bi bi-check-circle me-2"></i>Endereço copiado!
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fechar"></button>
-        </div>
-    </div>
-</div>
 
 <div class="row">
     <div class="col-12">
@@ -43,8 +32,7 @@
                         <tr>
                             <th scope="row" class="w-25">Célula</th>
                             <td>
-                                <span class="fw-bold fs-5">{{ cell_location.cell.name }}</span>
-                                <span class="text-muted ms-2">({{ cell_location.cell.area.get_color_display }})</span>
+                                <span class="fw-bold fs-5">{{ cell_location.cell|cell_display }}</span>
                             </td>
                         </tr>
                         <tr>
@@ -69,14 +57,7 @@
                         </tr>
                         <tr>
                             <th scope="row">Endereço</th>
-                            <td>
-                                <div class="d-flex align-items-start">
-                                    <span id="locationAddress" class="me-2">{{ cell_location.address }}</span>
-                                    <button class="btn btn-sm btn-outline-info" onclick="copyAddress()" title="Copiar endereço">
-                                        <i class="bi bi-copy"></i>
-                                    </button>
-                                </div>
-                            </td>
+                            <td>{{ cell_location.address|linebreaksbr }}</td>
                         </tr>
                         <tr>
                             <th scope="row">Observações</th>
@@ -116,55 +97,7 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Informações de vínculos -->
-        <div class="card shadow-sm mt-4">
-            <div class="card-header bg-dark border-secondary">
-                <h6 class="mb-0">
-                    <i class="bi bi-link-45deg me-2"></i>
-                    Reuniões neste Local
-                </h6>
-            </div>
-            <div class="card-body">
-                <div class="row text-center">
-                    <div class="col-md-4">
-                        <div class="border rounded p-3">
-                            <i class="bi bi-calendar-check fs-1 text-primary"></i>
-                            <h5 class="mt-2 mb-0">{{ cell_location.meetings.count|default:"0" }}</h5>
-                            <small class="text-muted">Total de reuniões</small>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="border rounded p-3">
-                            <i class="bi bi-calendar-week fs-1 text-success"></i>
-                            <h5 class="mt-2 mb-0">{{ cell_location.meetings.filter.took_place|default:"0" }}</h5>
-                            <small class="text-muted">Reuniões realizadas</small>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="border rounded p-3">
-                            <i class="bi bi-calendar-plus fs-1 text-warning"></i>
-                            <h5 class="mt-2 mb-0">—</h5>
-                            <small class="text-muted">Próxima reunião</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
-
-<script>
-    function copyAddress() {
-        const address = "{{ cell_location.address|escapejs }}";
-        
-        navigator.clipboard.writeText(address).then(() => {
-            const toast = new bootstrap.Toast(document.getElementById('copyToast'));
-            toast.show();
-        }).catch(err => {
-            console.error('Erro ao copiar:', err);
-        });
-    }
-</script>
 
 {% endblock %}
