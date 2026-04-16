@@ -24,6 +24,7 @@ class CellMemberAdmin(admin.ModelAdmin):
     )
     raw_id_fields = ('member', 'cell', 'role')
     date_hierarchy = 'start_date'
+<<<<<<< HEAD
     readonly_fields = ('created_at', 'updated_at',)
 
     fieldsets = (
@@ -44,6 +45,8 @@ class CellMemberAdmin(admin.ModelAdmin):
             'classes': ('collapse',),
         }),
     )
+=======
+>>>>>>> bfda95313dc2068c3e959514fde0f4313aa074ea
 
     def member_name_display(self, obj):
         return obj.member_name
@@ -52,14 +55,26 @@ class CellMemberAdmin(admin.ModelAdmin):
 
     def role_display(self, obj):
         """Exibe 'Membro' quando role for nulo"""
+<<<<<<< HEAD
         return obj.role_display if hasattr(obj, 'role_display') else (obj.role.title if obj.role else 'Membro')
+=======
+        return obj.role_display
+>>>>>>> bfda95313dc2068c3e959514fde0f4313aa074ea
     role_display.short_description = 'Função'
     role_display.admin_order_field = 'role__title'
 
     def get_queryset(self, request):
         return super().get_queryset(request).select_related(
+<<<<<<< HEAD
             'member__person', 'cell__area', 'role'
         )
 
 
 admin.site.register(models.CellMember, CellMemberAdmin)
+=======
+            'member__person', 'cell', 'role'
+        )
+
+
+admin.site.register(models.CellMember, CellMemberAdmin)
+>>>>>>> bfda95313dc2068c3e959514fde0f4313aa074ea

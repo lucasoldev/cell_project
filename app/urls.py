@@ -10,4 +10,5 @@ urlpatterns = [
     path('', include('visitors.urls')),
     path('', include('cells.urls')),
     path('', include('cell_locations.urls')),
+    path('', include('cell_members.urls')),
 ]
