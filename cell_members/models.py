@@ -7,13 +7,12 @@ from app.basemodel import BaseModel
 from cells.models import Cell
 from leadership_roles.models import LeadershipRole
 from members.models import Member
-from ministries.models import Ministry
 
 
 class CellMember(BaseModel):
     """
-    Membership records linking members to cells with specific roles
-    Tracks active/inactive status and membership duration
+    Membership records linking members to cells
+    Tracks active/inactive status and optional leadership roles
     """
 
     member = models.ForeignKey(
@@ -31,8 +30,11 @@ class CellMember(BaseModel):
     role = models.ForeignKey(
         LeadershipRole,
         on_delete=models.PROTECT,
+        null=True,  # ✅ Permite nulo (membro comum sem cargo)
+        blank=True,  # ✅ Permite vazio no formulário
         related_name="cell_members",
-        verbose_name="Função",
+        verbose_name="Função de Liderança",
+        help_text="Opcional. Preencha apenas se o membro tiver função de liderança nesta célula.",
     )
     start_date = models.DateField(verbose_name="Data de Início")
     end_date = models.DateField(
@@ -50,9 +52,9 @@ class CellMember(BaseModel):
         ordering = ["cell__name", "-is_active", "member__person__full_name"]
         constraints = [
             models.UniqueConstraint(
-                fields=["member", "cell", "role"],
+                fields=["member", "cell"],
                 condition=models.Q(is_active=True),
-                name="unique_active_member_cell_role",
+                name="unique_active_member_cell",
             )
         ]
         indexes = [
@@ -63,7 +65,8 @@ class CellMember(BaseModel):
 
     def __str__(self):
         status = "🟢" if self.is_active else "⚪"
-        return f"{status} {self.member.person.full_name} - {self.cell.name} ({self.role.title})"
+        role_display = f" - {self.role.title}" if self.role else ""
+        return f"{status} {self.member.person.full_name} - {self.cell.name}{role_display}"
 
     def clean(self):
         """Validates business rules for cell membership"""
@@ -124,3 +127,8 @@ class CellMember(BaseModel):
         if self.is_active:
             return "Ativo"
         return f"Encerrado em {self.end_date}"
+
+    @property
+    def role_display(self):
+        """Returns the role display or 'Membro' if no role"""
+        return self.role.title if self.role else "Membro"
