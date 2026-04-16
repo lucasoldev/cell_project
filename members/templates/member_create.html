@@ -42,7 +42,7 @@
                             <option value="">Selecione uma pessoa...</option>
                             {% for person in form.person.field.queryset %}
                                 <option value="{{ person.pk }}" {% if form.person.value|stringformat:"s" == person.pk|stringformat:"s" %}selected{% endif %}>
-                                    {{ person.full_name }} - {{ person.phone }}
+                                    {{ person.full_name }}
                                 </option>
                             {% endfor %}
                         </select>

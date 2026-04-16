@@ -63,7 +63,7 @@
                         <td>{{ cell_member.cell.name }}</td>
                         <td>
                             {% if cell_member.role %}
-                                <span class="badge bg-primary">{{ cell_member.role.title }}</span>
+                                <span class="badge bg-primary">{{ cell_member.role.get_title_display }}</span>
                             {% else %}
                                 <span class="badge bg-secondary">Membro</span>
                             {% endif %}

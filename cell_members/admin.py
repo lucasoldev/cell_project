@@ -32,27 +32,17 @@ class CellMemberAdmin(admin.ModelAdmin):
     date_hierarchy = 'start_date'
     readonly_fields = ('created_at', 'updated_at')
 
-    fieldsets = (
-        ('Member Information', {
-            'fields': ('member', 'cell')
-        }),
-        ('Leadership Role', {
-            'fields': ('role',),
-            'description': 'Optional. Leave empty for regular members without leadership role.'
-        }),
-        ('Status', {
-            'fields': ('is_active',)
-        }),
-        ('Period', {
-            'fields': ('start_date', 'end_date'),
-        }),
-        ('Notes', {
-            'fields': ('notes',)
-        }),
-        ('System Dates', {
-            'fields': ('created_at', 'updated_at'),
-            'classes': ('collapse',),
-        }),
+    # ✅ Sem fieldsets - todos os campos aparecem juntos sem divisões
+    fields = (
+        'member',
+        'cell',
+        'role',
+        'is_active',
+        'start_date',
+        'end_date',
+        'notes',
+        'created_at',
+        'updated_at',
     )
 
     def member_name_display(self, obj):
