@@ -42,7 +42,7 @@
                             <option value="">Selecione uma pessoa...</option>
                             {% for person in form.person.field.queryset %}
                                 <option value="{{ person.pk }}" {% if form.person.value|stringformat:"s" == person.pk|stringformat:"s" %}selected{% endif %}>
-                                    {{ person.full_name }} - {{ person.phone }}
+                                    {{ person.full_name }}
                                 </option>
                             {% endfor %}
                         </select>
@@ -72,7 +72,7 @@
                             <option value="">Selecione uma célula...</option>
                             {% for cell in form.cell.field.queryset %}
                                 <option value="{{ cell.pk }}" {% if form.cell.value|stringformat:"s" == cell.pk|stringformat:"s" %}selected{% endif %}>
-                                    {{ cell.name }} - {{ cell.area.get_color_display }}
+                                    {{ cell.name }} <!--Alterei aqui, puxava a área também. -->
                                 </option>
                             {% endfor %}
                         </select>
