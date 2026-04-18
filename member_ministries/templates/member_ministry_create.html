@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Adicionar Membro ao Ministério - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'member_ministry_list' %}">Membros de Ministérios</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Adicionar Membro</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-person-plus"></i> Adicionar Membro ao Ministério</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark border-secondary">
+                <h5 class="mb-0">
+                    Preencha os dados da participação
+                </h5>
+            </div>
+            
+            <div class="card-body">
+                <form method="post" action="{% url 'member_ministry_create' %}" novalidate>
+                    {% csrf_token %}
+                    
+                    <!-- Campo: Membro -->
+                    <div class="mb-3">
+                        <label for="{{ form.member.id_for_label }}" class="form-label">
+                            <i class="bi bi-person"></i> Membro <span class="text-danger">*</span>
+                        </label>
+                        <select 
+                            name="{{ form.member.name }}" 
+                            id="{{ form.member.id_for_label }}" 
+                            class="form-select {% if form.member.errors %}is-invalid{% endif %}"
+                            required
+                        >
+                            <option value="">Selecione um membro...</option>
+                            {% for member in form.member.field.queryset %}
+                                <option value="{{ member.pk }}" {% if form.member.value|stringformat:"s" == member.pk|stringformat:"s" %}selected{% endif %}>
+                                    {{ member.person.full_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if form.member.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.member.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            Apenas membros ativos podem ser adicionados.
+                        </small>
+                    </div>
+                    
+                    <!-- Campo: Ministério -->
+                    <div class="mb-3">
+                        <label for="{{ form.ministry.id_for_label }}" class="form-label">
+                            <i class="bi bi-building"></i> Ministério <span class="text-danger">*</span>
+                        </label>
+                        <select 
+                            name="{{ form.ministry.name }}" 
+                            id="{{ form.ministry.id_for_label }}" 
+                            class="form-select {% if form.ministry.errors %}is-invalid{% endif %}"
+                            required
+                        >
+                            <option value="">Selecione um ministério...</option>
+                            {% for ministry in form.ministry.field.queryset %}
+                                <option value="{{ ministry.pk }}" {% if form.ministry.value|stringformat:"s" == ministry.pk|stringformat:"s" %}selected{% endif %}>
+                                    {{ ministry.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if form.ministry.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.ministry.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Campo: Data de Início -->
+                    <div class="mb-3">
+                        <label for="{{ form.start_date.id_for_label }}" class="form-label">
+                            <i class="bi bi-calendar3"></i> Data de Início <span class="text-danger">*</span>
+                        </label>
+                        <input 
+                            type="date" 
+                            name="{{ form.start_date.name }}" 
+                            id="{{ form.start_date.id_for_label }}" 
+                            class="form-control {% if form.start_date.errors %}is-invalid{% endif %}"
+                            value="{{ form.start_date.value|date:'Y-m-d'|default:'' }}"
+                            required
+                        >
+                        {% if form.start_date.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.start_date.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Campo: Data de Término -->
+                    <div class="mb-3">
+                        <label for="{{ form.end_date.id_for_label }}" class="form-label">
+                            <i class="bi bi-calendar-x"></i> Data de Término
+                        </label>
+                        <input 
+                            type="date" 
+                            name="{{ form.end_date.name }}" 
+                            id="{{ form.end_date.id_for_label }}" 
+                            class="form-control {% if form.end_date.errors %}is-invalid{% endif %}"
+                            value="{{ form.end_date.value|date:'Y-m-d'|default:'' }}"
+                        >
+                        {% if form.end_date.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.end_date.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            Preencha apenas quando a participação for encerrada.
+                        </small>
+                    </div>
+                    
+                    <!-- Campo: Ativo -->
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input 
+                                type="checkbox" 
+                                name="{{ form.is_active.name }}" 
+                                id="{{ form.is_active.id_for_label }}" 
+                                class="form-check-input {% if form.is_active.errors %}is-invalid{% endif %}"
+                                {% if form.is_active.value %}checked{% endif %}
+                            >
+                            <label for="{{ form.is_active.id_for_label }}" class="form-check-label">
+                                <i class="bi bi-check-circle"></i> Participação ativa
+                            </label>
+                            {% if form.is_active.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.is_active.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <small class="form-text text-muted">Desmarque para encerrar a participação.</small>
+                    </div>
+                    
+                    <!-- Campo: Observações -->
+                    <div class="mb-3">
+                        <label for="{{ form.notes.id_for_label }}" class="form-label">
+                            <i class="bi bi-pencil"></i> Observações
+                        </label>
+                        <textarea 
+                            name="{{ form.notes.name }}" 
+                            id="{{ form.notes.id_for_label }}" 
+                            class="form-control {% if form.notes.errors %}is-invalid{% endif %}"
+                            rows="3"
+                            placeholder="Observações adicionais..."
+                        >{{ form.notes.value|default:'' }}</textarea>
+                        {% if form.notes.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.notes.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Botões de ação -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'member_ministry_list' %}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Cancelar e voltar para a lista
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg"></i> Salvar Participação
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

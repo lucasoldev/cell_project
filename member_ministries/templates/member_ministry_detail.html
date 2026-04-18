@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Detalhes da Participação - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'member_ministry_list' %}">Membros de Ministérios</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Detalhes</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-eye-fill"></i> Detalhes da Participação no Ministério</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark border-secondary">
+                <h5 class="mb-0">
+                    <i class="bi bi-person-badge"></i> Informações da participação
+                </h5>
+            </div>
+            
+            <div class="card-body">
+                <!-- Membro -->
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">
+                        <i class="bi bi-person"></i> Membro:
+                    </div>
+                    <div class="col-md-9">
+                        {{ member_ministry.member.person.full_name }}
+                    </div>
+                </div>
+
+                <!-- Ministério -->
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">
+                        <i class="bi bi-building"></i> Ministério:
+                    </div>
+                    <div class="col-md-9">
+                        {{ member_ministry.ministry.name }}
+                    </div>
+                </div>
+
+                <!-- Data de Início -->
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">
+                        <i class="bi bi-calendar3"></i> Data de Início:
+                    </div>
+                    <div class="col-md-9">
+                        {{ member_ministry.start_date|date:"d/m/Y" }}
+                    </div>
+                </div>
+
+                <!-- Data de Término -->
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">
+                        <i class="bi bi-calendar-x"></i> Data de Término:
+                    </div>
+                    <div class="col-md-9">
+                        {% if member_ministry.end_date %}
+                            {{ member_ministry.end_date|date:"d/m/Y" }}
+                        {% else %}
+                            <span class="text-muted">— Em andamento —</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Status (Ativo/Inativo) -->
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">
+                        <i class="bi bi-check-circle"></i> Status:
+                    </div>
+                    <div class="col-md-9">
+                        {% if member_ministry.is_active %}
+                            <span class="badge bg-success">
+                                <i class="bi bi-check-lg"></i> Participação ativa
+                            </span>
+                        {% else %}
+                            <span class="badge bg-secondary">
+                                <i class="bi bi-x-lg"></i> Participação encerrada
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Observações -->
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">
+                        <i class="bi bi-pencil"></i> Observações:
+                    </div>
+                    <div class="col-md-9">
+                        {% if member_ministry.notes %}
+                            {{ member_ministry.notes|linebreaksbr }}
+                        {% else %}
+                            <span class="text-muted">Nenhuma observação registrada.</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Botões de ação -->
+                <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+                    <a href="{% url 'member_ministry_list' %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Voltar para a lista
+                    </a>
+                    <div>
+                        <a href="{% url 'member_ministry_update' member_ministry.pk %}" class="btn btn-warning me-2">
+                            <i class="bi bi-pencil-square"></i> Editar
+                        </a>
+                        <a href="{% url 'member_ministry_delete' member_ministry.pk %}" class="btn btn-danger text-black">
+                            <i class="bi bi-trash"></i> Excluir
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

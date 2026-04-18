@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Deletar Liderança - Cell Project
+  Deletar Participação em Ministério - Cell Project
 {% endblock %}
 
 {% block breadcrumb_items %}
-  <li class="breadcrumb-item"><a href="{% url 'leadership_list' %}">Lideranças</a></li>
-  <li class="breadcrumb-item"><a href="{% url 'leadership_detail' object.pk %}">{{ object.person.full_name }}</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'member_ministry_list' %}">Membros de Ministérios</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'member_ministry_detail' object.pk %}">{{ object.member.person.full_name }}</a></li>
   <li class="breadcrumb-item active" aria-current="page">Deletar</li>
 {% endblock %}
 
 {% block page_heading %}
-  <span><i class="bi bi-trash3"></i> Deletar Liderança</span>
+  <span><i class="bi bi-trash3"></i> Deletar Participação em Ministério</span>
 {% endblock %}
 
 {% block content %}
@@ -31,14 +31,14 @@
           <i class="bi bi-exclamation-circle-fill me-3 fs-3"></i>
           <div>
             <h5 class="alert-heading">Atenção!</h5>
-            <p class="mb-0">Esta ação não pode ser desfeita. O registro desta liderança será permanentemente removido.</p>
+            <p class="mb-0">Esta ação não pode ser desfeita. O registro desta participação será permanentemente removido.</p>
           </div>
         </div>
         
         <p class="card-text fs-5">
-          Tem certeza de que deseja excluir a liderança de 
-          <strong class="text-danger">{{ object.person.full_name }}</strong> 
-          como <strong class="text-danger">{{ object.role.get_title_display }}</strong>?
+          Tem certeza de que deseja excluir a participação de 
+          <strong class="text-danger">{{ object.member.person.full_name }}</strong> 
+          no ministério <strong class="text-danger">{{ object.ministry.name }}</strong>?
         </p>
         
         <hr class="my-4">
@@ -48,27 +48,16 @@
             <table class="table table-borderless">
               <tbody>
                 <tr>
-                  <th scope="row" class="w-25">Pessoa:</th>
+                  <th scope="row" class="w-25">Membro:</th>
                   <td>
-                    <span class="fw-bold">{{ object.person.full_name }}</span>
+                    <span class="fw-bold">{{ object.member.person.full_name }}</span>
                   </td>
                 </tr>
                 <tr>
-                  <th scope="row">Cargo:</th>
+                  <th scope="row">Ministério:</th>
                   <td>
-                    <span class="badge bg-primary fs-6">{{ object.role.get_title_display }}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">Vinculação:</th>
-                  <td>
-                    {% if object.area %}
-                      <i class="bi bi-diagram-3 me-1"></i> Área: {{ object.area.get_color_display }}
-                    {% elif object.cell %}
-                      <i class="bi bi-house-door me-1"></i> Célula: {{ object.cell.name }}
-                    {% else %}
-                      —
-                    {% endif %}
+                    <i class="bi bi-building me-1"></i>
+                    {{ object.ministry.name }}
                   </td>
                 </tr>
                 <tr>
@@ -117,8 +106,8 @@
             <button type="submit" class="btn btn-danger text-black">
                 <i class="bi bi-trash3"></i> Excluir
             </button>
-            <a href="{% url 'leadership_list' %}" class="btn btn-secondary">
-              <i class="bi bi-arrow-left"></i> Cancelar e voltar para a Lista de Lideranças
+            <a href="{% url 'member_ministry_list' %}" class="btn btn-secondary">
+              <i class="bi bi-arrow-left"></i> Cancelar e voltar para a Lista de Participações
             </a>
           </div>
         </form>

@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Membros de Ministérios - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item active" aria-current="page">Membros de Ministérios</li>
+{% endblock %}
+
+{% block page_heading %}
+  <div class="d-flex justify-content-between align-items-center">
+    <span><i class="bi bi-building"></i> Membros de Ministérios</span>
+  </div>
+{% endblock %}
+
+{% block content %}
+<div class="card-header bg-dark border-secondary">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <form method="get" action="{% url 'member_ministry_list' %}">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="member_name" placeholder="Nome do membro" value="{{ request.GET.member_name }}">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-search"></i>
+                        </button>
+                        {% if request.GET.member_name %}
+                            <a href="{% url 'member_ministry_list' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+            {% if perms.member_ministries.add_memberministry %}
+            <div class="col-md-6">
+                <a href="{% url 'member_ministry_create' %}" class="btn btn-success float-end">
+                    <i class="bi bi-plus"></i> Adicionar membro ao ministério
+                </a>
+            </div>
+            {% endif %}
+        </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-bordered align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Membro</th>
+                        <th>Ministério</th>
+                        <th>Status</th>
+                        <th>Data Início</th>
+                        <th>Data Término</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ministry_member in member_ministries %}
+                    <tr>
+                        <td>{{ ministry_member.member_name }}</td>
+                        <td>{{ ministry_member.ministry_name }}</td>
+                        <td>
+                            {% if ministry_member.is_active %}
+                                <span class="badge bg-success">Ativo</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Inativo</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ ministry_member.start_date|date:"d/m/Y" }}</td>
+                        <td>{{ ministry_member.end_date|date:"d/m/Y"|default:"—" }}</td>
+                        <td>
+                            <a href="{% url 'member_ministry_detail' ministry_member.id %}" class="btn btn-info btn-sm" data-bs-toggle="tooltip" title="Visualizar">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{% url 'member_ministry_update' ministry_member.id %}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Editar">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="{% url 'member_ministry_delete' ministry_member.id %}" class="btn btn-sm btn-danger text-black" data-bs-toggle="tooltip" title="Excluir">
+                                <i class="bi bi-trash3"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-muted">
+                            <i class="bi bi-building fs-1"></i>
+                            <p class="mt-2 mb-0">Nenhum membro de ministério encontrado.</p>
+                            <a href="{% url 'member_ministry_create' %}" class="btn btn-sm btn-primary mt-3">
+                                <i class="bi bi-plus-circle"></i> Adicionar primeiro membro
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Informações adicionais -->
+    <div class="card-footer bg-dark border-secondary">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-info-circle-fill text-info me-2"></i>
+            <small class="text-muted">
+                <strong>Status:</strong> 
+                <span class="badge bg-success">Ativo</span> - Participação atual | 
+                <span class="badge bg-secondary">Inativo</span> - Participação encerrada
+            </small>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3"></div>
+
+<nav aria-label="Paginação">
+    <ul class="pagination justify-content-center mb-0">
+        <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-chevron-double-left"></i></span>
+        </li>
+        <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-chevron-left"></i></span>
+        </li>
+
+        <li class="page-item active">
+            <span class="page-link">Página 1 de 1</span>
+        </li>
+
+        <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-chevron-right"></i></span>
+        </li>
+        <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-chevron-double-right"></i></span>
+        </li>
+    </ul>
+</nav>
+{% endblock %}
