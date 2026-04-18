@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load cell_tags %}
+
+{% block title %}
+  Reuniões de Células - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item active" aria-current="page">Reuniões de Células</li>
+{% endblock %}
+
+{% block page_heading %}
+  <div class="d-flex justify-content-between align-items-center">
+    <span><i class="bi bi-calendar-check"></i> Reuniões de Células</span>
+  </div>
+{% endblock %}
+
+{% block content %}
+<div class="card-header bg-dark border-secondary">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <form method="get" action="{% url 'cell_meeting_list' %}">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="cell_name" placeholder="Nome da célula" value="{{ request.GET.cell_name }}">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-search"></i>
+                    </button>
+                    {% if request.GET.cell_name %}
+                        <a href="{% url 'cell_meeting_list' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-circle"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+        {% if perms.cell_meetings.add_cellmeeting %}
+        <div class="col-md-6">
+            <a href="{% url 'cell_meeting_create' %}" class="btn btn-success float-end">
+                <i class="bi bi-plus"></i> Nova reunião
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-bordered align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Célula</th>
+                        <th>Data</th>
+                        <th>Dia</th>
+                        <th>Status</th>
+                        <th>Presentes</th>
+                        <th>Anfitrião</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for meeting in cell_meetings %}
+                    <tr>
+                        <td>{{ meeting.cell|cell_display }}</td>
+                        <td>{{ meeting.meeting_date|date:"d/m/Y" }}</td>
+                        <td>{{ meeting.day_of_week }}</td>
+                        <td>
+                            {% if meeting.took_place %}
+                                <span class="badge bg-success">Realizada</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Cancelada</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ meeting.total_attendees }}</td>
+                        <td>{{ meeting.host_name }}</td>
+                        <td>
+                            <a href="{% url 'cell_meeting_detail' meeting.id %}" class="btn btn-info btn-sm" data-bs-toggle="tooltip" title="Visualizar">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{% url 'cell_meeting_update' meeting.id %}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Editar">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="{% url 'cell_meeting_delete' meeting.id %}" class="btn btn-sm btn-danger text-black" data-bs-toggle="tooltip" title="Excluir">
+                                <i class="bi bi-trash3"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center py-4 text-muted">
+                            <i class="bi bi-calendar-x fs-1"></i>
+                            <p class="mt-2 mb-0">Nenhuma reunião encontrada.</p>
+                            <a href="{% url 'cell_meeting_create' %}" class="btn btn-sm btn-primary mt-3">
+                                <i class="bi bi-plus-circle"></i> Cadastrar primeira reunião
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Informações adicionais -->
+    <div class="card-footer bg-dark border-secondary">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-info-circle-fill text-info me-2"></i>
+            <small class="text-muted">
+                <strong>Status:</strong> 
+                <span class="badge bg-success">Realizada</span> - Reunião ocorreu | 
+                <span class="badge bg-warning text-dark">Cancelada</span> - Reunião não ocorreu
+            </small>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3"></div>
+
+<nav aria-label="Paginação">
+    <ul class="pagination justify-content-center mb-0">
+        <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-chevron-double-left"></i></span>
+        </li>
+        <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-chevron-left"></i></span>
+        </li>
+
+        <li class="page-item active">
+            <span class="page-link">Página 1 de 1</span>
+        </li>
+
+        <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-chevron-right"></i></span>
+        </li>
+        <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-chevron-double-right"></i></span>
+        </li>
+    </ul>
+</nav>
+{% endblock %}

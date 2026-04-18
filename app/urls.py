@@ -14,4 +14,5 @@ urlpatterns = [
     path('', include('leaderships.urls')),
     path('', include('member_ministries.urls')),
     path('', include('calendar_events.urls')),
+    path('', include('cell_meetings.urls')),
 ]
