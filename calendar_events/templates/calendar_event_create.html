@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Novo Evento - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'calendar_event_list' %}">Eventos do Calendário</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Novo Evento</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-calendar-plus"></i> Cadastrar Evento</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark border-secondary">
+                <h5 class="mb-0">
+                    Preencha os dados do evento
+                </h5>
+            </div>
+            
+            <div class="card-body">
+                <form method="post" action="{% url 'calendar_event_create' %}" novalidate>
+                    {% csrf_token %}
+                    
+                    <!-- Campo: Data do Evento -->
+                    <div class="mb-3">
+                        <label for="{{ form.event_date.id_for_label }}" class="form-label">
+                            <i class="bi bi-calendar3"></i> Data do Evento <span class="text-danger">*</span>
+                        </label>
+                        <input 
+                            type="date" 
+                            name="{{ form.event_date.name }}" 
+                            id="{{ form.event_date.id_for_label }}" 
+                            class="form-control {% if form.event_date.errors %}is-invalid{% endif %}"
+                            value="{{ form.event_date.value|date:'Y-m-d'|default:'' }}"
+                            required
+                        >
+                        {% if form.event_date.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.event_date.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            Cada data só pode ter um evento cadastrado.
+                        </small>
+                    </div>
+                    
+                    <!-- Campo: Tipo de Evento -->
+                    <div class="mb-3">
+                        <label for="{{ form.event_type.id_for_label }}" class="form-label">
+                            <i class="bi bi-tag"></i> Tipo de Evento <span class="text-danger">*</span>
+                        </label>
+                        <select 
+                            name="{{ form.event_type.name }}" 
+                            id="{{ form.event_type.id_for_label }}" 
+                            class="form-select {% if form.event_type.errors %}is-invalid{% endif %}"
+                            required
+                        >
+                            <option value="">Selecione um tipo...</option>
+                            {% for event_type in form.event_type.field.queryset %}
+                                <option value="{{ event_type.pk }}" {% if form.event_type.value|stringformat:"s" == event_type.pk|stringformat:"s" %}selected{% endif %}>
+                                    {{ event_type.get_name_display }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if form.event_type.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.event_type.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Campo: Descrição -->
+                    <div class="mb-3">
+                        <label for="{{ form.description.id_for_label }}" class="form-label">
+                            <i class="bi bi-file-text"></i> Descrição
+                        </label>
+                        <textarea 
+                            name="{{ form.description.name }}" 
+                            id="{{ form.description.id_for_label }}" 
+                            class="form-control {% if form.description.errors %}is-invalid{% endif %}"
+                            rows="3"
+                            placeholder="Descreva o evento..."
+                        >{{ form.description.value|default:'' }}</textarea>
+                        {% if form.description.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.description.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Campo: Observações -->
+                    <div class="mb-3">
+                        <label for="{{ form.notes.id_for_label }}" class="form-label">
+                            <i class="bi bi-pencil"></i> Observações
+                        </label>
+                        <textarea 
+                            name="{{ form.notes.name }}" 
+                            id="{{ form.notes.id_for_label }}" 
+                            class="form-control {% if form.notes.errors %}is-invalid{% endif %}"
+                            rows="2"
+                            placeholder="Observações adicionais (opcional)..."
+                        >{{ form.notes.value|default:'' }}</textarea>
+                        {% if form.notes.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.notes.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Botões de ação -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'calendar_event_list' %}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Cancelar e voltar para a lista
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg"></i> Salvar Evento
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

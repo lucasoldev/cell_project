@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ calendar_event.event_date|date:"d/m/Y" }} - {{ calendar_event.event_type.get_name_display }} - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'calendar_event_list' %}">Eventos do Calendário</a></li>
+  <li class="breadcrumb-item active" aria-current="page">{{ calendar_event.event_date|date:"d/m/Y" }}</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-calendar-event"></i> Detalhes do Evento</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark border-secondary">
+                <h5 class="mb-0">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Informações do Evento
+                </h5>
+            </div>
+            
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="w-25">Data do Evento</th>
+                            <td>
+                                <span class="fw-bold fs-5">{{ calendar_event.event_date|date:"d/m/Y" }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Dia da Semana</th>
+                            <td>
+                                <i class="bi bi-calendar-week me-1"></i>
+                                {% if calendar_event.event_date.weekday == 0 %}Segunda-feira
+                                {% elif calendar_event.event_date.weekday == 1 %}Terça-feira
+                                {% elif calendar_event.event_date.weekday == 2 %}Quarta-feira
+                                {% elif calendar_event.event_date.weekday == 3 %}Quinta-feira
+                                {% elif calendar_event.event_date.weekday == 4 %}Sexta-feira
+                                {% elif calendar_event.event_date.weekday == 5 %}Sábado
+                                {% elif calendar_event.event_date.weekday == 6 %}Domingo
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Tipo de Evento</th>
+                            <td>
+                                {% if calendar_event.event_type.name == 'CELULA' %}
+                                    <span class="badge bg-primary fs-6">Célula</span>
+                                {% elif calendar_event.event_type.name == 'LIVRE' %}
+                                    <span class="badge bg-success fs-6">Livre</span>
+                                {% elif calendar_event.event_type.name == 'MAG' %}
+                                    <span class="badge bg-danger fs-6">Mag</span>
+                                {% else %}
+                                    <span class="badge bg-secondary fs-6">{{ calendar_event.event_type.get_name_display }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Descrição</th>
+                            <td>{{ calendar_event.description|default:"—"|linebreaksbr }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Observações</th>
+                            <td>{{ calendar_event.notes|default:"—"|linebreaksbr }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Criado em</th>
+                            <td>
+                                <i class="bi bi-calendar3 me-1"></i>
+                                {{ calendar_event.created_at|date:"d/m/Y H:i" }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Última atualização</th>
+                            <td>
+                                <i class="bi bi-clock-history me-1"></i>
+                                {{ calendar_event.updated_at|date:"d/m/Y H:i" }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="card-footer bg-dark border-secondary">
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'calendar_event_list' %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Voltar
+                    </a>
+                    <div>
+                        <a href="{% url 'calendar_event_update' calendar_event.pk %}" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> Editar
+                        </a>
+                        <a href="{% url 'calendar_event_delete' calendar_event.pk %}" class="btn btn-danger ms-2 text-black">
+                            <i class="bi bi-trash3"></i> Excluir
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Informações de vínculos -->
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-dark border-secondary">
+                <h6 class="mb-0">
+                    <i class="bi bi-link-45deg me-2"></i>
+                    Reuniões Vinculadas
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-calendar-check fs-1 text-primary"></i>
+                            <h5 class="mt-2 mb-0">{{ calendar_event.cell_meetings.count|default:"0" }}</h5>
+                            <small class="text-muted">Total de reuniões</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-calendar-week fs-1 text-success"></i>
+                            <h5 class="mt-2 mb-0">
+                                {% with completed=calendar_event.cell_meetings.all %}
+                                    {% for meeting in completed %}
+                                        {% if meeting.took_place %}{{ forloop.counter }}{% endif %}
+                                    {% empty %}0{% endfor %}
+                                {% endwith %}
+                            </h5>
+                            <small class="text-muted">Reuniões realizadas</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-calendar-range fs-1 text-info"></i>
+                            <h5 class="mt-2 mb-0">
+                                {% with total=calendar_event.cell_meetings.count %}
+                                    {% if total > 0 %}
+                                        {{ calendar_event.cell_meetings.first.cell.name|default:"—" }}
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                {% endwith %}
+                            </h5>
+                            <small class="text-muted">Última célula</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
