@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+{% load cell_tags %}
+
+{% block title %}
+  Editar Reunião - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'cell_meeting_list' %}">Reuniões de Células</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'cell_meeting_detail' cell_meeting.pk %}">{{ cell_meeting.cell|cell_display }} - {{ cell_meeting.meeting_date|date:"d/m/Y" }}</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Editar</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-pencil-square"></i> Editar Reunião</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark border-secondary">
+                <h5 class="mb-0">
+                    <i class="bi bi-pencil me-2"></i>
+                    Editando: {{ cell_meeting.cell|cell_display }} - {{ cell_meeting.meeting_date|date:"d/m/Y" }}
+                </h5>
+            </div>
+            
+            <div class="card-body">
+                <form method="post" class="form" novalidate>
+                    {% csrf_token %}
+                    
+                    <!-- Campo: Célula -->
+                    <div class="mb-3">
+                        <label for="{{ form.cell.id_for_label }}" class="form-label">
+                            <i class="bi bi-house-door"></i> Célula <span class="text-danger">*</span>
+                        </label>
+                        <select 
+                            name="{{ form.cell.name }}" 
+                            id="{{ form.cell.id_for_label }}" 
+                            class="form-select {% if form.cell.errors %}is-invalid{% endif %}"
+                            required
+                        >
+                            <option value="">Selecione uma célula...</option>
+                            {% for cell in form.cell.field.queryset %}
+                                <option value="{{ cell.pk }}" {% if form.cell.value|stringformat:"s" == cell.pk|stringformat:"s" %}selected{% endif %}>
+                                    {{ cell|cell_display }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if form.cell.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.cell.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Campo: Data da Reunião -->
+                    <div class="mb-3">
+                        <label for="{{ form.meeting_date.id_for_label }}" class="form-label">
+                            <i class="bi bi-calendar3"></i> Data da Reunião <span class="text-danger">*</span>
+                        </label>
+                        <input 
+                            type="date" 
+                            name="{{ form.meeting_date.name }}" 
+                            id="{{ form.meeting_date.id_for_label }}" 
+                            class="form-control {% if form.meeting_date.errors %}is-invalid{% endif %}"
+                            value="{{ form.meeting_date.value|date:'Y-m-d'|default:'' }}"
+                            required
+                        >
+                        {% if form.meeting_date.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.meeting_date.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            Cada célula só pode ter uma reunião por dia.
+                        </small>
+                    </div>
+                    
+                    <!-- Campo: Local da Célula -->
+                    <div class="mb-3">
+                        <label for="{{ form.cell_location.id_for_label }}" class="form-label">
+                            <i class="bi bi-geo-alt"></i> Local da Célula <span class="text-danger">*</span>
+                        </label>
+                        <select 
+                            name="{{ form.cell_location.name }}" 
+                            id="{{ form.cell_location.id_for_label }}" 
+                            class="form-select {% if form.cell_location.errors %}is-invalid{% endif %}"
+                            required
+                        >
+                            <option value="">Selecione um local...</option>
+                            {% for location in form.cell_location.field.queryset %}
+                                <option value="{{ location.pk }}" {% if form.cell_location.value|stringformat:"s" == location.pk|stringformat:"s" %}selected{% endif %}>
+                                    {{ location.cell|cell_display }} - {{ location.short_address }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if form.cell_location.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.cell_location.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            Apenas locais ativos são exibidos.
+                        </small>
+                    </div>
+                    
+                    <!-- Campo: Evento no Calendário -->
+                    <div class="mb-3">
+                        <label for="{{ form.calendar_event.id_for_label }}" class="form-label">
+                            <i class="bi bi-calendar-event"></i> Evento no Calendário
+                        </label>
+                        <select 
+                            name="{{ form.calendar_event.name }}" 
+                            id="{{ form.calendar_event.id_for_label }}" 
+                            class="form-select {% if form.calendar_event.errors %}is-invalid{% endif %}"
+                        >
+                            <option value="">Nenhum evento vinculado</option>
+                            {% for event in form.calendar_event.field.queryset %}
+                                <option value="{{ event.pk }}" {% if form.calendar_event.value|stringformat:"s" == event.pk|stringformat:"s" %}selected{% endif %}>
+                                    {{ event.event_date|date:"d/m/Y" }} - {{ event.event_type.get_name_display }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if form.calendar_event.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.calendar_event.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            Opcional. Vincule a um evento do calendário se houver.
+                        </small>
+                    </div>
+                    
+                    <!-- Campo: Realizada -->
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input 
+                                type="checkbox" 
+                                name="{{ form.took_place.name }}" 
+                                id="{{ form.took_place.id_for_label }}" 
+                                class="form-check-input {% if form.took_place.errors %}is-invalid{% endif %}"
+                                {% if form.took_place.value %}checked{% endif %}
+                            >
+                            <label for="{{ form.took_place.id_for_label }}" class="form-check-label">
+                                <i class="bi bi-check-circle"></i> Reunião realizada
+                            </label>
+                            {% if form.took_place.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.took_place.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <small class="form-text text-muted">
+                            Desmarque se a reunião foi cancelada.
+                        </small>
+                    </div>
+                    
+                    <!-- Campo: Total de Presentes -->
+                    <div class="mb-3">
+                        <label for="{{ form.total_attendees.id_for_label }}" class="form-label">
+                            <i class="bi bi-people"></i> Total de Presentes
+                        </label>
+                        <input 
+                            type="number" 
+                            name="{{ form.total_attendees.name }}" 
+                            id="{{ form.total_attendees.id_for_label }}" 
+                            class="form-control {% if form.total_attendees.errors %}is-invalid{% endif %}"
+                            value="{{ form.total_attendees.value|default:'0' }}"
+                            min="0"
+                        >
+                        {% if form.total_attendees.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.total_attendees.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Campo: Observações -->
+                    <div class="mb-3">
+                        <label for="{{ form.notes.id_for_label }}" class="form-label">
+                            <i class="bi bi-pencil"></i> Observações
+                        </label>
+                        <textarea 
+                            name="{{ form.notes.name }}" 
+                            id="{{ form.notes.id_for_label }}" 
+                            class="form-control {% if form.notes.errors %}is-invalid{% endif %}"
+                            rows="3"
+                            placeholder="Observações adicionais..."
+                        >{{ form.notes.value|default:'' }}</textarea>
+                        {% if form.notes.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.notes.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Informações do registro -->
+                    <div class="alert alert-secondary small">
+                        <i class="bi bi-info-circle me-1"></i>
+                        <strong>Informações do registro:</strong><br>
+                        Criado em: {{ cell_meeting.created_at|date:"d/m/Y H:i" }}<br>
+                        Última atualização: {{ cell_meeting.updated_at|date:"d/m/Y H:i" }}
+                    </div>
+                    
+                    <!-- Botões de ação -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <div>
+                            <a href="{% url 'cell_meeting_list' %}" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Cancelar e voltar para a lista
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg"></i> Salvar Alterações
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% load cell_tags %}
+
+{% block title %}
+  Reunião - {{ cell_meeting.cell|cell_display }} - {{ cell_meeting.meeting_date|date:"d/m/Y" }} - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'cell_meeting_list' %}">Reuniões de Células</a></li>
+  <li class="breadcrumb-item active" aria-current="page">{{ cell_meeting.cell|cell_display }} - {{ cell_meeting.meeting_date|date:"d/m/Y" }}</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-calendar-check"></i> Detalhes da Reunião</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark border-secondary">
+                <h5 class="mb-0">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Informações da Reunião
+                </h5>
+            </div>
+            
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="w-25">Célula</th>
+                            <td>
+                                <span class="fw-bold fs-5">{{ cell_meeting.cell|cell_display }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Data da Reunião</th>
+                            <td>
+                                <i class="bi bi-calendar3 me-1"></i>
+                                {{ cell_meeting.meeting_date|date:"d/m/Y" }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Dia da Semana</th>
+                            <td>
+                                <i class="bi bi-calendar-week me-1"></i>
+                                {{ cell_meeting.day_of_week }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Status</th>
+                            <td>
+                                {% if cell_meeting.took_place %}
+                                    <span class="badge bg-success fs-6">✅ Realizada</span>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark fs-6">❌ Cancelada</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Local</th>
+                            <td>
+                                <i class="bi bi-geo-alt me-1"></i>
+                                {{ cell_meeting.location_address|linebreaksbr }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Anfitrião</th>
+                            <td>
+                                <i class="bi bi-person me-1"></i>
+                                {{ cell_meeting.host_name }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Total de Presentes</th>
+                            <td>
+                                <i class="bi bi-people me-1"></i>
+                                <span class="fw-bold">{{ cell_meeting.total_attendees }}</span> pessoa(s)
+                            </td>
+                        </tr>
+                        {% if cell_meeting.calendar_event %}
+                        <tr>
+                            <th scope="row">Evento no Calendário</th>
+                            <td>
+                                <i class="bi bi-calendar-event me-1"></i>
+                                {{ cell_meeting.calendar_event.event_date|date:"d/m/Y" }} - {{ cell_meeting.calendar_event.event_type.get_name_display }}
+                            </td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <th scope="row">Observações</th>
+                            <td>{{ cell_meeting.notes|default:"—"|linebreaksbr }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Criado em</th>
+                            <td>
+                                <i class="bi bi-calendar3 me-1"></i>
+                                {{ cell_meeting.created_at|date:"d/m/Y H:i" }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Última atualização</th>
+                            <td>
+                                <i class="bi bi-clock-history me-1"></i>
+                                {{ cell_meeting.updated_at|date:"d/m/Y H:i" }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="card-footer bg-dark border-secondary">
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'cell_meeting_list' %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Voltar para a lista de reuniões
+                    </a>
+                    <div>
+                        <a href="{% url 'cell_meeting_update' cell_meeting.pk %}" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> Editar
+                        </a>
+                        <a href="{% url 'cell_meeting_delete' cell_meeting.pk %}" class="btn btn-danger ms-2 text-black">
+                            <i class="bi bi-trash3"></i> Excluir
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Informações de presenças -->
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-dark border-secondary">
+                <h6 class="mb-0">
+                    <i class="bi bi-people me-2"></i>
+                    Presenças Registradas
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-person-check fs-1 text-success"></i>
+                            <h5 class="mt-2 mb-0">{{ cell_meeting.attendances.count|default:"0" }}</h5>
+                            <small class="text-muted">Total de registros</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-check-circle fs-1 text-primary"></i>
+                            <h5 class="mt-2 mb-0">
+                                {% with present=0 %}
+                                    {% for attendance in cell_meeting.attendances.all %}
+                                        {% if attendance.attended %}{{ forloop.counter }}{% endif %}
+                                    {% empty %}0{% endfor %}
+                                {% endwith %}
+                            </h5>
+                            <small class="text-muted">Presentes</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-x-circle fs-1 text-danger"></i>
+                            <h5 class="mt-2 mb-0">
+                                {% with absent=0 %}
+                                    {% for attendance in cell_meeting.attendances.all %}
+                                        {% if not attendance.attended %}{{ forloop.counter }}{% endif %}
+                                    {% empty %}0{% endfor %}
+                                {% endwith %}
+                            </h5>
+                            <small class="text-muted">Ausentes</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-percent fs-1 text-info"></i>
+                            <h5 class="mt-2 mb-0">
+                                {% if cell_meeting.attendances.count > 0 %}
+                                    {% with present=0 total=cell_meeting.attendances.count %}
+                                        {% for attendance in cell_meeting.attendances.all %}
+                                            {% if attendance.attended %}{{ forloop.counter }}{% endif %}
+                                        {% endfor %}
+                                        {{ present|floatformat:0 }}%
+                                    {% endwith %}
+                                {% else %}
+                                    0%
+                                {% endif %}
+                            </h5>
+                            <small class="text-muted">Taxa de presença</small>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if cell_meeting.attendances.exists %}
+                <div class="mt-4">
+                    <a href="#" class="btn btn-primary btn-sm">
+                        <i class="bi bi-list-ul"></i> Ver lista de presenças
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

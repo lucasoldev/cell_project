@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load cell_tags %}
+
+{% block title %}
+  Deletar Reunião - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'cell_meeting_list' %}">Reuniões de Células</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'cell_meeting_detail' object.pk %}">{{ object.cell|cell_display }} - {{ object.meeting_date|date:"d/m/Y" }}</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Deletar</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-trash3"></i> Deletar Reunião</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow-sm border-danger">
+      <div class="card-header bg-danger text-white">
+        <h5 class="mb-0">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          Confirmar Exclusão
+        </h5>
+      </div>
+      
+      <div class="card-body">
+        <div class="alert alert-warning d-flex align-items-start" role="alert">
+          <i class="bi bi-exclamation-circle-fill me-3 fs-3"></i>
+          <div>
+            <h5 class="alert-heading">Atenção!</h5>
+            <p class="mb-0">Esta ação não pode ser desfeita. O registro desta reunião será permanentemente removido.</p>
+          </div>
+        </div>
+        
+        <p class="card-text fs-5">
+          Tem certeza de que deseja excluir a reunião da célula 
+          <strong class="text-danger">{{ object.cell|cell_display }}</strong> do dia 
+          <strong class="text-danger">{{ object.meeting_date|date:"d/m/Y" }}</strong>?
+        </p>
+        
+        <hr class="my-4">
+        
+        <!-- Detalhes do registro que será deletado -->
+        <div class="row mb-4">
+            <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <th scope="row" class="w-25">Célula:</th>
+                  <td>
+                    <span class="fw-bold">{{ object.cell|cell_display }}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Data da Reunião:</th>
+                  <td>{{ object.meeting_date|date:"d/m/Y" }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Dia da Semana:</th>
+                  <td>{{ object.day_of_week }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Status:</th>
+                  <td>
+                    {% if object.took_place %}
+                        <span class="badge bg-success">✅ Realizada</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark">❌ Cancelada</span>
+                    {% endif %}
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Local:</th>
+                  <td>{{ object.location_address|truncatechars:60 }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Anfitrião:</th>
+                  <td>{{ object.host_name }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Total de Presentes:</th>
+                  <td>{{ object.total_attendees }} pessoa(s)</td>
+                </tr>
+                {% if object.calendar_event %}
+                <tr>
+                  <th scope="row">Evento no Calendário:</th>
+                  <td>{{ object.calendar_event.event_date|date:"d/m/Y" }} - {{ object.calendar_event.event_type.get_name_display }}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                  <th scope="row">Observações:</th>
+                  <td>{{ object.notes|default:"—"|truncatechars:50 }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Criado em:</th>
+                  <td>{{ object.created_at|date:"d/m/Y H:i" }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Última atualização:</th>
+                  <td>{{ object.updated_at|date:"d/m/Y H:i" }}</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        
+        <!-- Aviso sobre registros relacionados -->
+        {% if object.attendances.exists %}
+        <div class="alert alert-danger">
+          <i class="bi bi-link-45deg me-2"></i>
+          <strong>Aviso:</strong> Esta reunião possui vínculos que também serão excluídos:
+          <ul class="mt-2 mb-0">
+            <li><strong>Presenças registradas:</strong> {{ object.attendances.count }} registro(s) será(ão) removido(s)</li>
+          </ul>
+        </div>
+        {% endif %}
+        
+        <form method="post">
+          {% csrf_token %}
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-danger text-black">
+                <i class="bi bi-trash3"></i> Excluir
+            </button>
+            <a href="{% url 'cell_meeting_list' %}" class="btn btn-secondary">
+              <i class="bi bi-arrow-left"></i> Cancelar e voltar para a Lista de Reuniões
+            </a>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
