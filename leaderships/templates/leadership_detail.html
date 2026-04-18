@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load cell_tags %}
+
+{% block title %}
+  {{ leadership.person.full_name }} - {{ leadership.role.get_title_display }} - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'leadership_list' %}">Lideranças</a></li>
+  <li class="breadcrumb-item active" aria-current="page">{{ leadership.person.full_name }}</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-star-fill"></i> Detalhes da Liderança</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark border-secondary">
+                <h5 class="mb-0">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Informações da Liderança
+                </h5>
+            </div>
+            
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="w-25">Pessoa</th>
+                            <td>
+                                <span class="fw-bold fs-5">{{ leadership.person.full_name }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Telefone</th>
+                            <td>
+                                <i class="bi bi-telephone me-1"></i>
+                                {{ leadership.person.phone }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Cargo</th>
+                            <td>
+                                <span class="badge bg-primary fs-6">{{ leadership.role.get_title_display }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Vinculação</th>
+                            <td>
+                                {% if leadership.area %}
+                                    <span class="badge" style="background-color: {% if leadership.area.color == 'RED' %}#dc3545{% elif leadership.area.color == 'YELLOW' %}#ffc107{% elif leadership.area.color == 'BLUE' %}#0d6efd{% elif leadership.area.color == 'GREEN' %}#198754{% elif leadership.area.color == 'WHITE' %}#f8f9fa{% else %}#6c757d{% endif %}; color: {% if leadership.area.color == 'YELLOW' or leadership.area.color == 'WHITE' %}black{% else %}white{% endif %};">
+                                        Área: {{ leadership.area.get_color_display }}
+                                    </span>
+                                {% elif leadership.cell %}
+                                    <span class="badge bg-info text-dark">
+                                        Célula: {{ leadership.cell|cell_display }}
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-secondary">—</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Status</th>
+                            <td>
+                                {% if leadership.is_active %}
+                                    <span class="badge bg-success fs-6">Ativo</span>
+                                {% else %}
+                                    <span class="badge bg-secondary fs-6">Inativo</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Data de Início</th>
+                            <td>
+                                <i class="bi bi-calendar3 me-1"></i>
+                                {{ leadership.start_date|date:"d/m/Y" }}
+                            </td>
+                        </tr>
+                        {% if leadership.end_date %}
+                        <tr>
+                            <th scope="row">Data de Término</th>
+                            <td>
+                                <i class="bi bi-calendar-x me-1"></i>
+                                {{ leadership.end_date|date:"d/m/Y" }}
+                            </td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <th scope="row">Duração</th>
+                            <td>
+                                <i class="bi bi-clock me-1"></i>
+                                {{ leadership.duration_days }} dias
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Observações</th>
+                            <td>{{ leadership.notes|default:"—"|linebreaksbr }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Criado em</th>
+                            <td>
+                                <i class="bi bi-calendar3 me-1"></i>
+                                {{ leadership.created_at|date:"d/m/Y H:i" }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Última atualização</th>
+                            <td>
+                                <i class="bi bi-clock-history me-1"></i>
+                                {{ leadership.updated_at|date:"d/m/Y H:i" }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="card-footer bg-dark border-secondary">
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'leadership_list' %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Voltar para a lista
+                    </a>
+                    <div>
+                        <a href="{% url 'leadership_update' leadership.pk %}" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> Editar
+                        </a>
+                        <a href="{% url 'leadership_delete' leadership.pk %}" class="btn btn-danger ms-2 text-black">
+                            <i class="bi bi-trash3"></i> Excluir
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Informações da Pessoa -->
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-dark border-secondary">
+                <h6 class="mb-0">
+                    <i class="bi bi-person me-2"></i>
+                    Informações da Pessoa
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="border rounded p-3 text-center">
+                            <i class="bi bi-person-circle fs-1 text-primary"></i>
+                            <h5 class="mt-2 mb-0">{{ leadership.person.age }} anos</h5>
+                            <small class="text-muted">Idade</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded p-3 text-center">
+                            <i class="bi bi-gender-ambiguous fs-1 text-info"></i>
+                            <h5 class="mt-2 mb-0">{{ leadership.person.get_gender_display }}</h5>
+                            <small class="text-muted">Gênero</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded p-3 text-center">
+                            <i class="bi bi-heart fs-1 text-danger"></i>
+                            <h5 class="mt-2 mb-0">{{ leadership.person.get_marital_status_display }}</h5>
+                            <small class="text-muted">Estado Civil</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

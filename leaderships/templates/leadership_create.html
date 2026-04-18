@@ -1,0 +1,238 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Nova Liderança - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'leadership_list' %}">Lideranças</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Nova Liderança</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-star"></i> Cadastrar Liderança</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark border-secondary">
+                <h5 class="mb-0">
+                    Preencha os dados da liderança
+                </h5>
+            </div>
+            
+            <div class="card-body">
+                <form method="post" action="{% url 'leadership_create' %}" novalidate>
+                    {% csrf_token %}
+                    
+                    <!-- Campo: Pessoa -->
+                    <div class="mb-3">
+                        <label for="{{ form.person.id_for_label }}" class="form-label">
+                            <i class="bi bi-person"></i> Pessoa <span class="text-danger">*</span>
+                        </label>
+                        <select 
+                            name="{{ form.person.name }}" 
+                            id="{{ form.person.id_for_label }}" 
+                            class="form-select {% if form.person.errors %}is-invalid{% endif %}"
+                            required
+                        >
+                            <option value="">Selecione uma pessoa...</option>
+                            {% for person in form.person.field.queryset %}
+                                <option value="{{ person.pk }}" {% if form.person.value|stringformat:"s" == person.pk|stringformat:"s" %}selected{% endif %}>
+                                    {{ person.full_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if form.person.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.person.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            <a href="{% url 'person_create' %}" target="_blank">
+                                <i class="bi bi-plus-circle"></i> Cadastrar nova pessoa
+                            </a>
+                        </small>
+                    </div>
+                    
+                    <!-- Campo: Cargo -->
+                    <div class="mb-3">
+                        <label for="{{ form.role.id_for_label }}" class="form-label">
+                            <i class="bi bi-tag"></i> Cargo <span class="text-danger">*</span>
+                        </label>
+                        <select 
+                            name="{{ form.role.name }}" 
+                            id="{{ form.role.id_for_label }}" 
+                            class="form-select {% if form.role.errors %}is-invalid{% endif %}"
+                            required
+                        >
+                            <option value="">Selecione um cargo...</option>
+                            {% for role in form.role.field.queryset %}
+                                <option value="{{ role.pk }}" {% if form.role.value|stringformat:"s" == role.pk|stringformat:"s" %}selected{% endif %}>
+                                    {{ role.get_title_display }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if form.role.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.role.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Campo: Área -->
+                    <div class="mb-3">
+                        <label for="{{ form.area.id_for_label }}" class="form-label">
+                            <i class="bi bi-diagram-3"></i> Área
+                        </label>
+                        <select 
+                            name="{{ form.area.name }}" 
+                            id="{{ form.area.id_for_label }}" 
+                            class="form-select {% if form.area.errors %}is-invalid{% endif %}"
+                        >
+                            <option value="">Selecione uma área...</option>
+                            {% for area in form.area.field.queryset %}
+                                <option value="{{ area.pk }}" {% if form.area.value|stringformat:"s" == area.pk|stringformat:"s" %}selected{% endif %}>
+                                    {{ area.get_color_display }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if form.area.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.area.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            Obrigatório para Supervisor de Área. Opcional para Supervisor de Célula.
+                        </small>
+                    </div>
+                    
+                    <!-- Campo: Célula -->
+                    <div class="mb-3">
+                        <label for="{{ form.cell.id_for_label }}" class="form-label">
+                            <i class="bi bi-house-door"></i> Célula
+                        </label>
+                        <select 
+                            name="{{ form.cell.name }}" 
+                            id="{{ form.cell.id_for_label }}" 
+                            class="form-select {% if form.cell.errors %}is-invalid{% endif %}"
+                        >
+                            <option value="">Selecione uma célula...</option>
+                            {% for cell in form.cell.field.queryset %}
+                                <option value="{{ cell.pk }}" {% if form.cell.value|stringformat:"s" == cell.pk|stringformat:"s" %}selected{% endif %}>
+                                    {{ cell.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if form.cell.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.cell.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            Obrigatório para Facilitador e Auxiliar. Opcional para Supervisor de Célula.
+                        </small>
+                    </div>
+                    
+                    <!-- Campo: Data de Início -->
+                    <div class="mb-3">
+                        <label for="{{ form.start_date.id_for_label }}" class="form-label">
+                            <i class="bi bi-calendar3"></i> Data de Início <span class="text-danger">*</span>
+                        </label>
+                        <input 
+                            type="date" 
+                            name="{{ form.start_date.name }}" 
+                            id="{{ form.start_date.id_for_label }}" 
+                            class="form-control {% if form.start_date.errors %}is-invalid{% endif %}"
+                            value="{{ form.start_date.value|date:'Y-m-d'|default:'' }}"
+                            required
+                        >
+                        {% if form.start_date.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.start_date.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Campo: Data de Término -->
+                    <div class="mb-3">
+                        <label for="{{ form.end_date.id_for_label }}" class="form-label">
+                            <i class="bi bi-calendar-x"></i> Data de Término
+                        </label>
+                        <input 
+                            type="date" 
+                            name="{{ form.end_date.name }}" 
+                            id="{{ form.end_date.id_for_label }}" 
+                            class="form-control {% if form.end_date.errors %}is-invalid{% endif %}"
+                            value="{{ form.end_date.value|date:'Y-m-d'|default:'' }}"
+                        >
+                        {% if form.end_date.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.end_date.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            Preencha apenas quando a liderança for encerrada.
+                        </small>
+                    </div>
+                    
+                    <!-- Campo: Ativo -->
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input 
+                                type="checkbox" 
+                                name="{{ form.is_active.name }}" 
+                                id="{{ form.is_active.id_for_label }}" 
+                                class="form-check-input {% if form.is_active.errors %}is-invalid{% endif %}"
+                                {% if form.is_active.value %}checked{% endif %}
+                            >
+                            <label for="{{ form.is_active.id_for_label }}" class="form-check-label">
+                                <i class="bi bi-check-circle"></i> Liderança ativa
+                            </label>
+                            {% if form.is_active.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.is_active.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <small class="form-text text-muted">Desmarque para encerrar a liderança.</small>
+                    </div>
+                    
+                    <!-- Campo: Observações -->
+                    <div class="mb-3">
+                        <label for="{{ form.notes.id_for_label }}" class="form-label">
+                            <i class="bi bi-pencil"></i> Observações
+                        </label>
+                        <textarea 
+                            name="{{ form.notes.name }}" 
+                            id="{{ form.notes.id_for_label }}" 
+                            class="form-control {% if form.notes.errors %}is-invalid{% endif %}"
+                            rows="3"
+                            placeholder="Observações adicionais..."
+                        >{{ form.notes.value|default:'' }}</textarea>
+                        {% if form.notes.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.notes.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Botões de ação -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'leadership_list' %}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Cancelar e voltar para a lista
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg"></i> Salvar Liderança
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

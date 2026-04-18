@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load cell_tags %}
+
+{% block title %}
+  Deletar Liderança - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'leadership_list' %}">Lideranças</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'leadership_detail' object.pk %}">{{ object.person.full_name }}</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Deletar</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-trash3"></i> Deletar Liderança</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow-sm border-danger">
+      <div class="card-header bg-danger text-white">
+        <h5 class="mb-0">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          Confirmar Exclusão
+        </h5>
+      </div>
+      
+      <div class="card-body">
+        <div class="alert alert-warning d-flex align-items-start" role="alert">
+          <i class="bi bi-exclamation-circle-fill me-3 fs-3"></i>
+          <div>
+            <h5 class="alert-heading">Atenção!</h5>
+            <p class="mb-0">Esta ação não pode ser desfeita. O registro desta liderança será permanentemente removido.</p>
+          </div>
+        </div>
+        
+        <p class="card-text fs-5">
+          Tem certeza de que deseja excluir a liderança de 
+          <strong class="text-danger">{{ object.person.full_name }}</strong> como 
+          <strong class="text-danger">{{ object.role.get_title_display }}</strong>?
+        </p>
+        
+        <hr class="my-4">
+        
+        <!-- Detalhes do registro que será deletado -->
+        <div class="row mb-4">
+            <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <th scope="row" class="w-25">Pessoa:</th>
+                  <td>
+                    <span class="fw-bold">{{ object.person.full_name }}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Telefone:</th>
+                  <td>{{ object.person.phone }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Cargo:</th>
+                  <td>
+                    <span class="badge bg-primary">{{ object.role.get_title_display }}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Vinculação:</th>
+                  <td>
+                    {% if object.area %}
+                        <span class="badge" style="background-color: {% if object.area.color == 'RED' %}#dc3545{% elif object.area.color == 'YELLOW' %}#ffc107{% elif object.area.color == 'BLUE' %}#0d6efd{% elif object.area.color == 'GREEN' %}#198754{% elif object.area.color == 'WHITE' %}#f8f9fa{% else %}#6c757d{% endif %}; color: {% if object.area.color == 'YELLOW' or object.area.color == 'WHITE' %}black{% else %}white{% endif %};">
+                            Área: {{ object.area.get_color_display }}
+                        </span>
+                    {% elif object.cell %}
+                        <span class="badge bg-info text-dark">
+                            Célula: {{ object.cell|cell_display }}
+                        </span>
+                    {% else %}
+                        <span class="badge bg-secondary">—</span>
+                    {% endif %}
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Status:</th>
+                  <td>
+                    {% if object.is_active %}
+                        <span class="badge bg-success">Ativo</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Inativo</span>
+                    {% endif %}
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Data de Início:</th>
+                  <td>{{ object.start_date|date:"d/m/Y" }}</td>
+                </tr>
+                {% if object.end_date %}
+                <tr>
+                  <th scope="row">Data de Término:</th>
+                  <td>{{ object.end_date|date:"d/m/Y" }}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                  <th scope="row">Duração:</th>
+                  <td>{{ object.duration_days }} dias</td>
+                </tr>
+                <tr>
+                  <th scope="row">Observações:</th>
+                  <td>{{ object.notes|default:"—"|truncatechars:50 }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Criado em:</th>
+                  <td>{{ object.created_at|date:"d/m/Y H:i" }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Última atualização:</th>
+                  <td>{{ object.updated_at|date:"d/m/Y H:i" }}</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        
+        <form method="post">
+          {% csrf_token %}
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-danger text-black">
+                <i class="bi bi-trash3"></i> Excluir
+            </button>
+            <a href="{% url 'leadership_list' %}" class="btn btn-secondary">
+              <i class="bi bi-arrow-left"></i> Cancelar e voltar para a Lista de Lideranças
+            </a>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

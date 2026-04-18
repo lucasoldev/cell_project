@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load cell_tags %}
+
+{% block title %}
+  Lideranças - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item active" aria-current="page">Lideranças</li>
+{% endblock %}
+
+{% block page_heading %}
+  <div class="d-flex justify-content-between align-items-center">
+    <span><i class="bi bi-star-fill"></i> Lideranças</span>
+  </div>
+{% endblock %}
+
+{% block content %}
+<div class="card-header bg-dark border-secondary">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <form method="get" action="{% url 'leadership_list' %}">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="person_name" placeholder="Nome da pessoa" value="{{ request.GET.person_name }}">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-search"></i>
+                        </button>
+                        {% if request.GET.person_name %}
+                            <a href="{% url 'leadership_list' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+            {% if perms.leaderships.add_leadership %}
+            <div class="col-md-6">
+                <a href="{% url 'leadership_create' %}" class="btn btn-success float-end">
+                    <i class="bi bi-plus"></i> Nova liderança
+                </a>
+            </div>
+            {% endif %}
+        </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-bordered align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Pessoa</th>
+                        <th>Cargo</th>
+                        <th>Vinculação</th>
+                        <th>Status</th>
+                        <th>Data Início</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for leadership in leaderships %}
+                    <tr>
+                        <td>{{ leadership.person.full_name }}</td>
+                        <td>
+                            <span class="badge bg-primary">{{ leadership.role.get_title_display }}</span>
+                        </td>
+                        <td>
+                            {% if leadership.area %}
+                                <span class="badge" style="background-color: {% if leadership.area.color == 'RED' %}#dc3545{% elif leadership.area.color == 'YELLOW' %}#ffc107{% elif leadership.area.color == 'BLUE' %}#0d6efd{% elif leadership.area.color == 'GREEN' %}#198754{% elif leadership.area.color == 'WHITE' %}#f8f9fa{% else %}#6c757d{% endif %}; color: {% if leadership.area.color == 'YELLOW' or leadership.area.color == 'WHITE' %}black{% else %}white{% endif %};">
+                                    Área: {{ leadership.area.get_color_display }}
+                                </span>
+                            {% elif leadership.cell %}
+                                <span class="badge bg-info text-dark">
+                                    Célula: {{ leadership.cell|cell_display }}
+                                </span>
+                            {% else %}
+                                <span class="badge bg-secondary">—</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if leadership.is_active %}
+                                <span class="badge bg-success">Ativo</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Inativo</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ leadership.start_date|date:"d/m/Y" }}</td>
+                        <td>
+                            <a href="{% url 'leadership_detail' leadership.id %}" class="btn btn-info btn-sm" data-bs-toggle="tooltip" title="Visualizar">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{% url 'leadership_update' leadership.id %}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Editar">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="{% url 'leadership_delete' leadership.id %}" class="btn btn-sm btn-danger text-black" data-bs-toggle="tooltip" title="Excluir">
+                                <i class="bi bi-trash3"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-muted">
+                            <i class="bi bi-star fs-1"></i>
+                            <p class="mt-2 mb-0">Nenhuma liderança encontrada.</p>
+                            <a href="{% url 'leadership_create' %}" class="btn btn-sm btn-primary mt-3">
+                                <i class="bi bi-plus-circle"></i> Cadastrar primeira liderança
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Informações adicionais -->
+    <div class="card-footer bg-dark border-secondary">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-info-circle-fill text-info me-2"></i>
+            <small class="text-muted">
+                <strong>Hierarquia:</strong> 
+                <span class="badge bg-danger">Pastor</span> 
+                <i class="bi bi-arrow-right"></i> 
+                <span class="badge bg-warning text-dark">Supervisor de Área</span> 
+                <i class="bi bi-arrow-right"></i> 
+                <span class="badge bg-info">Supervisor de Célula</span> 
+                <i class="bi bi-arrow-right"></i> 
+                <span class="badge bg-success">Facilitador</span> 
+                <i class="bi bi-arrow-right"></i> 
+                <span class="badge bg-secondary">Auxiliar</span>
+            </small>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3"></div>
+
+<div class="card-footer bg-dark border-secondary">
+    <nav aria-label="Paginação">
+        <ul class="pagination justify-content-center mb-0">
+            <li class="page-item disabled">
+                <span class="page-link"><i class="bi bi-chevron-double-left"></i></span>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link"><i class="bi bi-chevron-left"></i></span>
+            </li>
+
+            <li class="page-item active">
+                <span class="page-link">Página 1 de 1</span>
+            </li>
+
+            <li class="page-item disabled">
+                <span class="page-link"><i class="bi bi-chevron-right"></i></span>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link"><i class="bi bi-chevron-double-right"></i></span>
+            </li>
+        </ul>
+    </nav>
+</div>
+{% endblock %}
