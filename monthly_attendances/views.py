@@ -8,7 +8,7 @@ class MonthlyAttendanceListView(ListView):
     """
     model = models.MonthlyAttendance
     template_name = 'monthly_attendance_list.html'
-    context_object_name = 'monthly_attendances'
+    context_object_name = 'monthly_attendance_list'
     paginate_by = 20
 
     def get_queryset(self):
@@ -50,7 +50,7 @@ class MonthlyAttendanceDetailView(DetailView):
     """
     model = models.MonthlyAttendance
     template_name = 'monthly_attendance_detail.html'
-    context_object_name = 'monthly_attendance'
+    context_object_name = 'monthly_attendance_detail'
 
     def get_queryset(self):
         return super().get_queryset().select_related(

@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ area.get_color_display }} - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'area_list' %}">Áreas</a></li>
+  <li class="breadcrumb-item active" aria-current="page">{{ area.get_color_display }}</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-diagram-3"></i> Detalhes da Área</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row mb-3">
+    <div class="col-md-12">
+        <a href="{% url 'area_list' %}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Voltar para a lista
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark border-secondary">
+                <h5 class="mb-0">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Informações da Área
+                </h5>
+            </div>
+            
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="w-25">Cor</th>
+                            <td>
+                                {% if area.color == 'RED' %}
+                                    <span class="badge bg-danger fs-5">{{ area.get_color_display }}</span>
+                                {% elif area.color == 'YELLOW' %}
+                                    <span class="badge bg-warning text-dark fs-5">{{ area.get_color_display }}</span>
+                                {% elif area.color == 'BLUE' %}
+                                    <span class="badge bg-primary fs-5">{{ area.get_color_display }}</span>
+                                {% elif area.color == 'GREEN' %}
+                                    <span class="badge bg-success fs-5">{{ area.get_color_display }}</span>
+                                {% elif area.color == 'WHITE' %}
+                                    <span class="badge bg-light text-dark border fs-5">{{ area.get_color_display }}</span>
+                                {% else %}
+                                    <span class="badge bg-secondary fs-5">{{ area.get_color_display }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Código</th>
+                            <td><code>{{ area.color }}</code></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Área MAG</th>
+                            <td>
+                                {% if area.is_mag %}
+                                    <span class="badge bg-danger"><i class="bi bi-star-fill"></i> Sim (Área Principal)</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Não</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Observações</th>
+                            <td>{{ area.notes|default:"—"|linebreaksbr }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Criado em</th>
+                            <td>
+                                <i class="bi bi-calendar3 me-1"></i>
+                                {{ area.created_at|date:"d/m/Y H:i" }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Última atualização</th>
+                            <td>
+                                <i class="bi bi-clock-history me-1"></i>
+                                {{ area.updated_at|date:"d/m/Y H:i" }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Estatísticas da Área -->
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-dark border-secondary">
+                <h6 class="mb-0">
+                    <i class="bi bi-bar-chart me-2"></i>
+                    Estatísticas da Área
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-house-door fs-1 text-primary"></i>
+                            <h5 class="mt-2 mb-0">{{ area.cells.count|default:"0" }}</h5>
+                            <small class="text-muted">Células</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-star fs-1 text-warning"></i>
+                            <h5 class="mt-2 mb-0">{{ area.leaders.count|default:"0" }}</h5>
+                            <small class="text-muted">Líderes</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-people fs-1 text-success"></i>
+                            <h5 class="mt-2 mb-0">{{ total_members|default:"0" }}</h5>
+                            <small class="text-muted">Membros</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-calendar-check fs-1 text-info"></i>
+                            <h5 class="mt-2 mb-0">{{ total_meetings|default:"0" }}</h5>
+                            <small class="text-muted">Reuniões (mês)</small>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if area.is_mag %}
+                <div class="alert alert-danger mt-3">
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                    <strong>Área MAG (Vermelha):</strong> Esta é a área principal. Apenas esta área pode ser marcada como MAG.
+                    Ao ativar <code>is_mag = True</code>, a cor é automaticamente definida como Vermelha.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
