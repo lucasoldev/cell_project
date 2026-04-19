@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load cell_tags %}
+
+{% block title %}
+  {{ monthly_attendance.member_name }} - {{ monthly_attendance.month_year_display }} - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'monthly_attendance_list' %}">Frequências Mensais</a></li>
+  <li class="breadcrumb-item active" aria-current="page">{{ monthly_attendance.member_name }}</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-calendar-check"></i> Detalhes da Frequência Mensal</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark border-secondary">
+                <h5 class="mb-0">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Informações da Frequência
+                </h5>
+            </div>
+            
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="w-25">Membro</th>
+                            <td>
+                                <span class="fw-bold fs-5">{{ monthly_attendance.member_name }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Célula</th>
+                            <td>{{ monthly_attendance.cell|cell_display }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Período</th>
+                            <td>
+                                <span class="badge bg-primary fs-6">{{ monthly_attendance.month_year_display }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Total de Reuniões</th>
+                            <td>{{ monthly_attendance.total_meetings }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Presenças</th>
+                            <td>{{ monthly_attendance.attendances }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Faltas</th>
+                            <td>{{ monthly_attendance.total_meetings|add:"-"|add:monthly_attendance.attendances }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Percentual de Presença</th>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <span class="fw-bold me-2">{{ monthly_attendance.attendance_percentage|floatformat:1 }}%</span>
+                                    <span class="fs-4">{{ monthly_attendance.performance_emoji }}</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Status de Fidelidade</th>
+                            <td>
+                                {% if monthly_attendance.is_faithful %}
+                                    <span class="badge bg-success fs-6">Fiel (75% ou mais)</span>
+                                {% elif monthly_attendance.total_meetings == 0 %}
+                                    <span class="badge bg-secondary fs-6">Sem reuniões</span>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark fs-6">Infrequente (abaixo de 75%)</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Observações</th>
+                            <td>{{ monthly_attendance.notes|default:"—"|linebreaksbr }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Criado em</th>
+                            <td>
+                                <i class="bi bi-calendar3 me-1"></i>
+                                {{ monthly_attendance.created_at|date:"d/m/Y H:i" }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Última atualização</th>
+                            <td>
+                                <i class="bi bi-clock-history me-1"></i>
+                                {{ monthly_attendance.updated_at|date:"d/m/Y H:i" }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Barra de progresso visual -->
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-dark border-secondary">
+                <h6 class="mb-0">
+                    <i class="bi bi-bar-chart-fill me-2"></i>
+                    Visualização de Presença
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="mb-2">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Presenças ({{ monthly_attendance.attendances }}/{{ monthly_attendance.total_meetings }})</span>
+                        <span>{{ monthly_attendance.attendance_percentage|floatformat:1 }}%</span>
+                    </div>
+                    <div class="progress" style="height: 30px;">
+                        <div 
+                            class="progress-bar 
+                                {% if monthly_attendance.attendance_percentage >= 75 %}
+                                    bg-success
+                                {% elif monthly_attendance.attendance_percentage >= 50 %}
+                                    bg-warning
+                                {% else %}
+                                    bg-danger
+                                {% endif %}" 
+                            role="progressbar" 
+                            style="width: {{ monthly_attendance.attendance_percentage }}%;"
+                            aria-valuenow="{{ monthly_attendance.attendance_percentage }}" 
+                            aria-valuemin="0" 
+                            aria-valuemax="100"
+                        >
+                            {{ monthly_attendance.attendance_percentage|floatformat:1 }}%
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info mt-3">
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                    <strong>Resumo:</strong> {{ monthly_attendance.summary }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

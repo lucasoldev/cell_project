@@ -16,4 +16,5 @@ urlpatterns = [
     path('', include('calendar_events.urls')),
     path('', include('cell_meetings.urls')),
     path('', include('meeting_attendances.urls')),
+    path('', include('monthly_attendances.urls')),
 ]
