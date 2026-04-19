@@ -1,8 +1,17 @@
 import json
+
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
+)
+
 from hosts.models import Host
-from . import models, forms
+
+from . import forms, models
 
 
 class CellLocationListView(ListView):
@@ -28,24 +37,24 @@ class CellLocationCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
+
         # Busca todos os anfitriões
         hosts = Host.objects.select_related('person').all()
         hosts_data = []
-        
+
         for host in hosts:
             # Busca em QUAIS células este anfitrião JÁ É ANFITRIÃO (tem local cadastrado)
             hosted_cells = models.CellLocation.objects.filter(
                 host=host
             ).values_list('cell_id', flat=True)
-            
+
             hosts_data.append({
                 'pk': str(host.pk),
                 'name': host.person.full_name,
                 'full_address': host.full_address,
                 'hosted_cells': [str(cell_id) for cell_id in hosted_cells],  # Células onde já é anfitrião
             })
-        
+
         context['all_hosts_json'] = json.dumps(hosts_data)
         return context
 

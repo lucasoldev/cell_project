@@ -1,7 +1,10 @@
-from django import forms
 from datetime import date
-from . import models
+
+from django import forms
+
 from members.models import Member
+
+from . import models
 
 
 class MeetingAttendanceForm(forms.ModelForm):
@@ -32,14 +35,14 @@ class MeetingAttendanceForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
+
         # Filtra apenas reuniões válidas
         self.fields['cell_meeting'].queryset = models.CellMeeting.objects.filter(
             meeting_date__lte=date.today(),
             took_place=True
         ).select_related('cell').order_by('-meeting_date')
         self.fields['cell_meeting'].widget.attrs.update({'class': 'form-select'})
-        
+
         # Inicialmente, mostra apenas membros ativos (será filtrado após selecionar reunião via POST)
         self.fields['member'].queryset = Member.objects.filter(
             is_active=True

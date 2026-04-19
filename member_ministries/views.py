@@ -1,12 +1,13 @@
 from django.urls import reverse_lazy
 from django.views.generic import (
-    ListView,
     CreateView,
-    DetailView,
-    UpdateView,
     DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
 )
-from . import models, forms
+
+from . import forms, models
 
 
 class MemberMinistryListView(ListView):

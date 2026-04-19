@@ -1,4 +1,5 @@
-from django.views.generic import ListView, DetailView
+from django.views.generic import DetailView, ListView
+
 from . import models
 
 
@@ -41,16 +42,17 @@ class AreaDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         area = self.get_object()
-        
+
         # Total de membros nas células desta área
         from cell_members.models import CellMember
         context['total_members'] = CellMember.objects.filter(
             cell__area=area,
             is_active=True
         ).count()
-        
+
         # Total de reuniões este mês
         from datetime import date
+
         from cell_meetings.models import CellMeeting
         today = date.today()
         context['total_meetings'] = CellMeeting.objects.filter(
@@ -59,5 +61,5 @@ class AreaDetailView(DetailView):
             meeting_date__month=today.month,
             took_place=True
         ).count()
-        
+
         return context

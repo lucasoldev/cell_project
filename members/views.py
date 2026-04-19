@@ -1,6 +1,13 @@
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
-from . import models, forms
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
+)
+
+from . import forms, models
 
 
 class MemberListView(ListView):
@@ -14,7 +21,7 @@ class MemberListView(ListView):
 
         if person_name:
             queryset = queryset.filter(person__full_name__icontains=person_name)
-        
+
         return queryset
 
 

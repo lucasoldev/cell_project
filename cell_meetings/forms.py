@@ -1,8 +1,11 @@
-from django import forms
-from . import models
-from cell_locations.models import CellLocation
-from calendar_events.models import CalendarEvent
 from datetime import date
+
+from django import forms
+
+from calendar_events.models import CalendarEvent
+from cell_locations.models import CellLocation
+
+from . import models
 
 
 class CellMeetingForm(forms.ModelForm):

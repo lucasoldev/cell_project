@@ -11,7 +11,7 @@ def cell_display(cell):
     """
     if not cell:
         return ""
-    
+
     if cell.area.color == 'RED':
         return cell.name
     return f"{cell.name} - {cell.area.get_color_display()}"

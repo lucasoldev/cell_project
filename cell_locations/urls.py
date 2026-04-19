@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views
 
+from . import views
 
 urlpatterns = [
     path('cell_locations/list/', views.CellLocationListView.as_view(), name='cell_location_list'),

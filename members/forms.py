@@ -1,6 +1,8 @@
 from django import forms
-from . import models
+
 from person.models import Person
+
+from . import models
 
 
 class MemberForm(forms.ModelForm):
