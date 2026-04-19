@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load cell_tags %}
+
+{% block title %}
+  {{ attendance.member_name }} - Presença - Cell Project
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'meeting_attendance_list' %}">Presenças em Reuniões</a></li>
+  <li class="breadcrumb-item active" aria-current="page">{{ attendance.member_name }}</li>
+{% endblock %}
+
+{% block page_heading %}
+  <span><i class="bi bi-clipboard-check"></i> Detalhes da Presença</span>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark border-secondary">
+                <h5 class="mb-0">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Informações da Presença
+                </h5>
+            </div>
+            
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="w-25">Membro</th>
+                            <td>
+                                <span class="fw-bold fs-5">{{ attendance.member_name }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Célula</th>
+                            <td>{{ attendance.cell_meeting.cell|cell_display }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Data da Reunião</th>
+                            <td>
+                                <i class="bi bi-calendar3 me-1"></i>
+                                {{ attendance.meeting_date_display }}
+                                <span class="text-muted ms-2">({{ attendance.cell_meeting.day_of_week }})</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Status</th>
+                            <td>
+                                {% if attendance.attended %}
+                                    <span class="badge bg-success fs-6">✅ Presente</span>
+                                {% else %}
+                                    <span class="badge bg-danger fs-6">❌ Ausente</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% if not attendance.attended and attendance.absence_reason %}
+                        <tr>
+                            <th scope="row">Motivo da Ausência</th>
+                            <td>{{ attendance.absence_reason|linebreaksbr }}</td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <th scope="row">Observações</th>
+                            <td>{{ attendance.notes|default:"—"|linebreaksbr }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Criado em</th>
+                            <td>
+                                <i class="bi bi-calendar3 me-1"></i>
+                                {{ attendance.created_at|date:"d/m/Y H:i" }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Última atualização</th>
+                            <td>
+                                <i class="bi bi-clock-history me-1"></i>
+                                {{ attendance.updated_at|date:"d/m/Y H:i" }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="card-footer bg-dark border-secondary">
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'meeting_attendance_list' %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Voltar para a lista
+                    </a>
+                    <div>
+                        <a href="{% url 'meeting_attendance_update' attendance.pk %}" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> Editar
+                        </a>
+                        <a href="{% url 'meeting_attendance_delete' attendance.pk %}" class="btn btn-danger ms-2 text-black">
+                            <i class="bi bi-trash3"></i> Excluir
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Informações da Reunião -->
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-dark border-secondary">
+                <h6 class="mb-0">
+                    <i class="bi bi-calendar-check me-2"></i>
+                    Informações da Reunião
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th scope="row" class="w-25">Reunião:</th>
+                                    <td>{{ attendance.cell_meeting.cell.name }} - {{ attendance.meeting_date_display }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Status:</th>
+                                    <td>
+                                        {% if attendance.cell_meeting.took_place %}
+                                            <span class="badge bg-success">Realizada</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Cancelada</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Total de Presentes:</th>
+                                    <td>{{ attendance.cell_meeting.total_attendees }} pessoa(s)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th scope="row" class="w-25">Local:</th>
+                                    <td>{{ attendance.cell_meeting.location_address|default:"—"|truncatechars:50 }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Anfitrião:</th>
+                                    <td>{{ attendance.cell_meeting.host_name|default:"—" }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

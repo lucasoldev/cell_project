@@ -52,7 +52,11 @@ class MeetingAttendance(BaseModel):
 
     def __str__(self):
         status = "✅" if self.attended else "❌"
-        return f'{status} {self.member.person.full_name} - {self.cell_meeting.meeting_date.strftime("%d/%m/%Y")}'
+        if self.cell_meeting_id and self.member_id:
+            return f'{status} {self.member.person.full_name} - {self.cell_meeting.meeting_date.strftime("%d/%m/%Y")}'
+        elif self.member_id:
+            return f'{status} {self.member.person.full_name} - (sem reunião)'
+        return f'{status} (registro incompleto)'
 
     def clean(self):
         """Validates business rules for meeting attendance"""
@@ -108,8 +112,12 @@ class MeetingAttendance(BaseModel):
         old_attended = None
 
         if not is_new:
-            old_instance = MeetingAttendance.objects.get(pk=self.pk)
-            old_attended = old_instance.attended
+            try:
+                old_instance = MeetingAttendance.objects.get(pk=self.pk)
+                old_attended = old_instance.attended
+            except MeetingAttendance.DoesNotExist:
+                # Se por algum motivo não encontrar, trata como novo
+                is_new = True
 
         self.full_clean()
         super().save(*args, **kwargs)
@@ -124,7 +132,7 @@ class MeetingAttendance(BaseModel):
         if is_new:
             if self.attended:
                 meeting.total_attendees += 1
-        elif old_attended != self.attended:  # Só processa se houve mudança
+        elif old_attended != self.attended:
             if self.attended:
                 meeting.total_attendees += 1
             else:
@@ -134,7 +142,7 @@ class MeetingAttendance(BaseModel):
 
     def delete(self, *args, **kwargs):
         """Decrement meeting total_attendees when attendance is deleted"""
-        if self.attended:
+        if self.attended and self.cell_meeting_id:
             self.cell_meeting.total_attendees -= 1
             self.cell_meeting.save(update_fields=["total_attendees"])
         super().delete(*args, **kwargs)
@@ -144,19 +152,26 @@ class MeetingAttendance(BaseModel):
         """Returns a user-friendly status string"""
         if self.attended:
             return "✅ Presente"
-        return f"❌ Ausente - {self.absence_reason[:50]}..."
+        reason = self.absence_reason[:50] if self.absence_reason else "Não informado"
+        return f"❌ Ausente - {reason}"
 
     @property
     def member_name(self):
         """Returns the member's full name"""
-        return self.member.person.full_name
+        if self.member_id:
+            return self.member.person.full_name
+        return "Membro não definido"
 
     @property
     def meeting_date_display(self):
         """Returns formatted meeting date"""
-        return self.cell_meeting.meeting_date.strftime("%d/%m/%Y")
+        if self.cell_meeting_id:
+            return self.cell_meeting.meeting_date.strftime("%d/%m/%Y")
+        return "Data não definida"
 
     @property
     def cell_name(self):
         """Returns the cell name"""
-        return self.cell_meeting.cell.name
+        if self.cell_meeting_id and self.cell_meeting.cell_id:
+            return self.cell_meeting.cell.name
+        return "Célula não definida"

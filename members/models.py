@@ -32,7 +32,7 @@ class Member(BaseModel):
         ]
 
     def __str__(self):
-        return f"Membro: {self.person.full_name}"
+        return self.person.full_name
 
     @property
     def full_name(self):

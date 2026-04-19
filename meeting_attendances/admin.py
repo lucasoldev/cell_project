@@ -59,17 +59,26 @@ class MeetingAttendanceAdmin(admin.ModelAdmin):
 
     def member_name_display(self, obj):
         """Displays the member's full name"""
-        return obj.member_name
+        try:
+            return obj.member_name
+        except Exception:
+            return "—"
     member_name_display.short_description = 'Member'
 
     def cell_name_display(self, obj):
         """Displays the cell name"""
-        return obj.cell_name
+        try:
+            return obj.cell_name
+        except Exception:
+            return "—"
     cell_name_display.short_description = 'Cell'
 
     def meeting_date_display(self, obj):
         """Displays formatted meeting date"""
-        return obj.meeting_date_display
+        try:
+            return obj.meeting_date_display
+        except Exception:
+            return "—"
     meeting_date_display.short_description = 'Meeting Date'
 
     def absence_reason_preview(self, obj):
@@ -81,7 +90,10 @@ class MeetingAttendanceAdmin(admin.ModelAdmin):
 
     def status_display(self, obj):
         """Displays the status with emoji"""
-        return obj.status_display
+        try:
+            return obj.status_display
+        except Exception:
+            return "—"
     status_display.short_description = 'Status'
 
     def get_queryset(self, request):
