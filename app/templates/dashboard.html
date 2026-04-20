@@ -1,4 +1,4 @@
-{% extends 'app/base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}Dashboard - Cell Project{% endblock %}
 
@@ -9,7 +9,9 @@
 {% block page_heading %}Dashboard{% endblock %}
 
 {% block content %}
-<div class="row g-4">
+
+<!-- Cards de Métricas Principais -->
+<div class="row g-4 mb-4">
   <!-- Card: Total de Células -->
   <div class="col-md-3">
     <div class="card card-dashboard h-100">
@@ -17,12 +19,12 @@
         <div class="d-flex justify-content-between align-items-center">
           <div>
             <h6 class="text-muted mb-2">Total de Células</h6>
-            <h2 class="mb-0">12</h2>
+            <h2 class="mb-0">{{ total_cells }}</h2>
           </div>
           <i class="bi bi-house-door fs-1 text-primary"></i>
         </div>
         <small class="text-success">
-          <i class="bi bi-arrow-up"></i> 10 ativas
+          <i class="bi bi-check-circle"></i> {{ active_cells }} ativas
         </small>
       </div>
     </div>
@@ -35,12 +37,12 @@
         <div class="d-flex justify-content-between align-items-center">
           <div>
             <h6 class="text-muted mb-2">Membros Ativos</h6>
-            <h2 class="mb-0">48</h2>
+            <h2 class="mb-0">{{ active_members }}</h2>
           </div>
           <i class="bi bi-people fs-1 text-success"></i>
         </div>
         <small class="text-muted">
-          Total: 64 cadastrados
+          Total: {{ total_members }} cadastrados
         </small>
       </div>
     </div>
@@ -53,7 +55,7 @@
         <div class="d-flex justify-content-between align-items-center">
           <div>
             <h6 class="text-muted mb-2">Presença Média</h6>
-            <h2 class="mb-0">78.5%</h2>
+            <h2 class="mb-0">{{ avg_attendance }}%</h2>
           </div>
           <i class="bi bi-graph-up fs-1 text-warning"></i>
         </div>
@@ -71,15 +73,261 @@
         <div class="d-flex justify-content-between align-items-center">
           <div>
             <h6 class="text-muted mb-2">Visitantes (Mês)</h6>
-            <h2 class="mb-0">8</h2>
+            <h2 class="mb-0">{{ monthly_visitors }}</h2>
           </div>
           <i class="bi bi-person-plus fs-1 text-info"></i>
         </div>
         <small class="text-success">
-          <i class="bi bi-arrow-up"></i> 25.0% conversão
+          <i class="bi bi-arrow-up"></i> {{ conversion_rate }}% conversão
         </small>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Gráficos -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="row mt-4">
+  <!-- Gráfico: Presença Semanal -->
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header bg-dark border-secondary">
+        <h5 class="mb-0"><i class="bi bi-graph-up"></i> Presença Semanal</h5>
+      </div>
+      <div class="card-body">
+        <canvas id="weeklyAttendanceChart"></canvas>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Gráfico: Novos Membros -->
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header bg-dark border-secondary">
+        <h5 class="mb-0"><i class="bi bi-person-plus"></i> Novos Membros (Últimos 6 meses)</h5>
+      </div>
+      <div class="card-body">
+        <canvas id="monthlyNewMembersChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-4">
+  <!-- Gráfico: Células por Área -->
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header bg-dark border-secondary">
+        <h5 class="mb-0"><i class="bi bi-pie-chart"></i> Células por Área</h5>
+      </div>
+      <div class="card-body">
+        <canvas id="cellsByAreaChart"></canvas>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Gráfico: Top 5 Células -->
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header bg-dark border-secondary">
+        <h5 class="mb-0"><i class="bi bi-bar-chart"></i> Top 5 Células (Membros)</h5>
+      </div>
+      <div class="card-body">
+        <canvas id="membersByCellChart"></canvas>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Gráfico: Fidelidade -->
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header bg-dark border-secondary">
+        <h5 class="mb-0"><i class="bi bi-pie-chart"></i> Fidelidade (Mês Atual)</h5>
+      </div>
+      <div class="card-body">
+        <canvas id="faithfulChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Próximas Reuniões e Membros Fiéis -->
+<div class="row mt-4">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header bg-dark border-secondary">
+        <h5 class="mb-0"><i class="bi bi-calendar-check"></i> Próximas Reuniões</h5>
+      </div>
+      <div class="card-body p-0">
+        {% if upcoming_meetings %}
+          <div class="list-group list-group-flush">
+            {% for meeting in upcoming_meetings %}
+            <div class="list-group-item bg-dark text-white border-secondary">
+              <div class="d-flex w-100 justify-content-between">
+                <h6 class="mb-1">{{ meeting.cell.name }}</h6>
+                <small>{{ meeting.meeting_date|date:"d/m/Y" }}</small>
+              </div>
+              <small class="text-muted">
+                <i class="bi bi-person"></i> {{ meeting.host_name|default:"Anfitrião não definido" }}
+              </small>
+            </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="card-body text-center text-muted">
+            <i class="bi bi-calendar-x fs-1"></i>
+            <p class="mt-2">Nenhuma reunião agendada.</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header bg-dark border-secondary">
+        <h5 class="mb-0"><i class="bi bi-trophy-fill text-warning"></i> Membros Fiéis (Este Mês)</h5>
+      </div>
+      <div class="card-body p-0">
+        {% if faithful_members %}
+          <div class="list-group list-group-flush">
+            {% for member in faithful_members %}
+            <div class="list-group-item bg-dark text-white border-secondary">
+              <div class="d-flex w-100 justify-content-between align-items-center">
+                <div>
+                  <h6 class="mb-1">{{ member.member_name }}</h6>
+                  <small class="text-muted">{{ member.cell_name }}</small>
+                </div>
+                <span class="badge bg-success">{{ member.attendance_percentage|floatformat:1 }}%</span>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="card-body text-center text-muted">
+            <i class="bi bi-emoji-neutral fs-1"></i>
+            <p class="mt-2">Nenhum membro fiel este mês.</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Gráfico 1: Presença Semanal
+    const weeklyData = {{ weekly_attendance_data|safe }};
+    new Chart(document.getElementById('weeklyAttendanceChart'), {
+      type: 'line',
+      data: {
+        labels: weeklyData.labels,
+        datasets: [{
+          label: 'Presenças',
+          data: weeklyData.values,
+          borderColor: 'rgba(54, 162, 235, 1)',
+          backgroundColor: 'rgba(54, 162, 235, 0.1)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } }
+      }
+    });
+    
+    // Gráfico 2: Novos Membros
+    const monthlyData = {{ monthly_new_members_data|safe }};
+    new Chart(document.getElementById('monthlyNewMembersChart'), {
+      type: 'bar',
+      data: {
+        labels: monthlyData.labels,
+        datasets: [{
+          label: 'Novos Membros',
+          data: monthlyData.values,
+          backgroundColor: 'rgba(75, 192, 192, 0.7)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } }
+      }
+    });
+    
+    // Gráfico 3: Células por Área
+    const cellsByArea = {{ cells_by_area|safe }};
+    const areaColors = {
+      'RED': '#dc3545',
+      'YELLOW': '#ffc107',
+      'BLUE': '#0d6efd',
+      'GREEN': '#198754',
+      'WHITE': '#f8f9fa'
+    };
+    const areaNames = {
+      'RED': 'Vermelha',
+      'YELLOW': 'Amarela',
+      'BLUE': 'Azul',
+      'GREEN': 'Verde',
+      'WHITE': 'Branca'
+    };
+    new Chart(document.getElementById('cellsByAreaChart'), {
+      type: 'doughnut',
+      data: {
+        labels: Object.keys(cellsByArea).map(c => areaNames[c] || c),
+        datasets: [{
+          data: Object.values(cellsByArea),
+          backgroundColor: Object.keys(cellsByArea).map(c => areaColors[c] || '#6c757d'),
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'bottom' } }
+      }
+    });
+    
+    // Gráfico 4: Top 5 Células
+    const membersByCell = {{ members_by_cell|safe }};
+    new Chart(document.getElementById('membersByCellChart'), {
+      type: 'bar',
+      data: {
+        labels: membersByCell.map(c => c.cell__name),
+        datasets: [{
+          label: 'Membros',
+          data: membersByCell.map(c => c.count),
+          backgroundColor: 'rgba(153, 102, 255, 0.7)',
+          borderColor: 'rgba(153, 102, 255, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        indexAxis: 'y',
+        plugins: { legend: { display: false } }
+      }
+    });
+    
+    // Gráfico 5: Fidelidade
+    new Chart(document.getElementById('faithfulChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Fiéis', 'Infrequentes'],
+        datasets: [{
+          data: [{{ faithful_count }}, {{ unfaithful_count }}],
+          backgroundColor: ['#198754', '#dc3545'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'bottom' } }
+      }
+    });
+  });
+</script>
+
 {% endblock %}
