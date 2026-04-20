@@ -30,6 +30,10 @@ local_settings.py
 .env.local
 .env.*.local
 
+
+*populate*.py
+*sweaper*.py
+
 # IDE
 .vscode/
 .idea/

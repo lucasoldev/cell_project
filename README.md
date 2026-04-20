@@ -252,62 +252,227 @@ qwen review-docs docs/
 
 ```
 cell_project/
-├── backend/                    # Django project
-│   ├── cell_project/          # Main settings
-│   │   ├── settings/
-│   │   │   ├── base.py
-│   │   │   ├── development.py
-│   │   │   └── production.py
-│   │   └── urls.py
-│   ├── apps/                   # Modular Django applications
-│   │   ├── core/              # Shared functionalities
-│   │   ├── members/           # Member and person management
-│   │   ├── cells/             # Cell management
-│   │   ├── hierarchy/         # Leadership structure
-│   │   ├── ministries/        # Ministries
-│   │   ├── attendance/        # Attendance tracking
-│   │   └── calendar/          # Annual calendar
-│   ├── manage.py
-│   └── requirements.txt       # Exported via Poetry
-│
-├── frontend/                   # Angular application
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── modules/
-│   │   │   │   ├── members/
-│   │   │   │   ├── cells/
-│   │   │   │   └── reports/
-│   │   │   └── shared/
-│   │   └── environments/
-│   ├── angular.json
-│   └── package.json
-│
-├── analytics/                  # Data analysis scripts
-│   ├── notebooks/             # Jupyter notebooks
-│   ├── scripts/               # Python scripts with Pandas
-│   └── reports/               # Generated reports
-│
-├── docs/                       # MkDocs documentation
-│   ├── docs/
-│   │   ├── api/
-│   │   ├── models/
-│   │   └── guides/
-│   └── mkdocs.yml
-│
-├── scripts/                    # Utility scripts
-│   ├── backup_db.py
-│   └── seed_data.py
-│
-├── tests/                      # Integration and E2E tests
-│   ├── integration/
-│   └── e2e/
-│
-├── .env.example               # Environment variables template
-├── .gitignore
-├── pyproject.toml             # Poetry configuration
-├── poetry.lock                # Poetry lock file
-├── README.md                  # This file
-└── LICENSE
+├── app/                                     # Main Django application
+│   ├── asgi.py
+│   ├── basemodel.py                         # Base model with common fields
+│   ├── settings.py                          # Main settings file
+│   ├── templates/                           # Main templates
+│   │   ├── base.html                        # Base HTML template
+│   │   ├── components/                      # Reusable template components
+│   │   │   ├── _dashboard_metrics.html      # Dashboard metrics component
+│   │   │   ├── _footer.html                 # Footer component
+│   │   │   ├── _header.html                 # Header component
+│   │   │   └── _sidebar.html                # Sidebar navigation
+│   │   └── dashboard.html                   # Dashboard page
+│   ├── urls.py                              # Main URL routing
+│   ├── views.py                             # Dashboard and main views
+│   └── wsgi.py
+├── areas/                                   # Geographic areas management
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── templates/
+│   │   ├── area_detail.html
+│   │   └── area_list.html
+│   ├── urls.py
+│   └── views.py
+├── calendar_events/                         # Calendar events management
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── templates/
+│   │   ├── calendar_event_create.html
+│   │   ├── calendar_event_delete.html
+│   │   ├── calendar_event_detail.html
+│   │   ├── calendar_event_list.html
+│   │   └── calendar_event_update.html
+│   ├── urls.py
+│   └── views.py
+├── cell_locations/                          # Physical meeting locations
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── templates/
+│   │   ├── cell_location_create.html
+│   │   ├── cell_location_delete.html
+│   │   ├── cell_location_detail.html
+│   │   ├── cell_location_list.html
+│   │   └── cell_location_update.html
+│   ├── urls.py
+│   └── views.py
+├── cell_meetings/                           # Cell meeting records
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── templates/
+│   │   ├── cell_meeting_create.html
+│   │   ├── cell_meeting_delete.html
+│   │   ├── cell_meeting_detail.html
+│   │   ├── cell_meeting_list.html
+│   │   └── cell_meeting_update.html
+│   ├── urls.py
+│   └── views.py
+├── cell_members/                            # Cell membership management
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── templates/
+│   │   ├── cell_member_create.html
+│   │   ├── cell_member_delete.html
+│   │   ├── cell_member_detail.html
+│   │   ├── cell_member_list.html
+│   │   └── cell_member_update.html
+│   ├── urls.py
+│   └── views.py
+├── cell_project/                            # Project configuration directory
+├── cells/                                   # Cell groups management
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── templates/
+│   │   ├── cell_create.html
+│   │   ├── cell_delete.html
+│   │   ├── cell_detail.html
+│   │   ├── cell_list.html
+│   │   └── cell_update.html
+│   ├── templatetags/                        # Custom template tags
+│   │   └── cell_tags.py                     # Cell-related template tags
+│   ├── urls.py
+│   └── views.py
+├── event_types/                             # Event type definitions
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   └── views.py
+├── hosts/                                   # Meeting hosts management
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── templates/
+│   │   ├── host_create.html
+│   │   ├── host_delete.html
+│   │   ├── host_detail.html
+│   │   ├── host_list.html
+│   │   └── host_update.html
+│   ├── urls.py
+│   └── views.py
+├── leadership_roles/                        # Leadership role definitions
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   └── views.py
+├── leaderships/                             # Leadership assignments
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── templates/
+│   │   ├── leadership_create.html
+│   │   ├── leadership_delete.html
+│   │   ├── leadership_detail.html
+│   │   ├── leadership_list.html
+│   │   └── leadership_update.html
+│   ├── urls.py
+│   └── views.py
+├── mag_branches/                            # MAG branch management
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   └── views.py
+├── manage.py                                # Django management script
+├── meeting_attendances/                     # Individual meeting attendance
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── templates/
+│   │   ├── meeting_attendance_create.html
+│   │   ├── meeting_attendance_delete.html
+│   │   ├── meeting_attendance_detail.html
+│   │   ├── meeting_attendance_list.html
+│   │   └── meeting_attendance_update.html
+│   ├── urls.py
+│   └── views.py
+├── member_ministries/                       # Member ministry participation
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── templates/
+│   │   ├── member_ministry_create.html
+│   │   ├── member_ministry_delete.html
+│   │   ├── member_ministry_detail.html
+│   │   ├── member_ministry_list.html
+│   │   └── member_ministry_update.html
+│   ├── urls.py
+│   └── views.py
+├── members/                                 # Church members management
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── templates/
+│   │   ├── member_create.html
+│   │   ├── member_delete.html
+│   │   ├── member_detail.html
+│   │   ├── member_list.html
+│   │   └── member_update.html
+│   ├── urls.py
+│   └── views.py
+├── ministries/                              # Ministry definitions
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   └── views.py
+├── monthly_attendances/                     # Monthly attendance reports
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── templates/
+│   │   ├── monthly_attendance_detail.html
+│   │   └── monthly_attendance_list.html
+│   ├── urls.py
+│   └── views.py
+├── person/                                  # Person core model
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── templates/
+│   │   ├── person_create.html
+│   │   ├── person_delete.html
+│   │   ├── person_detail.html
+│   │   ├── person_list.html
+│   │   └── person_update.html
+│   ├── urls.py
+│   └── views.py
+├── poetry.lock                              # Poetry lock file
+├── pyproject.toml                           # Poetry configuration
+├── requirements.txt                         # Python dependencies
+└── visitors/                                # Visitor tracking
+    ├── admin.py
+    ├── apps.py
+    ├── forms.py
+    ├── models.py
+    ├── templates/
+    │   ├── visitor_create.html
+    │   ├── visitor_delete.html
+    │   ├── visitor_detail.html
+    │   ├── visitor_list.html
+    │   └── visitor_update.html
+    ├── urls.py
+    └── views.py
 ```
 
 ---
@@ -352,13 +517,17 @@ poetry run pytest --cov=cell_project --cov-report=html
 | **3 - Admin & CRUD** | CRUD: Update - Domain update | ✅ Completed |
 | **3 - Admin & CRUD** | CRUD: Delete - Domain deletion | ✅ Completed |
 | **3 - Admin & CRUD** | Pagination implementation | ✅ Completed |
-| **4 - Authentication** | Login route creation | ⏳ Pending |
-| **4 - Authentication** | Login screen creation | ⏳ Pending |
-| **4 - Authentication** | User authentication implementation | ⏳ Pending |
-| **4 - Authentication** | Logout implementation | ⏳ Pending |
-| **4 - Authentication** | User permissions | ⏳ Pending |
-| **4 - Authentication** | User groups and permissions | ⏳ Pending |
-| **4 - Authentication** | Dynamic interface based on permissions | ⏳ Pending |
+| **4 - Authentication & Reports** | Populate database with sample data | 🔄 In Progress |
+| **4 - Authentication & Reports** | Create charts and data visualization | 🔄 In Progress |
+| **4 - Authentication & Reports** | Create provisional report screens | 🔄 In Progress |
+| **4 - Authentication & Reports** | Create monthly cell member attendance screen | 🔄 In Progress |
+| **4 - Authentication & Reports** | Login route creation | ⏳ Pending |
+| **4 - Authentication & Reports** | Login screen creation | ⏳ Pending |
+| **4 - Authentication & Reports** | User authentication implementation | ⏳ Pending |
+| **4 - Authentication & Reports** | Logout implementation | ⏳ Pending |
+| **4 - Authentication & Reports** | User permissions | ⏳ Pending |
+| **4 - Authentication & Reports** | User groups and permissions | ⏳ Pending |
+| **4 - Authentication & Reports** | Dynamic interface based on permissions | ⏳ Pending |
 | **5 - API** | Domain API creation | ⏳ Pending |
 | **5 - API** | JWT API authentication | ⏳ Pending |
 | **5 - API** | API authentication and permissions | ⏳ Pending |
