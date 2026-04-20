@@ -18,8 +18,8 @@ class CalendarEvent(BaseModel):
         related_name="calendar_events",
         verbose_name="Tipo de Evento",
     )
-    description = models.TextField(blank=True, verbose_name="Descrição")
-    notes = models.TextField(blank=True, verbose_name="Observações")
+    description = models.TextField(blank=True, null=True, verbose_name="Descrição")
+    notes = models.TextField(blank=True, null=True, verbose_name="Observações")
 
     class Meta:
         db_table = "calendar_event"
