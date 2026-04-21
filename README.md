@@ -499,39 +499,45 @@ poetry run pytest --cov=cell_project --cov-report=html
 
 ## 📈 Development Roadmap
 
-| Phase | Task | Status |
-|-------|------|--------|
-| **1 - Foundation** | Poetry and Django environment setup | ✅ Completed |
-| **1 - Foundation** | Tech stack definition | ✅ Completed |
-| **1 - Foundation** | Data modeling | ✅ Completed |
-| **2 - Frontend Base** | Base template creation | ✅ Completed |
-| **2 - Frontend Base** | Components creation | ✅ Completed |
-| **2 - Frontend Base** | Domain layer validation | ✅ Completed |
-| **3 - Admin & CRUD** | Domain admin creation | ✅ Completed |
-| **3 - Admin & CRUD** | CRUD: Read - Domain list | ✅ Completed |
-| **3 - Admin & CRUD** | Domain filters | ✅ Completed |
-| **3 - Admin & CRUD** | CRUD: Create - Domain creation | ✅ Completed |
-| **3 - Admin & CRUD** | Domain forms styling | ✅ Completed |
-| **3 - Admin & CRUD** | CRUD: Read - Domain details | ✅ Completed |
-| **3 - Admin & CRUD** | Domain action menu | ✅ Completed |
-| **3 - Admin & CRUD** | CRUD: Update - Domain update | ✅ Completed |
-| **3 - Admin & CRUD** | CRUD: Delete - Domain deletion | ✅ Completed |
-| **3 - Admin & CRUD** | Pagination implementation | ✅ Completed |
-| **4 - Authentication & Reports** | Populate database with sample data | 🔄 In Progress |
-| **4 - Authentication & Reports** | Create charts and data visualization | 🔄 In Progress |
-| **4 - Authentication & Reports** | Create provisional report screens | 🔄 In Progress |
-| **4 - Authentication & Reports** | Create monthly cell member attendance screen | 🔄 In Progress |
-| **4 - Authentication & Reports** | Login route creation | ⏳ Pending |
-| **4 - Authentication & Reports** | Login screen creation | ⏳ Pending |
-| **4 - Authentication & Reports** | User authentication implementation | ⏳ Pending |
-| **4 - Authentication & Reports** | Logout implementation | ⏳ Pending |
-| **4 - Authentication & Reports** | User permissions | ⏳ Pending |
-| **4 - Authentication & Reports** | User groups and permissions | ⏳ Pending |
-| **4 - Authentication & Reports** | Dynamic interface based on permissions | ⏳ Pending |
-| **5 - API** | Domain API creation | ⏳ Pending |
-| **5 - API** | JWT API authentication | ⏳ Pending |
-| **5 - API** | API authentication and permissions | ⏳ Pending |
-| **6 - Final** | Final adjustments and best practices | ⏳ Pending |
+| Phase | Task | Owner | Status |
+|-------|------|-------|--------|
+| **1 - Foundation** | Poetry and Django environment setup | Lucas Oliveira | ✅ Completed |
+| **1 - Foundation** | Tech stack definition | Lucas Oliveira | ✅ Completed |
+| **1 - Foundation** | Data modeling | Lucas Oliveira | ✅ Completed |
+| **2 - Frontend Base (Provisional)** | Base template creation (Bootstrap) | Lucas Oliveira | ✅ Completed |
+| **2 - Frontend Base (Provisional)** | Components creation (Bootstrap) | Lucas Oliveira | ✅ Completed |
+| **2 - Frontend Base (Provisional)** | Domain layer validation | Lucas Oliveira | ✅ Completed |
+| **3 - Admin & CRUD** | Domain admin creation | Lucas Oliveira | ✅ Completed |
+| **3 - Admin & CRUD** | CRUD: Read - Domain list | Lucas Oliveira | ✅ Completed |
+| **3 - Admin & CRUD** | Domain filters | Lucas Oliveira | ✅ Completed |
+| **3 - Admin & CRUD** | CRUD: Create - Domain creation | Lucas Oliveira | ✅ Completed |
+| **3 - Admin & CRUD** | Domain forms styling | Lucas Oliveira | ✅ Completed |
+| **3 - Admin & CRUD** | CRUD: Read - Domain details | Lucas Oliveira | ✅ Completed |
+| **3 - Admin & CRUD** | Domain action menu | Lucas Oliveira | ✅ Completed |
+| **3 - Admin & CRUD** | CRUD: Update - Domain update | Lucas Oliveira | ✅ Completed |
+| **3 - Admin & CRUD** | CRUD: Delete - Domain deletion | Lucas Oliveira | ✅ Completed |
+| **3 - Admin & CRUD** | Pagination implementation | Lucas Oliveira | ✅ Completed |
+| **4 - Data Population & Provisional Reports** | Populate database with sample data | Lucas Oliveira | 🔄 In Progress |
+| **4 - Data Population & Provisional Reports** | Create provisional report screens (Bootstrap) | Lucas Oliveira | 🔄 In Progress |
+| **4 - Data Population & Provisional Reports** | Create monthly cell member attendance screen | Lucas Oliveira | 🔄 In Progress |
+| **5 - Data Analysis (Parallel)** | Data analysis with Pandas | Guilherme | 🔄 In Progress |
+| **5 - Data Analysis (Parallel)** | Generate charts and visualizations | Guilherme | 🔄 In Progress |
+| **6 - Frontend Definitive (Parallel)** | Angular project setup | Leandro | 🔄 In Progress |
+| **6 - Frontend Definitive (Parallel)** | Definitive UI/UX design implementation | Leandro | 🔄 In Progress |
+| **6 - Frontend Definitive (Parallel)** | Angular components and screens creation | Leandro | 🔄 In Progress |
+| **7 - Authentication & Permissions** | Login route creation | Lucas Oliveira | ⏳ Pending |
+| **7 - Authentication & Permissions** | Login screen creation | Lucas Oliveira | ⏳ Pending |
+| **7 - Authentication & Permissions** | User authentication implementation | Lucas Oliveira | ⏳ Pending |
+| **7 - Authentication & Permissions** | Logout implementation | Lucas Oliveira | ⏳ Pending |
+| **7 - Authentication & Permissions** | User permissions | Lucas Oliveira | ⏳ Pending |
+| **7 - Authentication & Permissions** | User groups and permissions | Lucas Oliveira | ⏳ Pending |
+| **7 - Authentication & Permissions** | Dynamic interface based on permissions | Lucas Oliveira | ⏳ Pending |
+| **8 - API** | Domain API creation | Lucas Oliveira | ⏳ Pending |
+| **8 - API** | JWT API authentication | Lucas Oliveira | ⏳ Pending |
+| **8 - API** | API authentication and permissions | Lucas Oliveira | ⏳ Pending |
+| **9 - Integration** | Integrate Pandas reports into Django | Lucas Oliveira + Guilherme | ⏳ Pending |
+| **9 - Integration** | Integrate Angular frontend with Django API | Lucas Oliveira + Leandro | ⏳ Pending |
+| **10 - Final Adjustments** | Final adjustments and best practices | Team | ⏳ Pending |
 
 **Legend:** ✅ Completed | 🔄 In Progress | ⏳ Pending
 
