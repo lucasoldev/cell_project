@@ -3,7 +3,7 @@
 {% load attendance_filters %}
 
 {% block title %}
-  Relatório - {{ cell|cell_display }} - {{ month_name }}
+  Relatório - {{ cell|cell_display }} - {{ month|month_name }}/{{ year }}
 {% endblock %}
 
 {% block breadcrumb_items %}
@@ -16,7 +16,7 @@
   <div class="d-flex justify-content-between align-items-center">
     <span>
       <i class="bi bi-table"></i>
-      Grade de Presença - {{ cell|cell_display }} - {{ month_name }}
+      Relatório - {{ cell|cell_display }} - {{ month|month_name }}/{{ year }}
     </span>
   </div>
 {% endblock %}
@@ -29,7 +29,7 @@
     <div class="d-flex justify-content-between align-items-center">
       <div>
         <a href="{% url 'monthly_attendance_grid' cell.pk %}?year={{ prev_month.year }}&month={{ prev_month.month }}"
-           class="btn btn-outline-secondary">
+           class="btn btn-secondary">
           <i class="bi bi-chevron-left"></i> Mês Anterior
         </a>
       </div>
@@ -52,7 +52,7 @@
 
       <div>
         <a href="{% url 'monthly_attendance_grid' cell.pk %}?year={{ next_month.year }}&month={{ next_month.month }}"
-           class="btn btn-outline-secondary">
+           class="btn btn-secondary">
           Próximo Mês <i class="bi bi-chevron-right"></i>
         </a>
       </div>
@@ -75,7 +75,7 @@
                 <div class="mt-2">
                   <button
                     type="button"
-                    class="btn btn-sm btn-outline-success mark-all-btn"
+                    class="btn btn-sm btn-success mark-all-btn"
                     data-meeting="{{ meeting.pk }}"
                     title="Marcar presença para todos os membros"
                   >
@@ -259,22 +259,22 @@
 
         // Envia TUDO em uma única requisição
         fetch('{% url "save_attendance" %}', {
-          method: 'POST',
-          headers: {
+        method: 'POST',
+        headers: {
             'Content-Type': 'application/json',
             'X-CSRFToken': '{{ csrf_token }}'
-          },
-          body: JSON.stringify({ attendances: attendances })
+        },
+        body: JSON.stringify({ attendances: attendances })
         })
         .then(response => response.json())
         .then(data => {
-          if (data.success) {
+        if (data.success) {
             // Atualiza o total da reunião
             updateMeetingTotal(meetingId);
             
-            // Atualiza todas as linhas afetadas
-            affectedRows.forEach(rowId => {
-              updateRowTotal(rowId);
+            // ✅ Atualiza TODAS as linhas de membro
+            document.querySelectorAll('tr[data-type="member"]').forEach(row => {
+            updateRowTotal(row.dataset.id);
             });
 
             // Feedback visual no botão
@@ -282,16 +282,16 @@
             this.style.backgroundColor = '#198754';
             this.style.color = 'white';
             setTimeout(() => {
-              this.style.backgroundColor = '';
-              this.style.color = '';
+            this.style.backgroundColor = '';
+            this.style.color = '';
             }, 500);
-          } else {
+        } else {
             // Reverte os checkboxes em caso de erro
             columnCheckboxes.forEach(checkbox => {
-              checkbox.checked = false;
+            checkbox.checked = false;
             });
             alert('Erro ao salvar presenças: ' + data.error);
-          }
+        }
         })
         .catch(error => {
           console.error('Erro:', error);
@@ -350,29 +350,75 @@
     }
 
     // ========== ATUALIZA TOTAIS ==========
+
     function updateRowTotal(rowId) {
-      const row = document.querySelector(`tr[data-id="${rowId}"]`);
-      if (!row) return;
+        const row = document.querySelector(`tr[data-id="${rowId}"]`);
+        if (!row) return;
 
-      const checkboxes = row.querySelectorAll('.attendance-check:checked');
-      const totalChecked = checkboxes.length;
-      const totalMeetings = {{ meetings|length }};
-      const percentage = totalMeetings > 0 ? ((totalChecked / totalMeetings) * 100).toFixed(1) : 0;
+        const checkboxes = row.querySelectorAll('.attendance-check:checked');
+        const totalChecked = checkboxes.length;
+        const totalMeetings = {{ meetings|length }};
+        
+        let percentage;
+        if (totalMeetings > 0) {
+            const rawPercentage = (totalChecked / totalMeetings) * 100;
+            // ✅ Remove .0 se for número inteiro
+            percentage = Number.isInteger(rawPercentage) ? rawPercentage.toString() : rawPercentage.toFixed(1);
+        } else {
+            percentage = '0';
+        }
 
-      const totalCell = document.getElementById(`total-${rowId}`);
-      const percentCell = document.getElementById(`percent-${rowId}`);
+        const totalCell = document.getElementById(`total-${rowId}`);
+        const percentCell = document.getElementById(`percent-${rowId}`);
 
-      if (totalCell) totalCell.textContent = totalChecked;
-      if (percentCell) percentCell.textContent = percentage + '%';
+        if (totalCell) totalCell.textContent = totalChecked;
+        if (percentCell) percentCell.textContent = percentage + '%';
     }
 
     function updateMeetingTotal(meetingId) {
-      const checkedInMeeting = document.querySelectorAll(`.attendance-check[data-meeting="${meetingId}"]:checked`);
-      const total = checkedInMeeting.length;
-      const totalCell = document.getElementById(`meeting-total-${meetingId}`);
-      if (totalCell) totalCell.textContent = total;
+        const checkedInMeeting = document.querySelectorAll(`.attendance-check[data-meeting="${meetingId}"]:checked`);
+        const total = checkedInMeeting.length;
+        const totalCell = document.getElementById(`meeting-total-${meetingId}`);
+        if (totalCell) totalCell.textContent = total;
     }
+
+    // ========== INICIALIZA OS TOTAIS NO CARREGAMENTO ==========
+    function initializeAllTotals() {
+    // Inicializa totais das linhas de membros
+    document.querySelectorAll('tr[data-type="member"]').forEach(row => {
+        const rowId = row.dataset.id;
+        const checkboxes = row.querySelectorAll('.attendance-check:checked');
+        const totalChecked = checkboxes.length;
+        const totalMeetings = {{ meetings|length }};
+        
+        let percentage;
+        if (totalMeetings > 0) {
+        const rawPercentage = (totalChecked / totalMeetings) * 100;
+        percentage = Number.isInteger(rawPercentage) ? rawPercentage.toString() : rawPercentage.toFixed(1);
+        } else {
+        percentage = '0';
+        }
+
+        const totalCell = document.getElementById(`total-${rowId}`);
+        const percentCell = document.getElementById(`percent-${rowId}`);
+
+        if (totalCell) totalCell.textContent = totalChecked;
+        if (percentCell) percentCell.textContent = percentage + '%';
+    });
+
+    // Inicializa totais das colunas (reuniões)
+    document.querySelectorAll('[id^="meeting-total-"]').forEach(cell => {
+        const meetingId = cell.id.replace('meeting-total-', '');
+        const checkedInMeeting = document.querySelectorAll(`.attendance-check[data-meeting="${meetingId}"]:checked`);
+        cell.textContent = checkedInMeeting.length;
+    });
+    }
+
+    // Chama a função quando a página carrega
+    initializeAllTotals();
+
   });
+
 </script>
 
 {% endblock %}
