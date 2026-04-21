@@ -71,12 +71,12 @@ class MeetingAttendance(BaseModel):
             )
 
         # Rule 2: Absence reason required when not attended
-        if not self.attended and not self.absence_reason:
-            raise ValidationError(
-                {
-                    "absence_reason": "É necessário informar o motivo da ausência"
-                }
-            )
+        #if not self.attended and not self.absence_reason:
+        #    raise ValidationError(
+        #        {
+        #            "absence_reason": "É necessário informar o motivo da ausência"
+        #        }
+        #    )
 
         # Rule 3: Absence reason should be empty when attended
         if self.attended and self.absence_reason:

@@ -1,0 +1,378 @@
+{% extends 'base.html' %}
+{% load cell_tags %}
+{% load attendance_filters %}
+
+{% block title %}
+  Relatório - {{ cell|cell_display }} - {{ month_name }}
+{% endblock %}
+
+{% block breadcrumb_items %}
+  <li class="breadcrumb-item"><a href="{% url 'cell_list' %}">Células</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'cell_detail' cell.pk %}">{{ cell|cell_display }}</a></li>
+  <li class="breadcrumb-item active">Grade de Presença</li>
+{% endblock %}
+
+{% block page_heading %}
+  <div class="d-flex justify-content-between align-items-center">
+    <span>
+      <i class="bi bi-table"></i>
+      Grade de Presença - {{ cell|cell_display }} - {{ month_name }}
+    </span>
+  </div>
+{% endblock %}
+
+{% block content %}
+
+<!-- Navegação de Mês -->
+<div class="row mb-3">
+  <div class="col-md-12">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <a href="{% url 'monthly_attendance_grid' cell.pk %}?year={{ prev_month.year }}&month={{ prev_month.month }}"
+           class="btn btn-outline-secondary">
+          <i class="bi bi-chevron-left"></i> Mês Anterior
+        </a>
+      </div>
+
+      <form method="get" class="d-flex gap-2">
+        <input type="hidden" name="year" value="{{ year }}">
+        <select name="month" class="form-select" onchange="this.form.submit()">
+          {% for m_num, m_name in months %}
+            <option value="{{ m_num }}" {% if month == m_num %}selected{% endif %}>
+              {{ m_name }}
+            </option>
+          {% endfor %}
+        </select>
+        <select name="year" class="form-select" onchange="this.form.submit()">
+          {% for y in "2024,2025,2026,2027"|split:"," %}
+            <option value="{{ y }}" {% if year == y|add:0 %}selected{% endif %}>{{ y }}</option>
+          {% endfor %}
+        </select>
+      </form>
+
+      <div>
+        <a href="{% url 'monthly_attendance_grid' cell.pk %}?year={{ next_month.year }}&month={{ next_month.month }}"
+           class="btn btn-outline-secondary">
+          Próximo Mês <i class="bi bi-chevron-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Grade de Presença -->
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover mb-0 attendance-grid">
+        <thead class="table-dark">
+          <tr>
+            <th style="min-width: 200px;">Membro/Visitante</th>
+            {% for meeting in meetings %}
+              <th class="text-center" style="min-width: 100px;">
+                <div>{{ meeting.meeting_date|date:"d/m" }}</div>
+                <small>{{ meeting.day_of_week|slice:":3" }}</small>
+                <div class="mt-2">
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-success mark-all-btn"
+                    data-meeting="{{ meeting.pk }}"
+                    title="Marcar presença para todos os membros"
+                  >
+                    <i class="bi bi-check-all"></i> Todos
+                  </button>
+                </div>
+              </th>
+            {% endfor %}
+            <th class="text-center">Total</th>
+            <th class="text-center">%</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in attendance_data %}
+          <tr data-type="{{ row.type }}" data-id="{{ row.id }}">
+            <td>
+              <i class="bi bi-person-fill {% if row.type == 'visitor' %}text-info{% else %}text-success{% endif %}"></i>
+              {{ row.name }}
+              <span class="badge {% if row.type == 'visitor' %}bg-info{% else %}bg-success{% endif %} ms-1">
+                {{ row.type_label }}
+              </span>
+            </td>
+
+            {% for meeting in meetings %}
+              <td class="text-center align-middle">
+                {% if row.type == 'member' %}
+                  <div class="form-check form-check-inline">
+                    <input
+                      type="checkbox"
+                      class="form-check-input attendance-check"
+                      data-meeting="{{ meeting.pk }}"
+                      data-member="{{ row.id|cut:'member_' }}"
+                      data-row-id="{{ row.id }}"
+                      {% if row.attendances|get_item:meeting.pk %}checked{% endif %}
+                    >
+                  </div>
+                {% else %}
+                  <span class="text-muted">—</span>
+                {% endif %}
+              </td>
+            {% endfor %}
+
+            <td class="text-center align-middle fw-bold" id="total-{{ row.id }}">
+              {% if row.type == 'member' %}
+                {{ row.attendances|count_true }}
+              {% else %}
+                —
+              {% endif %}
+            </td>
+            <td class="text-center align-middle" id="percent-{{ row.id }}">
+              {% if row.type == 'member' and meetings|length > 0 %}
+                {{ row.attendances|count_true|percentage:meetings|length }}%
+              {% else %}
+                —
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+
+          <!-- Linha de totais -->
+          <tr class="table-secondary fw-bold">
+            <td class="text-end">TOTAL PRESENTES:</td>
+            {% for meeting in meetings %}
+              <td class="text-center" id="meeting-total-{{ meeting.pk }}">
+                {{ meeting.total_attendees }}
+              </td>
+            {% endfor %}
+            <td colspan="2"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card-footer bg-dark border-secondary">
+    <div class="d-flex align-items-center">
+      <i class="bi bi-info-circle-fill text-info me-2"></i>
+      <small class="text-muted">
+        <i class="bi bi-check-square"></i> Clique nos checkboxes para marcar/desmarcar presença.
+        <i class="bi bi-check-all text-success"></i> Use o botão "Todos" para marcar presença de todos os membros de uma vez.
+        As alterações são salvas automaticamente.
+      </small>
+    </div>
+  </div>
+</div>
+
+<style>
+  .attendance-grid th {
+    vertical-align: middle;
+    text-align: center;
+  }
+  .attendance-grid td {
+    vertical-align: middle;
+  }
+  .form-check-inline {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+  }
+  .form-check-input {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+  .form-check-input:checked {
+    background-color: #198754;
+    border-color: #198754;
+  }
+  .mark-all-btn {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+  }
+  .mark-all-btn:hover {
+    background-color: #198754;
+    color: white;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const checkboxes = document.querySelectorAll('.attendance-check');
+    const markAllButtons = document.querySelectorAll('.mark-all-btn');
+
+    // ========== CHECKBOX INDIVIDUAL ==========
+    checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        const meetingId = this.dataset.meeting;
+        const memberId = this.dataset.member;
+        const attended = this.checked;
+        const row = this.closest('tr');
+        const rowId = row.dataset.id;
+
+        // Envia单个 via POST normal
+        saveAttendanceSingle(meetingId, memberId, attended, checkbox, rowId);
+      });
+    });
+
+    // ========== BOTÃO "TODOS" (ENVIA EM LOTE) ==========
+    markAllButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const meetingId = this.dataset.meeting;
+        const columnCheckboxes = document.querySelectorAll(`.attendance-check[data-meeting="${meetingId}"]`);
+
+        if (!confirm(`Marcar presença para TODOS os membros nesta reunião?`)) {
+          return;
+        }
+
+        // Desabilita o botão durante o processamento
+        this.disabled = true;
+        const originalText = this.innerHTML;
+        this.innerHTML = '<i class="bi bi-hourglass-split"></i> Salvando...';
+
+        // Coleta os dados para enviar em lote
+        const attendances = [];
+        const affectedRows = new Set();
+        
+        columnCheckboxes.forEach(checkbox => {
+          if (!checkbox.checked) {
+            const memberId = checkbox.dataset.member;
+            const row = checkbox.closest('tr');
+            
+            attendances.push({
+              meeting_id: meetingId,
+              member_id: memberId,
+              attended: true
+            });
+            
+            affectedRows.add(row.dataset.id);
+            
+            // Marca visualmente (otimista)
+            checkbox.checked = true;
+          }
+        });
+
+        // Se não há nada para marcar, restaura o botão
+        if (attendances.length === 0) {
+          this.disabled = false;
+          this.innerHTML = originalText;
+          return;
+        }
+
+        // Envia TUDO em uma única requisição
+        fetch('{% url "save_attendance" %}', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          body: JSON.stringify({ attendances: attendances })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Atualiza o total da reunião
+            updateMeetingTotal(meetingId);
+            
+            // Atualiza todas as linhas afetadas
+            affectedRows.forEach(rowId => {
+              updateRowTotal(rowId);
+            });
+
+            // Feedback visual no botão
+            this.style.transition = 'all 0.2s';
+            this.style.backgroundColor = '#198754';
+            this.style.color = 'white';
+            setTimeout(() => {
+              this.style.backgroundColor = '';
+              this.style.color = '';
+            }, 500);
+          } else {
+            // Reverte os checkboxes em caso de erro
+            columnCheckboxes.forEach(checkbox => {
+              checkbox.checked = false;
+            });
+            alert('Erro ao salvar presenças: ' + data.error);
+          }
+        })
+        .catch(error => {
+          console.error('Erro:', error);
+          // Reverte os checkboxes
+          columnCheckboxes.forEach(checkbox => {
+            checkbox.checked = false;
+          });
+          alert('Erro de conexão ao salvar presenças.');
+        })
+        .finally(() => {
+          this.disabled = false;
+          this.innerHTML = originalText;
+        });
+      });
+    });
+
+    // ========== FUNÇÃO PARA SALVAR PRESENÇA INDIVIDUAL ==========
+    function saveAttendanceSingle(meetingId, memberId, attended, checkbox, rowId) {
+      checkbox.disabled = true;
+
+      // Envia como POST normal (form-urlencoded) para compatibilidade
+      const formData = new FormData();
+      formData.append('meeting_id', meetingId);
+      formData.append('member_id', memberId);
+      formData.append('attended', attended);
+
+      fetch('{% url "save_attendance" %}', {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          updateRowTotal(rowId);
+          updateMeetingTotal(meetingId);
+
+          checkbox.style.transition = 'all 0.2s';
+          checkbox.style.transform = 'scale(1.2)';
+          setTimeout(() => checkbox.style.transform = 'scale(1)', 200);
+        } else {
+          checkbox.checked = !attended;
+          alert('Erro ao salvar presença: ' + data.error);
+        }
+      })
+      .catch(error => {
+        console.error('Erro:', error);
+        checkbox.checked = !attended;
+        alert('Erro de conexão ao salvar presença.');
+      })
+      .finally(() => {
+        checkbox.disabled = false;
+      });
+    }
+
+    // ========== ATUALIZA TOTAIS ==========
+    function updateRowTotal(rowId) {
+      const row = document.querySelector(`tr[data-id="${rowId}"]`);
+      if (!row) return;
+
+      const checkboxes = row.querySelectorAll('.attendance-check:checked');
+      const totalChecked = checkboxes.length;
+      const totalMeetings = {{ meetings|length }};
+      const percentage = totalMeetings > 0 ? ((totalChecked / totalMeetings) * 100).toFixed(1) : 0;
+
+      const totalCell = document.getElementById(`total-${rowId}`);
+      const percentCell = document.getElementById(`percent-${rowId}`);
+
+      if (totalCell) totalCell.textContent = totalChecked;
+      if (percentCell) percentCell.textContent = percentage + '%';
+    }
+
+    function updateMeetingTotal(meetingId) {
+      const checkedInMeeting = document.querySelectorAll(`.attendance-check[data-meeting="${meetingId}"]:checked`);
+      const total = checkedInMeeting.length;
+      const totalCell = document.getElementById(`meeting-total-${meetingId}`);
+      if (totalCell) totalCell.textContent = total;
+    }
+  });
+</script>
+
+{% endblock %}

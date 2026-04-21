@@ -62,8 +62,9 @@
       
       <!-- Relatórios -->
       <li class="nav-item">
-        <a class="nav-link" href="#">
-          <i class="bi bi-graph-up"></i>
+        <a class="nav-link {% if 'attendance_report' in request.resolver_match.url_name %}active{% endif %}" 
+     href="{% url 'attendance_report_select' %}">
+          <i class="bi bi-file-earmark-spreadsheet"></i>
           Relatórios
         </a>
       </li>
