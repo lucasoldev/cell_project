@@ -23,7 +23,7 @@
 
 {% block content %}
 
-<!-- Navegação de Mês -->
+<!-- Month navigation -->
 <div class="row mb-3">
   <div class="col-md-12">
     <div class="d-flex justify-content-between align-items-center">
@@ -60,7 +60,7 @@
   </div>
 </div>
 
-<!-- Grade de Presença -->
+<!-- Attendance Grid -->
 <div class="card shadow-sm">
   <div class="card-body p-0">
     <div class="table-responsive">
@@ -135,7 +135,7 @@
           </tr>
           {% endfor %}
 
-          <!-- Linha de totais -->
+          <!-- Sum line -->
           <tr class="table-secondary fw-bold">
             <td class="text-end">TOTAL PRESENTES:</td>
             {% for meeting in meetings %}
@@ -199,7 +199,7 @@
     const checkboxes = document.querySelectorAll('.attendance-check');
     const markAllButtons = document.querySelectorAll('.mark-all-btn');
 
-    // ========== CHECKBOX INDIVIDUAL ==========
+    // ========== INDIVIDUAL CHECKBOX ==========
     checkboxes.forEach(checkbox => {
       checkbox.addEventListener('change', function() {
         const meetingId = this.dataset.meeting;
@@ -208,12 +208,12 @@
         const row = this.closest('tr');
         const rowId = row.dataset.id;
 
-        // Envia单个 via POST normal
+        // Send via POST
         saveAttendanceSingle(meetingId, memberId, attended, checkbox, rowId);
       });
     });
 
-    // ========== BOTÃO "TODOS" (ENVIA EM LOTE) ==========
+    // ========== "TODOS" BUTTON (BULK SEND) ==========
     markAllButtons.forEach(button => {
       button.addEventListener('click', function() {
         const meetingId = this.dataset.meeting;
@@ -223,12 +223,12 @@
           return;
         }
 
-        // Desabilita o botão durante o processamento
+        // Disables button during processing
         this.disabled = true;
         const originalText = this.innerHTML;
         this.innerHTML = '<i class="bi bi-hourglass-split"></i> Salvando...';
 
-        // Coleta os dados para enviar em lote
+        // Collect the data to bulk send
         const attendances = [];
         const affectedRows = new Set();
         
@@ -245,19 +245,19 @@
             
             affectedRows.add(row.dataset.id);
             
-            // Marca visualmente (otimista)
+            // Visual Mark (optimistic)
             checkbox.checked = true;
           }
         });
 
-        // Se não há nada para marcar, restaura o botão
+        // If theres nothing to show, restores the button
         if (attendances.length === 0) {
           this.disabled = false;
           this.innerHTML = originalText;
           return;
         }
 
-        // Envia TUDO em uma única requisição
+        // Send EVERYTHING in one request
         fetch('{% url "save_attendance" %}', {
         method: 'POST',
         headers: {
@@ -269,15 +269,15 @@
         .then(response => response.json())
         .then(data => {
         if (data.success) {
-            // Atualiza o total da reunião
+            // Refresh the meeting total
             updateMeetingTotal(meetingId);
             
-            // ✅ Atualiza TODAS as linhas de membro
+            // ✅ Refresh ALL the members lines
             document.querySelectorAll('tr[data-type="member"]').forEach(row => {
             updateRowTotal(row.dataset.id);
             });
 
-            // Feedback visual no botão
+            // Button visual feedback
             this.style.transition = 'all 0.2s';
             this.style.backgroundColor = '#198754';
             this.style.color = 'white';
@@ -286,7 +286,7 @@
             this.style.color = '';
             }, 500);
         } else {
-            // Reverte os checkboxes em caso de erro
+            // Switches the checkboxes in failure case
             columnCheckboxes.forEach(checkbox => {
             checkbox.checked = false;
             });
@@ -295,7 +295,7 @@
         })
         .catch(error => {
           console.error('Erro:', error);
-          // Reverte os checkboxes
+          // Switch the checkboxes
           columnCheckboxes.forEach(checkbox => {
             checkbox.checked = false;
           });
@@ -308,11 +308,11 @@
       });
     });
 
-    // ========== FUNÇÃO PARA SALVAR PRESENÇA INDIVIDUAL ==========
+    // ========== FUNCTION TO SAVE INDIVIDUAL ATTENDANCE ==========
     function saveAttendanceSingle(meetingId, memberId, attended, checkbox, rowId) {
       checkbox.disabled = true;
 
-      // Envia como POST normal (form-urlencoded) para compatibilidade
+      // Send as normal POST (form-urlencoded) to accounting
       const formData = new FormData();
       formData.append('meeting_id', meetingId);
       formData.append('member_id', memberId);
@@ -349,7 +349,7 @@
       });
     }
 
-    // ========== ATUALIZA TOTAIS ==========
+    // ========== REFRESH TOTALS ==========
 
     function updateRowTotal(rowId) {
         const row = document.querySelector(`tr[data-id="${rowId}"]`);
@@ -362,7 +362,7 @@
         let percentage;
         if (totalMeetings > 0) {
             const rawPercentage = (totalChecked / totalMeetings) * 100;
-            // ✅ Remove .0 se for número inteiro
+            // ✅ Removes .0 in integer number case
             percentage = Number.isInteger(rawPercentage) ? rawPercentage.toString() : rawPercentage.toFixed(1);
         } else {
             percentage = '0';
@@ -382,9 +382,9 @@
         if (totalCell) totalCell.textContent = total;
     }
 
-    // ========== INICIALIZA OS TOTAIS NO CARREGAMENTO ==========
+    // ========== INITIALIZES THE TOTALS DURING LOADING ==========
     function initializeAllTotals() {
-    // Inicializa totais das linhas de membros
+    // Initializes member lines totals
     document.querySelectorAll('tr[data-type="member"]').forEach(row => {
         const rowId = row.dataset.id;
         const checkboxes = row.querySelectorAll('.attendance-check:checked');
@@ -406,7 +406,7 @@
         if (percentCell) percentCell.textContent = percentage + '%';
     });
 
-    // Inicializa totais das colunas (reuniões)
+    // Initializes columns totals (meetings)
     document.querySelectorAll('[id^="meeting-total-"]').forEach(cell => {
         const meetingId = cell.id.replace('meeting-total-', '');
         const checkedInMeeting = document.querySelectorAll(`.attendance-check[data-meeting="${meetingId}"]:checked`);
@@ -414,7 +414,7 @@
     });
     }
 
-    // Chama a função quando a página carrega
+    // Calls the function when the page reloads
     initializeAllTotals();
 
   });

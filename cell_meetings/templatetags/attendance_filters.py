@@ -5,21 +5,21 @@ register = template.Library()
 
 @register.filter
 def get_item(dictionary, key):
-    """Retorna o valor do dicionário para a chave"""
+    """Returns the dictionary value to the key"""
     if dictionary is None:
         return False
     return dictionary.get(key, False)
 
 @register.filter
 def count_true(dictionary):
-    """Conta quantos valores True existem no dicionário"""
+    """Count how many True values are in the dictionary"""
     if not dictionary:
         return 0
     return sum(1 for v in dictionary.values() if v)
 
 @register.filter
 def month_name(month_num):
-    """Retorna o nome do mês em português"""
+    """Return the month name in portugues"""
     months = {
         1: 'Janeiro', 2: 'Fevereiro', 3: 'Março',
         4: 'Abril', 5: 'Maio', 6: 'Junho',
@@ -33,7 +33,7 @@ def month_name(month_num):
 
 @register.filter
 def percentage(value, total):
-    """Calcula porcentagem"""
+    """Calculate the percentage"""
     # ✅ Converte para int se for QuerySet
     if hasattr(total, 'count'):
         total = total.count()
@@ -49,5 +49,5 @@ def percentage(value, total):
 
 @register.filter
 def split(value, separator):
-    """Divide uma string"""
+    """Split a string"""
     return value.split(separator)
