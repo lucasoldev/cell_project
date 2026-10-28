@@ -111,11 +111,11 @@ pandas>=2.0.0
    DEBUG=True
    ALLOWED_HOSTS=localhost,127.0.0.1
    
-   # Database
-   DATABASE_URL=postgresql://user:password@localhost:5432/cell_db
+   # Database (same values used by compose.yaml)
+   DB_ENGINE=postgres
    DB_NAME=cell_db
-   DB_USER=postgres
-   DB_PASSWORD=your_password
+   DB_USER=cell_user
+   DB_PASSWORD=cell_password
    DB_HOST=localhost
    DB_PORT=5432
    
@@ -126,14 +126,14 @@ pandas>=2.0.0
    JWT_SECRET_KEY=your-jwt-key
    ```
 
-5. **Create PostgreSQL database**
-   ```sql
-   CREATE DATABASE cell_db;
+5. **Start PostgreSQL in Docker**
+   ```bash
+   cp .env.example .env
+   docker compose up -d db
    ```
 
-6. **Run initial migrations**
+6. **Create the schema in PostgreSQL**
    ```bash
-   python manage.py makemigrations
    python manage.py migrate
    ```
 
@@ -146,6 +146,24 @@ pandas>=2.0.0
    ```bash
    python manage.py runserver
    ```
+
+### Import existing SQLite data
+
+Keep a copy of `db.sqlite3` in the project root before starting. With `.env`
+configured for PostgreSQL and the container running, export the SQLite records,
+then load them into PostgreSQL:
+
+```bash
+DB_ENGINE=sqlite python manage.py dumpdata \
+  --exclude contenttypes --exclude auth.permission \
+  --exclude admin.logentry --exclude sessions --indent 2 > sqlite_backup.json
+python manage.py migrate
+python manage.py loaddata sqlite_backup.json
+```
+
+Check the imported records in Django admin or the application before deleting
+the backup fixture or the original SQLite file. To roll back locally, set
+`DB_ENGINE=sqlite` in `.env`; the SQLite file is left untouched.
    
    The API will be available at: `http://localhost:8000/api/`
 
