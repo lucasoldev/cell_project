@@ -39,7 +39,7 @@ pytest-django = "^4.8.0"  # Adicionei pois é essencial para testar Django
 pytest-cov = "^5.0"
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "cell_project.settings" # Ajuste se seu settings estiver em outro lugar
+DJANGO_SETTINGS_MODULE = "app.settings"
 pythonpath = "."
 addopts = '-p no:warnings --reuse-db'
 
