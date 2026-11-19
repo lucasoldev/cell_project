@@ -95,10 +95,12 @@ reais do Poetry, pytest e Ruff.
 3. `AGENTS.md` orienta o Codex a usar os documentos e a respeitar os pontos de
    revisão humana.
 4. Bugs e alterações pequenas têm um caminho curto documentado.
-5. O README aponta para o guia SDD, não recomenda comandos/ferramentas removidos
-   e cita o caminho correto para testes.
+5. O README aponta para o guia SDD, mantém MkDocs + Material em documentação,
+   remove Qwen e cita o caminho correto para testes.
 6. Nenhuma dependência de runtime ou comportamento da aplicação muda.
 7. Links internos e exemplos de comando dos documentos são revisados.
+8. O README descreve GPT via Codex/ChatGPT Plus como assistência de
+   desenvolvimento, sem apresentá-lo como uso da API OpenAI pelo plano Plus.
 
 ## Verificação
 

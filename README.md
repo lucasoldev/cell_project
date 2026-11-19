@@ -39,10 +39,11 @@
 - **Visualization:** To be defined (Matplotlib/Seaborn/Power BI)
 
 ### Development Tools
-- **Documentation:** MkDocs + Material + **Qwen CLI** (docs and testing assistance)
-- **Testing:** Pytest + Pytest-Django + **Qwen CLI**
+- **Documentation:** MkDocs + Material
+- **Development process:** Spec Driven Development (SDD), documented in [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md)
+- **Testing:** Pytest + Pytest-Django
 - **Linting/Formatting:** Ruff
-- **AI Integration:** OpenAI API
+- **AI Development Assistant:** GPT via Codex and ChatGPT Plus
 
 ---
 
@@ -265,29 +266,12 @@ poetry run jupyter notebook
 
 ---
 
-## 🤖 Qwen CLI - Documentation and Testing Assistant
+## 📝 Development Workflow (SDD)
 
-**Qwen CLI** accelerates development through:
-
-- Automatic docstring generation
-- Test case suggestions
-- Documentation review
-- Unit test writing assistance
-
-### Useful commands:
-
-```bash
-# Generate docstring for a function
-qwen docstring "def calculate_attendance(month, attendances):"
-
-# Suggest tests for a Django model
-qwen suggest-tests "class Cell(models.Model):"
-
-# Review MkDocs documentation
-qwen review-docs docs/
-```
-
-> **Note:** Ensure Qwen CLI is installed and configured with your API key.
+New features start with reviewed requirements and acceptance criteria, followed
+by a reviewed technical plan before implementation. See the
+[development guide](docs/DEVELOPMENT.md) for the full workflow, templates, and
+the lightweight path for bugs and small changes.
 
 ---
 
@@ -298,7 +282,6 @@ qwen review-docs docs/
 | `poetry run task lint` | Run code checks with Ruff |
 | `poetry run task format` | Auto-format code |
 | `poetry run task test` | Run test suite with coverage |
-| `poetry run task docs` | Start MkDocs server at `127.0.0.1:8001` |
 
 ---
 
@@ -540,7 +523,9 @@ poetry run task test
 
 ### Run specific tests
 ```bash
-poetry run pytest apps/members/tests/
+poetry run pytest tests/
+# Or run one test file
+poetry run pytest tests/test_people.py
 ```
 
 ### Generate HTML coverage report
