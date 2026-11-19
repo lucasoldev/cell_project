@@ -1,0 +1,1392 @@
+[
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "staff",
+    "permissions": [
+      1,
+      2,
+      3,
+      4,
+      37,
+      38,
+      39,
+      40,
+      9,
+      10,
+      11,
+      12,
+      5,
+      6,
+      7,
+      8,
+      13,
+      14,
+      15,
+      16,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      85,
+      86,
+      87,
+      88,
+      77,
+      78,
+      79,
+      80,
+      57,
+      58,
+      59,
+      60,
+      17,
+      18,
+      19,
+      20,
+      25,
+      26,
+      27,
+      28,
+      53,
+      54,
+      55,
+      56,
+      29,
+      30,
+      31,
+      32,
+      73,
+      74,
+      75,
+      76,
+      41,
+      42,
+      43,
+      44,
+      89,
+      90,
+      91,
+      92,
+      81,
+      82,
+      83,
+      84,
+      49,
+      50,
+      51,
+      52,
+      33,
+      34,
+      35,
+      36,
+      93,
+      94,
+      95,
+      96,
+      45,
+      46,
+      47,
+      48,
+      21,
+      22,
+      23,
+      24,
+      69,
+      70,
+      71,
+      72
+    ]
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$LcANg8r8vP0WfehTw7p6ui$y1zCMyuuRcko9ecBIbO5uuy/dCveU7DTctbZ3m5YHdE=",
+    "last_login": "2026-04-16T02:46:42.078Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "lucas@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-04-09T20:27:48.784Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$7VUfwIpO38TshYzBZMYCab$azeKGYiAI3OC2SGFCNPyC5UZ8DAAnh/5/Q+vsDZptS4=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "guilherme",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-04-16T20:41:01Z",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$gcO6DpHmmDl4By52LRy72v$RzPNf+CE/pPKanLo3fQy0Q4buCF4eAt0ACBxabIzMmA=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "leandro",
+    "first_name": "Leandro",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-04-16T20:44:41Z",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$mDG3OfcDXFnZmaqaLxS4Iw$+keeE9XI5fdGfWvRVzv4glz5gYVdCfroJk2EFYBfD0M=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "teste",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-04-29T23:34:30.247Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "event_types.eventtype",
+  "pk": "4252ea0f-e449-4da6-abce-d463fc4bb69f",
+  "fields": {
+    "created_at": "2026-04-16T20:34:22.543Z",
+    "updated_at": "2026-04-16T20:35:45.430Z",
+    "name": "LIVRE",
+    "description": "Dia livre, sem programação de célula ou encontro do MAG."
+  }
+},
+{
+  "model": "event_types.eventtype",
+  "pk": "49bc4fd9-a08f-4228-887d-a5d097789d11",
+  "fields": {
+    "created_at": "2026-04-13T23:45:14.661Z",
+    "updated_at": "2026-04-16T20:36:03.389Z",
+    "name": "CELULA",
+    "description": "Reuniões semanais de célula."
+  }
+},
+{
+  "model": "event_types.eventtype",
+  "pk": "700e5ff3-194e-4385-9256-2c50f4050a9c",
+  "fields": {
+    "created_at": "2026-04-14T02:45:47.171Z",
+    "updated_at": "2026-04-16T20:36:16.927Z",
+    "name": "MAG",
+    "description": "Encontros do MAG."
+  }
+},
+{
+  "model": "leadership_roles.leadershiprole",
+  "pk": "4f964deb-8061-4ebe-8daf-4feb1363c23a",
+  "fields": {
+    "created_at": "2026-04-16T04:28:35.721Z",
+    "updated_at": "2026-04-16T04:28:35.721Z",
+    "title": "AUXILIAR",
+    "description": "",
+    "hierarchy_level": 5
+  }
+},
+{
+  "model": "leadership_roles.leadershiprole",
+  "pk": "6db7aa98-7375-448f-9d90-2305e2f82b63",
+  "fields": {
+    "created_at": "2026-04-16T17:57:31.603Z",
+    "updated_at": "2026-04-16T17:57:31.603Z",
+    "title": "SUPERVISOR_CELULA",
+    "description": "",
+    "hierarchy_level": 3
+  }
+},
+{
+  "model": "leadership_roles.leadershiprole",
+  "pk": "d42f1b20-f0b7-44f1-8f53-21884e167553",
+  "fields": {
+    "created_at": "2026-04-16T17:57:37.001Z",
+    "updated_at": "2026-04-16T17:57:37.001Z",
+    "title": "FACILITADOR",
+    "description": "",
+    "hierarchy_level": 4
+  }
+},
+{
+  "model": "leadership_roles.leadershiprole",
+  "pk": "efae03d4-c67c-401f-bb72-b739fb898776",
+  "fields": {
+    "created_at": "2026-04-14T20:29:48.915Z",
+    "updated_at": "2026-04-14T20:29:48.915Z",
+    "title": "SUPERVISOR_AREA",
+    "description": "Faz as coisa de supervisor.",
+    "hierarchy_level": 2
+  }
+},
+{
+  "model": "ministries.ministry",
+  "pk": "02fd4437-963b-451e-b955-114dbef0a10c",
+  "fields": {
+    "created_at": "2026-04-14T22:46:39.388Z",
+    "updated_at": "2026-04-14T22:59:02.726Z",
+    "name": "Louvor",
+    "description": "musica",
+    "notes": ""
+  }
+},
+{
+  "model": "ministries.ministry",
+  "pk": "1113ccfc-3dd8-4373-a632-fd8d5be6b08e",
+  "fields": {
+    "created_at": "2026-04-16T20:53:03.685Z",
+    "updated_at": "2026-04-16T20:53:03.685Z",
+    "name": "Som",
+    "description": "Mesa de som.",
+    "notes": ""
+  }
+},
+{
+  "model": "ministries.ministry",
+  "pk": "4b7793fc-09cd-4573-bc0d-562091d188fb",
+  "fields": {
+    "created_at": "2026-04-16T20:52:55.993Z",
+    "updated_at": "2026-04-16T20:52:55.993Z",
+    "name": "Transmissão",
+    "description": "Ajuda na transmissão ao vivo dos cultos.",
+    "notes": ""
+  }
+},
+{
+  "model": "ministries.ministry",
+  "pk": "8f8fabe6-47c4-4fb2-ba39-5fc6428fa30c",
+  "fields": {
+    "created_at": "2026-04-16T20:53:22.199Z",
+    "updated_at": "2026-04-16T20:53:22.199Z",
+    "name": "Teatro",
+    "description": "Várias apresentação dahora meo.",
+    "notes": ""
+  }
+},
+{
+  "model": "ministries.ministry",
+  "pk": "d114cabc-ebe3-4792-aa80-edbd8ef6e37a",
+  "fields": {
+    "created_at": "2026-04-16T20:54:24.182Z",
+    "updated_at": "2026-04-16T20:54:24.182Z",
+    "name": "Kids",
+    "description": "Cuida dos crionça.",
+    "notes": ""
+  }
+},
+{
+  "model": "ministries.ministry",
+  "pk": "e4d417ae-9597-49ad-9d52-dc2be4859ad4",
+  "fields": {
+    "created_at": "2026-04-16T20:51:59.349Z",
+    "updated_at": "2026-04-16T20:51:59.349Z",
+    "name": "Intecerssão",
+    "description": "O povo qui ora.",
+    "notes": ""
+  }
+},
+{
+  "model": "ministries.ministry",
+  "pk": "eeb10d66-d396-40b3-b9d5-f9ed1b13f39b",
+  "fields": {
+    "created_at": "2026-04-16T20:52:42.286Z",
+    "updated_at": "2026-04-16T20:52:42.286Z",
+    "name": "Projeção",
+    "description": "Ajuda no telão.",
+    "notes": ""
+  }
+},
+{
+  "model": "areas.area",
+  "pk": "e1502794-ab56-4cd7-bf8c-c4be65c02a18",
+  "fields": {
+    "created_at": "2026-04-15T20:57:25.948Z",
+    "updated_at": "2026-04-15T20:57:25.948Z",
+    "color": "RED",
+    "is_mag": true,
+    "notes": ""
+  }
+},
+{
+  "model": "mag_branches.magbranch",
+  "pk": "1e6e2814-073a-4c7c-a6e0-cd2595f679df",
+  "fields": {
+    "created_at": "2026-04-15T21:00:12.570Z",
+    "updated_at": "2026-04-15T21:00:12.570Z",
+    "name": "MAG",
+    "description": "Magzão mesmo.",
+    "notes": ""
+  }
+},
+{
+  "model": "mag_branches.magbranch",
+  "pk": "47b55114-065d-4e3d-ae39-7d9d6b6c059d",
+  "fields": {
+    "created_at": "2026-04-16T20:51:41.404Z",
+    "updated_at": "2026-04-16T20:51:41.404Z",
+    "name": "OW",
+    "description": "Adolescentes até 17 anos e 11 meses.",
+    "notes": ""
+  }
+},
+{
+  "model": "mag_branches.magbranch",
+  "pk": "5167b2a2-0c9d-48f9-a0f3-da5efcb896f1",
+  "fields": {
+    "created_at": "2026-04-16T20:51:22.933Z",
+    "updated_at": "2026-04-16T20:51:22.933Z",
+    "name": "A2",
+    "description": "Jovens casais, namorados ou casados.",
+    "notes": ""
+  }
+},
+{
+  "model": "person.person",
+  "pk": "03c38cb7-7870-4f9c-b486-a98900e1e9ff",
+  "fields": {
+    "created_at": "2026-04-16T02:52:34.382Z",
+    "updated_at": "2026-04-16T02:52:34.382Z",
+    "full_name": "Humberto Vieira da Silva",
+    "address": "Rua da Transmissão 74, Vila Vivaldi, São Bernardo do Campo, SP",
+    "gender": "M",
+    "marital_status": "SINGLE",
+    "birth_date": "2011-01-10",
+    "phone": "(11)97475-2222",
+    "notes": ""
+  }
+},
+{
+  "model": "person.person",
+  "pk": "28010e5f-0550-4e60-9d7d-f8b2c34257bf",
+  "fields": {
+    "created_at": "2026-04-16T02:50:02.901Z",
+    "updated_at": "2026-04-16T02:50:02.901Z",
+    "full_name": "Allan Pessoa Sousa",
+    "address": "Rua atibaia 359, Valparaiso, Santo André, SP",
+    "gender": "M",
+    "marital_status": "SINGLE",
+    "birth_date": "2004-09-15",
+    "phone": "(11)95350-3717",
+    "notes": ""
+  }
+},
+{
+  "model": "person.person",
+  "pk": "2cf56686-5bd0-4ae2-a43e-d245e50ead1e",
+  "fields": {
+    "created_at": "2026-04-16T20:55:54.657Z",
+    "updated_at": "2026-04-16T20:55:54.657Z",
+    "full_name": "Tiago n sabemo sobrenome ainda",
+    "address": "N/A",
+    "gender": "M",
+    "marital_status": "SINGLE",
+    "birth_date": "2001-01-01",
+    "phone": "11 96110-5536",
+    "notes": ""
+  }
+},
+{
+  "model": "person.person",
+  "pk": "2edab51d-da8a-4f07-b241-fc1f89d8af99",
+  "fields": {
+    "created_at": "2026-04-16T02:58:41.395Z",
+    "updated_at": "2026-04-16T02:58:41.395Z",
+    "full_name": "Lukeni Ferreira Correia",
+    "address": "Rua Dr. Simão de Lima, 535, Vila Palmares, Santo André, SP",
+    "gender": "M",
+    "marital_status": "SINGLE",
+    "birth_date": "2004-02-25",
+    "phone": "(11)95500-2502",
+    "notes": ""
+  }
+},
+{
+  "model": "person.person",
+  "pk": "3108c634-b54e-41bb-8c52-4b357d6fed1a",
+  "fields": {
+    "created_at": "2026-04-16T19:34:24.672Z",
+    "updated_at": "2026-04-16T19:35:30.034Z",
+    "full_name": "Bruna Vitória Alves",
+    "address": "Rua Tibiriçá, 357 - Vila Vivaldi - SBC",
+    "gender": "F",
+    "marital_status": "SINGLE",
+    "birth_date": "2004-05-15",
+    "phone": "(11)97437-1772",
+    "notes": ""
+  }
+},
+{
+  "model": "person.person",
+  "pk": "7b335721-f641-4e24-b44c-2daa4ab0a5b2",
+  "fields": {
+    "created_at": "2026-04-16T02:59:36.006Z",
+    "updated_at": "2026-04-16T02:59:36.006Z",
+    "full_name": "Tiago Cioca Cirillo",
+    "address": "Rua dos americanos, 320, AP. 156, Baeta Neves, São Bernardo do Campo, SP",
+    "gender": "M",
+    "marital_status": "MARRIED",
+    "birth_date": "1990-08-11",
+    "phone": "(11)99550-2776",
+    "notes": ""
+  }
+},
+{
+  "model": "person.person",
+  "pk": "aedb1ea8-0f87-444b-876b-a0673826bc4f",
+  "fields": {
+    "created_at": "2026-04-16T02:56:01.726Z",
+    "updated_at": "2026-04-16T02:56:01.726Z",
+    "full_name": "Khin Stephanie Silva Borges",
+    "address": "Rua dos americanos, 320, AP. 156, Baeta Neves, São Bernardo do Campo, SP",
+    "gender": "F",
+    "marital_status": "MARRIED",
+    "birth_date": "1993-05-12",
+    "phone": "(11)96685-0805",
+    "notes": ""
+  }
+},
+{
+  "model": "person.person",
+  "pk": "b49b89e6-cdfd-4390-91d0-598d0a316226",
+  "fields": {
+    "created_at": "2026-04-16T02:56:43.343Z",
+    "updated_at": "2026-04-16T02:56:43.343Z",
+    "full_name": "Lucas Oliveira",
+    "address": "Rua Itaparica, 90, Vila Curuçá, Santo André, SP",
+    "gender": "M",
+    "marital_status": "SINGLE",
+    "birth_date": "1996-01-23",
+    "phone": "11962523586",
+    "notes": ""
+  }
+},
+{
+  "model": "person.person",
+  "pk": "d1e800ec-c135-42d7-9536-928abce4748b",
+  "fields": {
+    "created_at": "2026-04-16T02:51:01.052Z",
+    "updated_at": "2026-04-16T02:51:01.052Z",
+    "full_name": "Arthur Barreto Borges Carmo",
+    "address": "Rua da Transmissão 74, Vila Vivaldi, São Bernardo do Campo, SP",
+    "gender": "M",
+    "marital_status": "SINGLE",
+    "birth_date": "2011-02-15",
+    "phone": "(11)94757-8442",
+    "notes": ""
+  }
+},
+{
+  "model": "person.person",
+  "pk": "d58cfce2-9244-4f01-b9ab-45df90a28a6e",
+  "fields": {
+    "created_at": "2026-04-16T02:55:12.697Z",
+    "updated_at": "2026-04-16T02:55:12.697Z",
+    "full_name": "Kaique de Brito Sampaio",
+    "address": "Avenida Fagundes de Oliveira, 519, Piraporinha, Diadema - SP",
+    "gender": "M",
+    "marital_status": "SINGLE",
+    "birth_date": "2006-06-18",
+    "phone": "11 93027-5971",
+    "notes": ""
+  }
+},
+{
+  "model": "person.person",
+  "pk": "f86930b7-8db9-4a49-837e-a1637d7e34ca",
+  "fields": {
+    "created_at": "2026-04-16T02:57:36.373Z",
+    "updated_at": "2026-04-16T02:57:36.373Z",
+    "full_name": "Lucca Comisso Procópio",
+    "address": "Rua Dr Gabriel Nicolau, 125, Vila Nova Orlandina, São Bernardo do Campo, SP",
+    "gender": "M",
+    "marital_status": "SINGLE",
+    "birth_date": "2004-05-15",
+    "phone": "(11)94014-1797",
+    "notes": ""
+  }
+},
+{
+  "model": "members.member",
+  "pk": "165eecb9-deb7-401a-87b9-9719b6fe0e69",
+  "fields": {
+    "created_at": "2026-04-16T03:08:33.970Z",
+    "updated_at": "2026-04-16T03:08:33.970Z",
+    "person": "d1e800ec-c135-42d7-9536-928abce4748b",
+    "is_active": true,
+    "entry_date": "2025-01-01",
+    "notes": ""
+  }
+},
+{
+  "model": "members.member",
+  "pk": "3d3df997-f35a-44d1-9af6-68f286e40a1e",
+  "fields": {
+    "created_at": "2026-04-16T17:48:20.414Z",
+    "updated_at": "2026-04-16T17:48:20.414Z",
+    "person": "03c38cb7-7870-4f9c-b486-a98900e1e9ff",
+    "is_active": true,
+    "entry_date": "2025-01-01",
+    "notes": ""
+  }
+},
+{
+  "model": "members.member",
+  "pk": "50971e22-06a1-470c-ba63-030b707a9b46",
+  "fields": {
+    "created_at": "2026-04-16T17:48:57.597Z",
+    "updated_at": "2026-04-16T17:48:57.597Z",
+    "person": "aedb1ea8-0f87-444b-876b-a0673826bc4f",
+    "is_active": true,
+    "entry_date": "2025-01-01",
+    "notes": ""
+  }
+},
+{
+  "model": "members.member",
+  "pk": "56f111a2-556b-451d-91c2-170acb589b21",
+  "fields": {
+    "created_at": "2026-04-16T17:48:40.469Z",
+    "updated_at": "2026-04-16T17:48:40.469Z",
+    "person": "d58cfce2-9244-4f01-b9ab-45df90a28a6e",
+    "is_active": true,
+    "entry_date": "2025-01-01",
+    "notes": ""
+  }
+},
+{
+  "model": "members.member",
+  "pk": "65984b65-0122-4c47-95c4-a329b8d00aca",
+  "fields": {
+    "created_at": "2026-04-16T17:52:03.962Z",
+    "updated_at": "2026-04-16T17:52:03.962Z",
+    "person": "7b335721-f641-4e24-b44c-2daa4ab0a5b2",
+    "is_active": true,
+    "entry_date": "2025-05-02",
+    "notes": ""
+  }
+},
+{
+  "model": "members.member",
+  "pk": "9a9dac7d-d74b-4850-b111-726e7a994bc1",
+  "fields": {
+    "created_at": "2026-04-16T17:51:42.408Z",
+    "updated_at": "2026-04-16T17:51:42.408Z",
+    "person": "f86930b7-8db9-4a49-837e-a1637d7e34ca",
+    "is_active": true,
+    "entry_date": "2023-11-23",
+    "notes": ""
+  }
+},
+{
+  "model": "members.member",
+  "pk": "a583dc40-e449-43d8-a7bd-9a75c8945b59",
+  "fields": {
+    "created_at": "2026-04-16T17:51:54.545Z",
+    "updated_at": "2026-04-16T17:51:54.546Z",
+    "person": "2edab51d-da8a-4f07-b241-fc1f89d8af99",
+    "is_active": true,
+    "entry_date": "2025-02-02",
+    "notes": ""
+  }
+},
+{
+  "model": "members.member",
+  "pk": "bedde4f1-23c5-470c-9c78-8472fefea85f",
+  "fields": {
+    "created_at": "2026-04-16T17:51:24.515Z",
+    "updated_at": "2026-04-16T17:51:24.515Z",
+    "person": "b49b89e6-cdfd-4390-91d0-598d0a316226",
+    "is_active": true,
+    "entry_date": "2018-09-13",
+    "notes": ""
+  }
+},
+{
+  "model": "members.member",
+  "pk": "e639a6a7-1d24-458e-a5c0-125f5d144a4e",
+  "fields": {
+    "created_at": "2026-04-16T03:08:07.717Z",
+    "updated_at": "2026-04-16T03:08:07.717Z",
+    "person": "28010e5f-0550-4e60-9d7d-f8b2c34257bf",
+    "is_active": true,
+    "entry_date": "2025-01-01",
+    "notes": ""
+  }
+},
+{
+  "model": "members.member",
+  "pk": "f88b74bc-ef0f-4e98-9064-d8ef5575de41",
+  "fields": {
+    "created_at": "2026-04-16T19:35:52.783Z",
+    "updated_at": "2026-04-16T19:35:52.783Z",
+    "person": "3108c634-b54e-41bb-8c52-4b357d6fed1a",
+    "is_active": true,
+    "entry_date": "2024-01-01",
+    "notes": ""
+  }
+},
+{
+  "model": "hosts.host",
+  "pk": "43ae0618-9c49-448a-b7f9-20f70c94ca57",
+  "fields": {
+    "created_at": "2026-04-16T19:34:39.942Z",
+    "updated_at": "2026-04-16T19:34:39.942Z",
+    "person": "3108c634-b54e-41bb-8c52-4b357d6fed1a",
+    "full_address": "Rua Tibiriçá, 357 - Vila Vivaldi - SBC",
+    "notes": ""
+  }
+},
+{
+  "model": "hosts.host",
+  "pk": "c9701e89-0d7f-4bc7-8540-54b4f7e6743e",
+  "fields": {
+    "created_at": "2026-04-16T18:59:27.402Z",
+    "updated_at": "2026-04-16T18:59:27.402Z",
+    "person": "f86930b7-8db9-4a49-837e-a1637d7e34ca",
+    "full_address": "Rua Dr Gabriel Nicolau, 125, Vila Nova Orlandina, São Bernardo do Campo, SP",
+    "notes": ""
+  }
+},
+{
+  "model": "cells.cell",
+  "pk": "f672494d-4abe-4eab-8c97-604688a03ab0",
+  "fields": {
+    "created_at": "2026-04-15T21:00:42.483Z",
+    "updated_at": "2026-04-15T21:00:42.483Z",
+    "name": "Doulos em missão",
+    "area": "e1502794-ab56-4cd7-bf8c-c4be65c02a18",
+    "mag_branch": "1e6e2814-073a-4c7c-a6e0-cd2595f679df",
+    "cgsbc": "",
+    "notes": "A melhor e mais humilde principalmente."
+  }
+},
+{
+  "model": "calendar_events.calendarevent",
+  "pk": "149a3720-9644-496b-bf3c-7dcda16d5523",
+  "fields": {
+    "created_at": "2026-04-20T05:23:03.812Z",
+    "updated_at": "2026-04-20T05:27:11.355Z",
+    "event_date": "2026-03-28",
+    "event_type": "700e5ff3-194e-4385-9256-2c50f4050a9c",
+    "description": "Mag",
+    "notes": ""
+  }
+},
+{
+  "model": "calendar_events.calendarevent",
+  "pk": "58ff8c90-de21-44cf-96c4-827da9c84a6e",
+  "fields": {
+    "created_at": "2026-04-20T05:23:03.639Z",
+    "updated_at": "2026-04-20T05:23:03.639Z",
+    "event_date": "2026-03-14",
+    "event_type": "49bc4fd9-a08f-4228-887d-a5d097789d11",
+    "description": "Célula",
+    "notes": ""
+  }
+},
+{
+  "model": "calendar_events.calendarevent",
+  "pk": "65e31974-e2f2-4946-8b26-20b7ee8a7904",
+  "fields": {
+    "created_at": "2026-04-18T16:42:24.395Z",
+    "updated_at": "2026-04-18T16:42:24.395Z",
+    "event_date": "2026-04-18",
+    "event_type": "49bc4fd9-a08f-4228-887d-a5d097789d11",
+    "description": "",
+    "notes": ""
+  }
+},
+{
+  "model": "calendar_events.calendarevent",
+  "pk": "798411b6-ded6-4b83-944d-bf78f3068b14",
+  "fields": {
+    "created_at": "2026-04-20T05:23:03.974Z",
+    "updated_at": "2026-04-20T05:23:03.974Z",
+    "event_date": "2026-04-11",
+    "event_type": "49bc4fd9-a08f-4228-887d-a5d097789d11",
+    "description": "Célula",
+    "notes": ""
+  }
+},
+{
+  "model": "calendar_events.calendarevent",
+  "pk": "7e55652a-1470-41e5-84b0-309a586fcc61",
+  "fields": {
+    "created_at": "2026-04-20T05:23:03.557Z",
+    "updated_at": "2026-04-20T05:23:03.557Z",
+    "event_date": "2026-03-07",
+    "event_type": "49bc4fd9-a08f-4228-887d-a5d097789d11",
+    "description": "Célula",
+    "notes": ""
+  }
+},
+{
+  "model": "calendar_events.calendarevent",
+  "pk": "8ea8843a-d8f1-4a08-9e3e-cdb0c653122a",
+  "fields": {
+    "created_at": "2026-04-20T05:23:03.321Z",
+    "updated_at": "2026-04-20T05:26:32.950Z",
+    "event_date": "2026-02-14",
+    "event_type": "700e5ff3-194e-4385-9256-2c50f4050a9c",
+    "description": "Conf Mag",
+    "notes": ""
+  }
+},
+{
+  "model": "calendar_events.calendarevent",
+  "pk": "94e46b62-8091-43b7-89e1-e87fff589708",
+  "fields": {
+    "created_at": "2026-04-20T05:23:03.167Z",
+    "updated_at": "2026-04-20T05:23:03.167Z",
+    "event_date": "2026-01-31",
+    "event_type": "49bc4fd9-a08f-4228-887d-a5d097789d11",
+    "description": "Célula",
+    "notes": ""
+  }
+},
+{
+  "model": "calendar_events.calendarevent",
+  "pk": "c59147c0-faca-486e-85e4-70c5d43dc796",
+  "fields": {
+    "created_at": "2026-04-20T05:23:03.402Z",
+    "updated_at": "2026-04-20T05:23:03.402Z",
+    "event_date": "2026-02-21",
+    "event_type": "49bc4fd9-a08f-4228-887d-a5d097789d11",
+    "description": "Célula",
+    "notes": ""
+  }
+},
+{
+  "model": "calendar_events.calendarevent",
+  "pk": "e3044800-7958-4740-a678-f82383e381c7",
+  "fields": {
+    "created_at": "2026-04-20T05:23:03.487Z",
+    "updated_at": "2026-04-20T05:23:03.487Z",
+    "event_date": "2026-02-28",
+    "event_type": "49bc4fd9-a08f-4228-887d-a5d097789d11",
+    "description": "Célula",
+    "notes": ""
+  }
+},
+{
+  "model": "calendar_events.calendarevent",
+  "pk": "ebcfeae6-0230-4c02-b5f9-f396670eaf33",
+  "fields": {
+    "created_at": "2026-04-20T05:23:03.732Z",
+    "updated_at": "2026-04-20T05:23:03.732Z",
+    "event_date": "2026-03-21",
+    "event_type": "49bc4fd9-a08f-4228-887d-a5d097789d11",
+    "description": "Célula",
+    "notes": ""
+  }
+},
+{
+  "model": "calendar_events.calendarevent",
+  "pk": "eeff1d0c-655d-4640-b1b1-da677fdac99d",
+  "fields": {
+    "created_at": "2026-04-20T05:23:04.051Z",
+    "updated_at": "2026-04-20T05:27:50.707Z",
+    "event_date": "2026-04-25",
+    "event_type": "700e5ff3-194e-4385-9256-2c50f4050a9c",
+    "description": "Mag",
+    "notes": ""
+  }
+},
+{
+  "model": "calendar_events.calendarevent",
+  "pk": "fc3f73ec-d62e-4d64-8906-dca8464017ae",
+  "fields": {
+    "created_at": "2026-04-20T05:23:03.245Z",
+    "updated_at": "2026-04-20T05:23:03.245Z",
+    "event_date": "2026-02-07",
+    "event_type": "49bc4fd9-a08f-4228-887d-a5d097789d11",
+    "description": "Célula",
+    "notes": ""
+  }
+},
+{
+  "model": "cell_locations.celllocation",
+  "pk": "14e235f2-2610-4bc7-8774-770f6041fb73",
+  "fields": {
+    "created_at": "2026-04-16T19:35:11.545Z",
+    "updated_at": "2026-04-16T19:35:11.545Z",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "host": "43ae0618-9c49-448a-b7f9-20f70c94ca57",
+    "address": "Rua Tibiriçá, 357 - Vila Vivaldi - SBC",
+    "is_active": true,
+    "notes": ""
+  }
+},
+{
+  "model": "cell_locations.celllocation",
+  "pk": "3443e522-9269-4b27-bd60-15145c46bb7f",
+  "fields": {
+    "created_at": "2026-04-16T19:03:57.881Z",
+    "updated_at": "2026-04-16T19:03:57.881Z",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "host": "c9701e89-0d7f-4bc7-8540-54b4f7e6743e",
+    "address": "Rua Dr Gabriel Nicolau, 125, Vila Nova Orlandina, São Bernardo do Campo, SP",
+    "is_active": true,
+    "notes": ""
+  }
+},
+{
+  "model": "visitors.visitor",
+  "pk": "b3eb2132-5bdb-411a-a511-220683b41251",
+  "fields": {
+    "created_at": "2026-04-16T21:01:12.742Z",
+    "updated_at": "2026-04-16T21:01:12.742Z",
+    "person": "2cf56686-5bd0-4ae2-a43e-d245e50ead1e",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "visit_date": "2026-04-12",
+    "became_member": false,
+    "notes": ""
+  }
+},
+{
+  "model": "leaderships.leadership",
+  "pk": "b7845182-e75e-45ca-b9e2-7e64875d4018",
+  "fields": {
+    "created_at": "2026-04-18T03:39:25.327Z",
+    "updated_at": "2026-04-18T03:39:25.327Z",
+    "person": "b49b89e6-cdfd-4390-91d0-598d0a316226",
+    "role": "d42f1b20-f0b7-44f1-8f53-21884e167553",
+    "area": "e1502794-ab56-4cd7-bf8c-c4be65c02a18",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "start_date": "2023-05-20",
+    "end_date": null,
+    "is_active": true,
+    "notes": ""
+  }
+},
+{
+  "model": "cell_members.cellmember",
+  "pk": "01f19d85-19d4-4e20-bdf9-4057ffed5fa6",
+  "fields": {
+    "created_at": "2026-04-16T17:58:17.076Z",
+    "updated_at": "2026-04-16T17:58:17.076Z",
+    "member": "bedde4f1-23c5-470c-9c78-8472fefea85f",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "role": "d42f1b20-f0b7-44f1-8f53-21884e167553",
+    "start_date": "2020-02-02",
+    "end_date": null,
+    "is_active": true,
+    "notes": ""
+  }
+},
+{
+  "model": "cell_members.cellmember",
+  "pk": "18b66d78-edde-45e2-93ed-95c4379bde77",
+  "fields": {
+    "created_at": "2026-04-16T17:58:47.429Z",
+    "updated_at": "2026-04-16T17:58:47.429Z",
+    "member": "a583dc40-e449-43d8-a7bd-9a75c8945b59",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "role": null,
+    "start_date": "2025-02-02",
+    "end_date": null,
+    "is_active": true,
+    "notes": ""
+  }
+},
+{
+  "model": "cell_members.cellmember",
+  "pk": "1c5bdb30-f4e1-4944-a1a8-c9ef124e40de",
+  "fields": {
+    "created_at": "2026-04-16T17:54:34.968Z",
+    "updated_at": "2026-04-16T17:54:34.968Z",
+    "member": "e639a6a7-1d24-458e-a5c0-125f5d144a4e",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "role": null,
+    "start_date": "2025-01-01",
+    "end_date": null,
+    "is_active": true,
+    "notes": ""
+  }
+},
+{
+  "model": "cell_members.cellmember",
+  "pk": "488526b8-ec43-48a6-9215-75a5a4ecdc67",
+  "fields": {
+    "created_at": "2026-04-16T17:58:33.315Z",
+    "updated_at": "2026-04-16T17:58:33.315Z",
+    "member": "9a9dac7d-d74b-4850-b111-726e7a994bc1",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "role": "4f964deb-8061-4ebe-8daf-4feb1363c23a",
+    "start_date": "2023-11-23",
+    "end_date": null,
+    "is_active": true,
+    "notes": ""
+  }
+},
+{
+  "model": "cell_members.cellmember",
+  "pk": "54401078-a328-4b54-a256-bac631e95e96",
+  "fields": {
+    "created_at": "2026-04-16T17:59:00.121Z",
+    "updated_at": "2026-04-16T17:59:00.121Z",
+    "member": "65984b65-0122-4c47-95c4-a329b8d00aca",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "role": null,
+    "start_date": "2025-05-02",
+    "end_date": null,
+    "is_active": true,
+    "notes": ""
+  }
+},
+{
+  "model": "cell_members.cellmember",
+  "pk": "631ddbf8-9dd3-4d47-b1fe-1e721c3dc33c",
+  "fields": {
+    "created_at": "2026-04-16T17:57:08.801Z",
+    "updated_at": "2026-04-16T17:57:08.801Z",
+    "member": "56f111a2-556b-451d-91c2-170acb589b21",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "role": null,
+    "start_date": "2025-01-01",
+    "end_date": null,
+    "is_active": true,
+    "notes": ""
+  }
+},
+{
+  "model": "cell_members.cellmember",
+  "pk": "a9869378-fcc7-4bc1-a750-b627fce48649",
+  "fields": {
+    "created_at": "2026-04-16T19:36:17.013Z",
+    "updated_at": "2026-04-16T19:36:17.013Z",
+    "member": "f88b74bc-ef0f-4e98-9064-d8ef5575de41",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "role": "4f964deb-8061-4ebe-8daf-4feb1363c23a",
+    "start_date": "2024-01-01",
+    "end_date": null,
+    "is_active": true,
+    "notes": ""
+  }
+},
+{
+  "model": "cell_members.cellmember",
+  "pk": "abaf4f2a-2929-4c96-b282-358043b655ff",
+  "fields": {
+    "created_at": "2026-04-16T17:56:13.868Z",
+    "updated_at": "2026-04-16T17:56:13.868Z",
+    "member": "165eecb9-deb7-401a-87b9-9719b6fe0e69",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "role": null,
+    "start_date": "2025-01-01",
+    "end_date": null,
+    "is_active": true,
+    "notes": ""
+  }
+},
+{
+  "model": "cell_members.cellmember",
+  "pk": "ae94c245-7180-4bef-a2c8-367d50d072da",
+  "fields": {
+    "created_at": "2026-04-16T17:57:59.113Z",
+    "updated_at": "2026-04-16T17:57:59.113Z",
+    "member": "50971e22-06a1-470c-ba63-030b707a9b46",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "role": null,
+    "start_date": "2025-05-02",
+    "end_date": null,
+    "is_active": true,
+    "notes": ""
+  }
+},
+{
+  "model": "cell_members.cellmember",
+  "pk": "bad8e148-4e6d-4e80-849c-17497bb75054",
+  "fields": {
+    "created_at": "2026-04-16T17:56:48.648Z",
+    "updated_at": "2026-04-16T17:56:48.648Z",
+    "member": "3d3df997-f35a-44d1-9af6-68f286e40a1e",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "role": null,
+    "start_date": "2025-01-01",
+    "end_date": null,
+    "is_active": true,
+    "notes": ""
+  }
+},
+{
+  "model": "member_ministries.memberministry",
+  "pk": "ca327a46-7df1-4131-a6a7-4d332fde550c",
+  "fields": {
+    "created_at": "2026-04-18T04:12:49.801Z",
+    "updated_at": "2026-04-18T04:12:49.801Z",
+    "member": "bedde4f1-23c5-470c-9c78-8472fefea85f",
+    "ministry": "02fd4437-963b-451e-b955-114dbef0a10c",
+    "start_date": "2019-04-02",
+    "end_date": null,
+    "is_active": true,
+    "notes": ""
+  }
+},
+{
+  "model": "member_ministries.memberministry",
+  "pk": "f9f6cee6-415c-4720-9612-b516a1e4bae9",
+  "fields": {
+    "created_at": "2026-04-18T04:13:09.951Z",
+    "updated_at": "2026-04-18T04:13:09.951Z",
+    "member": "bedde4f1-23c5-470c-9c78-8472fefea85f",
+    "ministry": "e4d417ae-9597-49ad-9d52-dc2be4859ad4",
+    "start_date": "2025-02-02",
+    "end_date": null,
+    "is_active": true,
+    "notes": ""
+  }
+},
+{
+  "model": "cell_meetings.cellmeeting",
+  "pk": "03848191-c56f-4d75-ac74-d62d879e9c21",
+  "fields": {
+    "created_at": "2026-04-20T05:40:29.108Z",
+    "updated_at": "2026-04-20T05:40:29.108Z",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "cell_location": "14e235f2-2610-4bc7-8774-770f6041fb73",
+    "calendar_event": "7e55652a-1470-41e5-84b0-309a586fcc61",
+    "meeting_date": "2026-03-07",
+    "took_place": true,
+    "total_attendees": 0,
+    "notes": ""
+  }
+},
+{
+  "model": "cell_meetings.cellmeeting",
+  "pk": "1d150893-03bb-4f4e-b7fe-04dfcf73e9d5",
+  "fields": {
+    "created_at": "2026-04-20T05:40:28.930Z",
+    "updated_at": "2026-04-20T05:40:28.930Z",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "cell_location": "14e235f2-2610-4bc7-8774-770f6041fb73",
+    "calendar_event": "c59147c0-faca-486e-85e4-70c5d43dc796",
+    "meeting_date": "2026-02-21",
+    "took_place": true,
+    "total_attendees": 0,
+    "notes": ""
+  }
+},
+{
+  "model": "cell_meetings.cellmeeting",
+  "pk": "4771222f-1dc0-4db8-8145-f29da4e1fb76",
+  "fields": {
+    "created_at": "2026-04-18T18:41:47.931Z",
+    "updated_at": "2026-04-18T18:41:47.931Z",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "cell_location": "14e235f2-2610-4bc7-8774-770f6041fb73",
+    "calendar_event": "65e31974-e2f2-4946-8b26-20b7ee8a7904",
+    "meeting_date": "2026-04-18",
+    "took_place": true,
+    "total_attendees": 1,
+    "notes": ""
+  }
+},
+{
+  "model": "cell_meetings.cellmeeting",
+  "pk": "5d9f2c35-4612-44fb-bfc3-41e6605bb510",
+  "fields": {
+    "created_at": "2026-04-20T05:40:29.369Z",
+    "updated_at": "2026-04-20T05:40:29.369Z",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "cell_location": "14e235f2-2610-4bc7-8774-770f6041fb73",
+    "calendar_event": "798411b6-ded6-4b83-944d-bf78f3068b14",
+    "meeting_date": "2026-04-11",
+    "took_place": true,
+    "total_attendees": 10,
+    "notes": ""
+  }
+},
+{
+  "model": "cell_meetings.cellmeeting",
+  "pk": "5f07358d-b7ef-41a2-a422-c7df6cdbb99b",
+  "fields": {
+    "created_at": "2026-04-20T05:40:28.816Z",
+    "updated_at": "2026-04-20T05:40:28.816Z",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "cell_location": "14e235f2-2610-4bc7-8774-770f6041fb73",
+    "calendar_event": "fc3f73ec-d62e-4d64-8906-dca8464017ae",
+    "meeting_date": "2026-02-07",
+    "took_place": true,
+    "total_attendees": 0,
+    "notes": ""
+  }
+},
+{
+  "model": "cell_meetings.cellmeeting",
+  "pk": "6ac6cf46-10d5-4b97-bc96-0dc83ae2b883",
+  "fields": {
+    "created_at": "2026-04-20T05:40:28.666Z",
+    "updated_at": "2026-04-20T05:40:28.666Z",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "cell_location": "14e235f2-2610-4bc7-8774-770f6041fb73",
+    "calendar_event": "94e46b62-8091-43b7-89e1-e87fff589708",
+    "meeting_date": "2026-01-31",
+    "took_place": true,
+    "total_attendees": 0,
+    "notes": ""
+  }
+},
+{
+  "model": "cell_meetings.cellmeeting",
+  "pk": "7dfd35fa-c081-495b-9d1d-296ec83facb2",
+  "fields": {
+    "created_at": "2026-04-20T05:40:29.202Z",
+    "updated_at": "2026-04-20T05:40:29.202Z",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "cell_location": "14e235f2-2610-4bc7-8774-770f6041fb73",
+    "calendar_event": "58ff8c90-de21-44cf-96c4-827da9c84a6e",
+    "meeting_date": "2026-03-14",
+    "took_place": true,
+    "total_attendees": 0,
+    "notes": ""
+  }
+},
+{
+  "model": "cell_meetings.cellmeeting",
+  "pk": "8141232a-87da-4111-8289-2b4ce07ba753",
+  "fields": {
+    "created_at": "2026-04-20T05:40:29.026Z",
+    "updated_at": "2026-04-20T05:40:29.026Z",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "cell_location": "14e235f2-2610-4bc7-8774-770f6041fb73",
+    "calendar_event": "e3044800-7958-4740-a678-f82383e381c7",
+    "meeting_date": "2026-02-28",
+    "took_place": true,
+    "total_attendees": 0,
+    "notes": ""
+  }
+},
+{
+  "model": "cell_meetings.cellmeeting",
+  "pk": "da717c70-683d-4f42-9cc2-74ccc328b765",
+  "fields": {
+    "created_at": "2026-04-20T05:40:29.286Z",
+    "updated_at": "2026-04-20T05:40:29.286Z",
+    "cell": "f672494d-4abe-4eab-8c97-604688a03ab0",
+    "cell_location": "14e235f2-2610-4bc7-8774-770f6041fb73",
+    "calendar_event": "ebcfeae6-0230-4c02-b5f9-f396670eaf33",
+    "meeting_date": "2026-03-21",
+    "took_place": true,
+    "total_attendees": 0,
+    "notes": ""
+  }
+},
+{
+  "model": "meeting_attendances.meetingattendance",
+  "pk": "13ed71eb-ff98-4b5e-a10d-c3bd9d5a1edc",
+  "fields": {
+    "created_at": "2026-04-21T01:24:40.303Z",
+    "updated_at": "2026-04-21T01:36:08.025Z",
+    "cell_meeting": "4771222f-1dc0-4db8-8145-f29da4e1fb76",
+    "member": "165eecb9-deb7-401a-87b9-9719b6fe0e69",
+    "attended": false,
+    "absence_reason": "",
+    "notes": ""
+  }
+},
+{
+  "model": "meeting_attendances.meetingattendance",
+  "pk": "16bacea5-8ff6-4b54-b269-9f667535fd38",
+  "fields": {
+    "created_at": "2026-04-21T01:07:52.756Z",
+    "updated_at": "2026-04-21T01:07:52.756Z",
+    "cell_meeting": "5d9f2c35-4612-44fb-bfc3-41e6605bb510",
+    "member": "f88b74bc-ef0f-4e98-9064-d8ef5575de41",
+    "attended": true,
+    "absence_reason": "",
+    "notes": ""
+  }
+},
+{
+  "model": "meeting_attendances.meetingattendance",
+  "pk": "181b52f1-7db2-4aab-9d75-3236184e5148",
+  "fields": {
+    "created_at": "2026-04-21T01:21:44.563Z",
+    "updated_at": "2026-04-21T01:21:44.563Z",
+    "cell_meeting": "5d9f2c35-4612-44fb-bfc3-41e6605bb510",
+    "member": "9a9dac7d-d74b-4850-b111-726e7a994bc1",
+    "attended": true,
+    "absence_reason": "",
+    "notes": ""
+  }
+},
+{
+  "model": "meeting_attendances.meetingattendance",
+  "pk": "352ebee0-5535-4141-a018-bc1d3e7f76cf",
+  "fields": {
+    "created_at": "2026-04-21T01:07:45.818Z",
+    "updated_at": "2026-04-21T01:07:45.818Z",
+    "cell_meeting": "5d9f2c35-4612-44fb-bfc3-41e6605bb510",
+    "member": "65984b65-0122-4c47-95c4-a329b8d00aca",
+    "attended": true,
+    "absence_reason": "",
+    "notes": ""
+  }
+},
+{
+  "model": "meeting_attendances.meetingattendance",
+  "pk": "3fec8c28-78af-441d-b0bc-4df79cc99b61",
+  "fields": {
+    "created_at": "2026-04-21T01:17:39.055Z",
+    "updated_at": "2026-04-21T01:17:39.055Z",
+    "cell_meeting": "5d9f2c35-4612-44fb-bfc3-41e6605bb510",
+    "member": "a583dc40-e449-43d8-a7bd-9a75c8945b59",
+    "attended": true,
+    "absence_reason": "",
+    "notes": ""
+  }
+},
+{
+  "model": "meeting_attendances.meetingattendance",
+  "pk": "42d6e82c-f1ba-4bd7-ab8d-c279b05028d6",
+  "fields": {
+    "created_at": "2026-04-21T01:07:45.696Z",
+    "updated_at": "2026-04-21T01:07:45.696Z",
+    "cell_meeting": "5d9f2c35-4612-44fb-bfc3-41e6605bb510",
+    "member": "bedde4f1-23c5-470c-9c78-8472fefea85f",
+    "attended": true,
+    "absence_reason": "",
+    "notes": ""
+  }
+},
+{
+  "model": "meeting_attendances.meetingattendance",
+  "pk": "6a82eb72-8931-45f0-9321-3ca09cd660c9",
+  "fields": {
+    "created_at": "2026-04-21T01:24:51.536Z",
+    "updated_at": "2026-04-21T01:24:51.839Z",
+    "cell_meeting": "4771222f-1dc0-4db8-8145-f29da4e1fb76",
+    "member": "3d3df997-f35a-44d1-9af6-68f286e40a1e",
+    "attended": false,
+    "absence_reason": "",
+    "notes": ""
+  }
+},
+{
+  "model": "meeting_attendances.meetingattendance",
+  "pk": "7543e114-321d-40fa-9db3-0fc8c0886c7d",
+  "fields": {
+    "created_at": "2026-04-19T04:37:43.597Z",
+    "updated_at": "2026-04-21T01:43:50.928Z",
+    "cell_meeting": "4771222f-1dc0-4db8-8145-f29da4e1fb76",
+    "member": "e639a6a7-1d24-458e-a5c0-125f5d144a4e",
+    "attended": true,
+    "absence_reason": "",
+    "notes": ""
+  }
+},
+{
+  "model": "meeting_attendances.meetingattendance",
+  "pk": "953953f4-9628-43e5-bcde-19c0f45317f2",
+  "fields": {
+    "created_at": "2026-04-21T01:17:38.832Z",
+    "updated_at": "2026-04-21T01:17:38.832Z",
+    "cell_meeting": "5d9f2c35-4612-44fb-bfc3-41e6605bb510",
+    "member": "56f111a2-556b-451d-91c2-170acb589b21",
+    "attended": true,
+    "absence_reason": "",
+    "notes": ""
+  }
+},
+{
+  "model": "meeting_attendances.meetingattendance",
+  "pk": "9d01c011-f7b4-4f58-8cdf-0ace07fe3161",
+  "fields": {
+    "created_at": "2026-04-21T01:24:48.225Z",
+    "updated_at": "2026-04-21T01:24:48.639Z",
+    "cell_meeting": "4771222f-1dc0-4db8-8145-f29da4e1fb76",
+    "member": "f88b74bc-ef0f-4e98-9064-d8ef5575de41",
+    "attended": false,
+    "absence_reason": "",
+    "notes": ""
+  }
+},
+{
+  "model": "meeting_attendances.meetingattendance",
+  "pk": "aa9c3762-8560-4e22-ab85-685fb4716092",
+  "fields": {
+    "created_at": "2026-04-21T01:07:45.573Z",
+    "updated_at": "2026-04-21T01:07:45.573Z",
+    "cell_meeting": "5d9f2c35-4612-44fb-bfc3-41e6605bb510",
+    "member": "165eecb9-deb7-401a-87b9-9719b6fe0e69",
+    "attended": true,
+    "absence_reason": "",
+    "notes": ""
+  }
+},
+{
+  "model": "meeting_attendances.meetingattendance",
+  "pk": "d2d46d0b-f10a-46c1-ac2c-427fae99565a",
+  "fields": {
+    "created_at": "2026-04-21T01:21:42.714Z",
+    "updated_at": "2026-04-21T01:21:42.714Z",
+    "cell_meeting": "5d9f2c35-4612-44fb-bfc3-41e6605bb510",
+    "member": "50971e22-06a1-470c-ba63-030b707a9b46",
+    "attended": true,
+    "absence_reason": "",
+    "notes": ""
+  }
+},
+{
+  "model": "meeting_attendances.meetingattendance",
+  "pk": "e2e68418-b887-4312-b8d0-c2e948b10092",
+  "fields": {
+    "created_at": "2026-04-21T01:07:43.066Z",
+    "updated_at": "2026-04-21T01:07:43.066Z",
+    "cell_meeting": "5d9f2c35-4612-44fb-bfc3-41e6605bb510",
+    "member": "e639a6a7-1d24-458e-a5c0-125f5d144a4e",
+    "attended": true,
+    "absence_reason": "",
+    "notes": ""
+  }
+},
+{
+  "model": "meeting_attendances.meetingattendance",
+  "pk": "eab74468-7f29-4bff-b1a9-228da76da069",
+  "fields": {
+    "created_at": "2026-04-21T01:07:56.059Z",
+    "updated_at": "2026-04-21T01:07:56.059Z",
+    "cell_meeting": "5d9f2c35-4612-44fb-bfc3-41e6605bb510",
+    "member": "3d3df997-f35a-44d1-9af6-68f286e40a1e",
+    "attended": true,
+    "absence_reason": "",
+    "notes": ""
+  }
+}
+]

@@ -147,6 +147,42 @@ pandas>=2.0.0
    python manage.py runserver
    ```
 
+### Local Development Infrastructure (WSL + Docker on Windows)
+
+The Django project runs from WSL, while PostgreSQL and pgAdmin run in Docker
+on Windows. Docker publishes PostgreSQL on port `5432` and pgAdmin on port
+`8080`; WSL reaches PostgreSQL through `localhost:5432`.
+
+```mermaid
+flowchart LR
+    Browser[Browser]
+
+    subgraph Windows[Windows]
+        subgraph Docker[Docker containers]
+            PgAdmin[pgAdmin<br/>container port 80]
+            Postgres[PostgreSQL 18<br/>container port 5432]
+        end
+        PgAdminPort[Published port 8080]
+        PostgresPort[Published port 5432]
+        PgAdminPort --> PgAdmin
+        PostgresPort --> Postgres
+    end
+
+    subgraph WSL[WSL]
+        Django[Django project]
+        Env[.env<br/>DB_ENGINE=postgres<br/>DB_HOST=localhost<br/>DB_PORT=5432]
+        Django --> Env
+    end
+
+    Browser -->|http://localhost:8080| PgAdminPort
+    Browser -.->|http://localhost:8000 when Django is running| Django
+    Env -->|PostgreSQL protocol over TCP| PostgresPort
+```
+
+Open pgAdmin at `http://localhost:8080`. PostgreSQL uses port `5432` for
+database clients such as Django and `psql`; it is not an HTTP page for the
+browser.
+
 ### Import existing SQLite data
 
 Keep a copy of `db.sqlite3` in the project root before starting. With `.env`
